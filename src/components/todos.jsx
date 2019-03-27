@@ -11,10 +11,52 @@ class Todos extends Component {
     this.setState({ todos });
   }
 
+  // handle edit
+  handleEdit = (todo) => {
+    console.log("edit", todo.title);
+    // call the backend ...
+  }
+
+  // handle delete
+  handleDelete = (todo) => {
+    console.log("delete", todo.title);
+    // call the backend ...
+  }
+
+  // get the class of the span based on the number of todos
+  getSpannClasses = () => {
+    let classes = "badge badge-";
+    classes += this.state.todos.length === 0 ? "danger" : "primary";
+    return classes;
+  };
+
+  // conditionally render the number of elements in the todo list
+  renderNumberOfTodoElemensts = () => {
+    const { todos } = this.state;
+    if (todos.length === 0)
+      return <h5>There are no elements in the todo list.</h5>;
+    if (todos.length === 1) {
+      return (
+        <h5>
+          There is <span className={this.getSpannClasses()}>1</span> element in
+          the todo list.
+        </h5>
+      );
+    } else {
+      return (
+        <h5>
+          There are{" "}
+          <span className={this.getSpannClasses()}>{todos.length}</span>{" "}
+          elements in the todo list.
+        </h5>
+      );
+    }
+  };
+
   render() {
     return (
       <React.Fragment>
-        <h3>There are {this.state.todos.length} todos in the DB.</h3>
+        {this.renderNumberOfTodoElemensts()}
         <table className="table">
           <thead>
             <tr>
@@ -30,10 +72,20 @@ class Todos extends Component {
                 <td>{this.state.todos.indexOf(todo) + 1}</td>
                 <td>{todo.title}</td>
                 <td>
-                  <button className="btn btn-sm btn-secondary">Edit</button>
+                  <button
+                    onClick={() => this.handleEdit(todo)}
+                    className="btn btn-sm btn-secondary"
+                  >
+                    Edit
+                  </button>
                 </td>
                 <td>
-                  <button className="btn btn-sm btn-danger">Delete</button>
+                  <button
+                    onClick={() => this.handleDelete(todo)}
+                    className="btn btn-sm btn-danger"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
