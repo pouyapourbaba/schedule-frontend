@@ -1,9 +1,13 @@
 import React, { Component } from "react";
+import { paginate } from "../utils/paginate";
+import Pagination from "./common/pagination";
 import Axios from "axios";
 
 class Todos extends Component {
   state = {
-    todos: []
+    todos: [],
+    pageSize: 3,
+    currentPage: 1
   };
 
   async componentDidMount() {
@@ -11,17 +15,28 @@ class Todos extends Component {
     this.setState({ todos });
   }
 
-  // handle edit
-  handleEdit = (todo) => {
-    console.log("edit", todo.title);
+  // handle page change
+  handlePageChange = page => {
+    this.setState({ currentPage: page });
+  };
+
+  // handle add a new todo
+  handleAdd = () => {
+    console.log("add new post");
     // call the backend ...
   }
 
+  // handle edit
+  handleEdit = todo => {
+    console.log("edit", todo.title);
+    // call the backend ...
+  };
+
   // handle delete
-  handleDelete = (todo) => {
+  handleDelete = todo => {
     console.log("delete", todo.title);
     // call the backend ...
-  }
+  };
 
   // get the class of the span based on the number of todos
   getSpannClasses = () => {
@@ -54,6 +69,11 @@ class Todos extends Component {
   };
 
   render() {
+    const { length: count } = this.state.todos;
+    const { pageSize, currentPage, todos: allTodos } = this.state;
+
+    const todos = paginate(allTodos, currentPage, pageSize);
+
     return (
       <React.Fragment>
         {this.renderNumberOfTodoElemensts()}
@@ -67,9 +87,9 @@ class Todos extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.todos.map(todo => (
+            {todos.map(todo => (
               <tr key={todo._id}>
-                <td>{this.state.todos.indexOf(todo) + 1}</td>
+                <td>{todos.indexOf(todo) + 1}</td>
                 <td>{todo.title}</td>
                 <td>
                   <button
@@ -91,7 +111,13 @@ class Todos extends Component {
             ))}
           </tbody>
         </table>
-        <button className="btn btn-primary btn-sm">New Todo</button>
+        <Pagination
+          itemsCount={count}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={this.handlePageChange}
+        />
+        <button onClick={() => this.handleAdd()} className="btn btn-primary btn-sm">New Todo</button>
       </React.Fragment>
     );
   }
