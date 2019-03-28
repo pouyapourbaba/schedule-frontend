@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { paginate } from "../utils/paginate";
 import Pagination from "./common/pagination";
-import Axios from "axios";
+import axios from "axios";
+
+const apiEndpoint = "http://localhost:3000/api/todos";
 
 class Todos extends Component {
   state = {
@@ -11,7 +13,7 @@ class Todos extends Component {
   };
 
   async componentDidMount() {
-    const { data: todos } = await Axios.get("http://localhost:3000/api/todos");
+    const { data: todos } = await axios.get(apiEndpoint);
     this.setState({ todos });
   }
 
@@ -21,21 +23,51 @@ class Todos extends Component {
   };
 
   // handle add a new todo
-  handleAdd = () => {
-    console.log("add new post");
-    // call the backend ...
-  }
+  handleAdd = async () => {
+    // add a static new todo
+    // after creating the new todo form it should be dynamic
+    const obj = { title: "added from the front end" };
+    const { data: todo } = await axios.post(apiEndpoint, obj);
+    const todos = [todo, ...this.state.todos];
+    this.setState({ todos });
+  };
 
   // handle edit
-  handleEdit = todo => {
-    console.log("edit", todo.title);
-    // call the backend ...
+  handleUpdate = async todo => {
+    // update a static new todo
+    // after creating the new todo form it should be dynamic
+
+    // Optimistic Update
+    const originalTodos = this.state.todos;
+    
+    todo.title = "Updated from the frontend 2 2";
+    const todos = [...this.state.todos];
+    const index = todos.indexOf(todo);
+    todos[index] = { ...todo };
+    this.setState({ todos });
+
+    try {
+      await axios.put(apiEndpoint + "/" + todo._id, todo);
+    } catch (ex) {
+      alert("Something went wrong while deleting the post.");
+      this.setState({ todos: originalTodos });
+    }
   };
 
   // handle delete
-  handleDelete = todo => {
-    console.log("delete", todo.title);
-    // call the backend ...
+  handleDelete = async todo => {
+    // Optimistic Delete
+    const originalTodos = this.state.todos;
+
+    const todos = this.state.todos.filter(t => t._id !== todo._id);
+    this.setState({ todos });
+
+    try {
+      await axios.delete(apiEndpoint + "/" + todo._id);
+    } catch (ex) {
+      alert("Something went wrong while deleting the post.");
+      this.setState({ todos: originalTodos });
+    }
   };
 
   // get the class of the span based on the number of todos
@@ -89,11 +121,11 @@ class Todos extends Component {
           <tbody>
             {todos.map(todo => (
               <tr key={todo._id}>
-                <td>{todos.indexOf(todo) + 1}</td>
+                <td>{this.state.todos.indexOf(todo) + 1}</td>
                 <td>{todo.title}</td>
                 <td>
                   <button
-                    onClick={() => this.handleEdit(todo)}
+                    onClick={() => this.handleUpdate(todo)}
                     className="btn btn-sm btn-secondary"
                   >
                     Edit
@@ -117,7 +149,12 @@ class Todos extends Component {
           currentPage={currentPage}
           onPageChange={this.handlePageChange}
         />
-        <button onClick={() => this.handleAdd()} className="btn btn-primary btn-sm">New Todo</button>
+        <button
+          onClick={() => this.handleAdd()}
+          className="btn btn-primary btn-sm"
+        >
+          New Todo
+        </button>
       </React.Fragment>
     );
   }
