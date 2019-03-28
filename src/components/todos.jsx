@@ -3,6 +3,20 @@ import { paginate } from "../utils/paginate";
 import Pagination from "./common/pagination";
 import axios from "axios";
 
+axios.interceptors.response.use(null, error => {
+  const expectedError =
+    error.response &&
+    error.response.status >= 400 &&
+    error.response.status < 500;
+
+  if (!expectedError) {
+    console.log("Logging the error", error);
+    alert("An unexpected error occurred.");
+  }
+
+  return Promise.reject(error);
+});
+
 const apiEndpoint = "http://localhost:3000/api/todos";
 
 class Todos extends Component {
@@ -39,7 +53,7 @@ class Todos extends Component {
 
     // Optimistic Update
     const originalTodos = this.state.todos;
-    
+
     todo.title = "Updated from the frontend 2 2";
     const todos = [...this.state.todos];
     const index = todos.indexOf(todo);
@@ -65,7 +79,9 @@ class Todos extends Component {
     try {
       await axios.delete(apiEndpoint + "/" + todo._id);
     } catch (ex) {
-      alert("Something went wrong while deleting the post.");
+      if (ex.response && ex.response.status === 400) {
+        alert("This todo has already been deleted.");
+      }
       this.setState({ todos: originalTodos });
     }
   };
