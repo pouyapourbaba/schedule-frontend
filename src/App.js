@@ -25,6 +25,7 @@ class App extends Component {
         </main>
       </React.Fragment>
     );
+
   }
 }
 
