@@ -6,6 +6,7 @@ import Todos from "./components/todos";
 import Profile from "./components/profile";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
+import RegisterForm from "./components/registerForm";
 import "./App.css";
 
 class App extends Component {
@@ -15,6 +16,7 @@ class App extends Component {
         <NavBar />
         <main className="container">
           <Switch>
+            <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginForm} />
             <Route path="/profile" component={Profile} />
             <Route path="/todos" component={Todos} />
@@ -25,7 +27,6 @@ class App extends Component {
         </main>
       </React.Fragment>
     );
-
   }
 }
 
