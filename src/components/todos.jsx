@@ -1,23 +1,8 @@
 import React, { Component } from "react";
 import { paginate } from "../utils/paginate";
 import Pagination from "./common/pagination";
-import axios from "axios";
-
-axios.interceptors.response.use(null, error => {
-  const expectedError =
-    error.response &&
-    error.response.status >= 400 &&
-    error.response.status < 500;
-
-  if (!expectedError) {
-    console.log("Logging the error", error);
-    alert("An unexpected error occurred.");
-  }
-
-  return Promise.reject(error);
-});
-
-const apiEndpoint = "http://localhost:3000/api/todos";
+import http from "../services/httpService";
+import config from "../config.json";
 
 class Todos extends Component {
   state = {
@@ -27,7 +12,7 @@ class Todos extends Component {
   };
 
   async componentDidMount() {
-    const { data: todos } = await axios.get(apiEndpoint);
+    const { data: todos } = await http.get(config.apiEndpoint);
     this.setState({ todos });
   }
 
@@ -41,7 +26,7 @@ class Todos extends Component {
     // add a static new todo
     // after creating the new todo form it should be dynamic
     const obj = { title: "added from the front end" };
-    const { data: todo } = await axios.post(apiEndpoint, obj);
+    const { data: todo } = await http.post(config.apiEndpoint, obj);
     const todos = [todo, ...this.state.todos];
     this.setState({ todos });
   };
@@ -61,7 +46,7 @@ class Todos extends Component {
     this.setState({ todos });
 
     try {
-      await axios.put(apiEndpoint + "/" + todo._id, todo);
+      await http.put(config.apiEndpoint + "/" + todo._id, todo);
     } catch (ex) {
       alert("Something went wrong while deleting the post.");
       this.setState({ todos: originalTodos });
@@ -77,7 +62,7 @@ class Todos extends Component {
     this.setState({ todos });
 
     try {
-      await axios.delete(apiEndpoint + "/" + todo._id);
+      await http.delete(config.apiEndpoint + "/" + todo._id);
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         alert("This todo has already been deleted.");
