@@ -56,3 +56,15 @@
   color: rgb(76, 180, 250);
   text-decoration: none;
 }
+
+/* Content Editable */
+.content-editable {
+  padding: 0.2rem;
+}
+.content-editable:hover {
+  background: #f7f7f7;
+}
+.content-editable:focus {
+  background: #fcf8e1;
+  outline: 0;
+}

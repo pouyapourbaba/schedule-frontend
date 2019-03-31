@@ -1,18 +1,20 @@
+import contentEditable from "react-contenteditable";
 import Joi from "joi-browser";
 import React, { Component } from "react";
 import { paginate } from "../utils/paginate";
 import Pagination from "./common/pagination";
 import http from "../services/httpService";
 import config from "../config.json";
-import Input from "./common/input";
+import Form from "./common/form";
+import ContentEditable from "react-contenteditable";
 
-class Todos extends Component {
+class Todos extends Form {
   state = {
     todos: [],
     pageSize: 5,
     currentPage: 1,
     data: { title: "" },
-    errors: {}
+    errors: []
   };
 
   schema = {
@@ -25,6 +27,7 @@ class Todos extends Component {
 
   async componentDidMount() {
     const { data: todos } = await http.get(config.apiEndpoint);
+    todos.reverse();
     this.setState({ todos });
   }
 
@@ -33,72 +36,34 @@ class Todos extends Component {
     this.setState({ currentPage: page });
   };
 
-  // handle the change of the input field and bind it to the state
-  handleChange = ({ currentTarget: input }) => {
-    // const errors = { ...this.state.errors };
-    // const errorMessage = this.validateProperty(input);
-    // if (errorMessage) errors[input.name] = errorMessage;
-    // else delete errors[input.name];
-
-    let data = { ...this.state.data };
-    data.title = input.value;
-    this.setState({ data });
-  };
-
-  // prevent the full page reload when submitting this form
-  handleSubmit = e => {
-    e.preventDefault();
-
-    const errors = this.validate();
-    this.setState({ errors: errors || {} });
-    if (errors) return;
-
-    this.doSubmit();
-  };
-
-  // validate the whole form
-  validate = () => {
-    const options = { abortEarly: false };
-    const { error } = Joi.validate(this.state.data, this.schema, options);
-    if (!error) return null;
-
-    const errors = {};
-    for (let item of error.details) errors[item.path[0]] = item.message;
-
-    return errors;
-  };
-
-  // validate each field when its value changes
-  // validateProperty = ({ name, value }) => {
-  //   const obj = { [name]: value };
-  //   const schema = { [name]: this.schema[name] };
-  //   const { error } = Joi.validate(obj, schema);
-
-  //   return error ? error.details[0].message : null;
-  // };
-
   // handle add a new todo
   doSubmit = async () => {
-    const obj = this.state.data;
-    console.log("obj ", obj);
-
-    const { data: todo } = await http.post(config.apiEndpoint, obj);
-    const todos = [todo, ...this.state.todos];
-    this.setState({ todos });
+    try {
+      const obj = this.state.data;
+      const { data: todo } = await http.post(config.apiEndpoint, obj);
+      const todos = [todo, ...this.state.todos];
+      this.setState({ todos });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        const errors = { ...this.state.errors };
+        errors.email = ex.response.data;
+        this.setState({ errors });
+      }
+    }
   };
 
   // handle edit
   handleUpdate = async todo => {
-    // update a static new todo
-    // after creating the new todo form it should be dynamic
-
     // Optimistic Update
     const originalTodos = this.state.todos;
 
-    todo.title = "Updated from the frontend 2 2";
     const todos = [...this.state.todos];
     const index = todos.indexOf(todo);
     todos[index] = { ...todo };
+
+    // trim the possible spaces added to the title in the ContentEditable
+    todos[index].title = this.trimSpaces(todos[index].title);
+
     this.setState({ todos });
 
     try {
@@ -141,7 +106,7 @@ class Todos extends Component {
       return <h5>There are no elements in the todo list.</h5>;
     if (todos.length === 1) {
       return (
-        <h5>
+        <h5 contentEditable="true">
           There is <span className={this.getSpannClasses()}>1</span> element in
           the todo list.
         </h5>
@@ -155,6 +120,45 @@ class Todos extends Component {
         </h5>
       );
     }
+  };
+
+  handleContentEditable = e => {
+    const errors = { ...this.state.errors };
+    const todos = this.state.todos;
+    const index = todos.findIndex(
+      todo => todo._id === e.currentTarget.dataset.column
+    );
+    todos[index].title = e.target.value;
+    const obj = { title: e.target.value };
+    const { error } = Joi.validate(obj, this.schema);
+    const errorMessage = error ? error.details[0].message : null;
+
+    console.log("error ", errorMessage);
+    if (errorMessage) {
+      errors["title"] = errorMessage;
+      errors["id"] = todos[index]._id;
+    } else delete errors["title"];
+
+    this.setState({ todos, errors });
+  };
+
+  // disable new lines in the ContentEditable
+  disableNewlines = event => {
+    const keyCode = event.keyCode || event.which;
+
+    if (keyCode === 13) {
+      event.returnValue = false;
+      if (event.preventDefault) event.preventDefault();
+    }
+  };
+
+  // trim the spaces in the ContentEditable
+  trimSpaces = string => {
+    return string
+      .replace(/&nbsp;/g, "")
+      .replace(/&amp;/g, "&")
+      .replace(/&gt;/g, ">")
+      .replace(/&lt;/g, "<");
   };
 
   render() {
@@ -179,11 +183,26 @@ class Todos extends Component {
             {todos.map(todo => (
               <tr key={todo._id}>
                 <td>{this.state.todos.indexOf(todo) + 1}</td>
-                <td>{todo.title}</td>
+                <td>
+                  <ContentEditable
+                    html={todo.title}
+                    data-column={todo._id}
+                    className="content-editable"
+                    onChange={this.handleContentEditable}
+                    onKeyPress={this.disableNewlines}
+                  />
+                  {this.state.errors.title &&
+                    this.state.errors.id === todo._id && (
+                      <div className="alert alert-danger">
+                        {this.state.errors.title}
+                      </div>
+                    )}
+                </td>
                 <td>
                   <button
                     onClick={() => this.handleUpdate(todo)}
                     className="btn btn-sm btn-secondary"
+                    disabled={this.state.errors.title && this.state.errors.id === todo._id}
                   >
                     Edit
                   </button>
@@ -207,14 +226,8 @@ class Todos extends Component {
           onPageChange={this.handlePageChange}
         />
         <form onSubmit={this.handleSubmit}>
-          <Input
-            name="data"
-            value={this.state.data.title}
-            label="New todo"
-            onChange={this.handleChange}
-            error={this.state.erros}
-          />
-          <button className="btn btn-primary btn-sm">Submit</button>
+          {this.renderInput("title", "Title", false)}
+          {this.renderButton("Submit")}
         </form>
       </React.Fragment>
     );
