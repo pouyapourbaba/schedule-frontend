@@ -35,3 +35,24 @@
 .container {
   margin-top: 20px;
 }
+
+/* Sidebar */
+#sidebar {
+  position: "fixed";
+  height: 89.8vh;
+  background: #282c34;
+  padding: "10px"
+}
+#sidebar ul {
+  padding: 10px;
+}
+#sidebar ul li {
+  padding: 10px;
+}
+.sidebar-listitems {
+  color: #fff;
+}
+.sidebar-listitems:hover {
+  color: rgb(76, 180, 250);
+  text-decoration: none;
+}

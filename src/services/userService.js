@@ -1,5 +1,4 @@
 import http from "./httpService";
-import axios from "axios"
 // import {apiUrl} from "../config.json"
 
 const apiUrl = " http://localhost:3000/api";

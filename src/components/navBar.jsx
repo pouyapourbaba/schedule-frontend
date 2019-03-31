@@ -22,11 +22,11 @@ class NavBar extends Component {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav">
-            <NavLink className="nav-link" to="/todos">
-              Todos
-            </NavLink>
             {!this.props.user && (
               <React.Fragment>
+                <NavLink className="nav-link" to="/dashboard">
+                  Dashboard
+                </NavLink>
                 <NavLink className="nav-link" to="/login">
                   Login
                 </NavLink>
@@ -37,6 +37,9 @@ class NavBar extends Component {
             )}
             {this.props.user && (
               <React.Fragment>
+                <NavLink className="nav-link" to="/dashboard">
+                  Dashboard
+                </NavLink>
                 <NavLink className="nav-link" to="/profile">
                   {this.props.user.first_name}
                 </NavLink>
