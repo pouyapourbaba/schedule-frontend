@@ -13,7 +13,5 @@ export function register(user) {
 }
 
 export function getUser(id) {
-  console.log("id ", id);
-
   return http.get(apiEndpoint + "/" + id)
 }
