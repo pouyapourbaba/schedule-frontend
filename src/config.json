@@ -1,3 +1,4 @@
 {
-  "apiEndpoint": "http://localhost:3000/api/todos"
+  "apiEndpoint": "http://localhost:3000/api/todos",
+  "apiUrl": "http://localhost:3000/api"
 }

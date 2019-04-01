@@ -1,12 +1,10 @@
-import contentEditable from "react-contenteditable";
-import Joi from "joi-browser";
-import React, { Component } from "react";
+import ContentEditable from "react-contenteditable";import Joi from "joi-browser";
+import React from "react";
 import { paginate } from "../utils/paginate";
 import Pagination from "./common/pagination";
 import http from "../services/httpService";
 import config from "../config.json";
 import Form from "./common/form";
-import ContentEditable from "react-contenteditable";
 
 class Todos extends Form {
   state = {
@@ -65,6 +63,7 @@ class Todos extends Form {
     todos[index].title = this.trimSpaces(todos[index].title);
 
     this.setState({ todos });
+    console.log(todo)
 
     try {
       await http.put(config.apiEndpoint + "/" + todo._id, todo);
@@ -133,7 +132,6 @@ class Todos extends Form {
     const { error } = Joi.validate(obj, this.schema);
     const errorMessage = error ? error.details[0].message : null;
 
-    console.log("error ", errorMessage);
     if (errorMessage) {
       errors["title"] = errorMessage;
       errors["id"] = todos[index]._id;
