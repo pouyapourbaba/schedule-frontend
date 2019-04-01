@@ -8,7 +8,7 @@ class SideBar extends Component {
         <div>
           <ul>
             <li>
-              <NavLink className="sidebar-listitems" to="/todos">Todos</NavLink>
+              <NavLink className="sidebar-listitems" to={`/todos/${this.props.user._id}`}>Todos</NavLink>
             </li>
             <li>
               <NavLink className="sidebar-listitems" to="/scheduler">Scheduler</NavLink>

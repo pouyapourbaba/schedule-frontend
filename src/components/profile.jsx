@@ -1,14 +1,14 @@
 import Joi from "joi-browser";
 import ContentEditable from "react-contenteditable";
 import React from "react";
-import auth from "../services/authService";
 import http from "../services/httpService";
-import {getUser} from "../services/userService";
-import config from "../config.json"
+import { getUser } from "../services/userService";
+import config from "../config.json";
 import Form from "./common/form";
 
 class Profile extends Form {
   state = {
+    user: [],
     errors: []
   };
 
@@ -58,15 +58,15 @@ class Profile extends Form {
     return error ? error.details[0].message : null;
   };
 
-  componentWillMount() {
-    const user = auth.getCurrentUser();
-    this.setState({ user });
-  }
-
   async componentDidMount() {
-    let user = await getUser(this.state.user._id);
-    user = user.data;
-    this.setState({ user });
+    if (this.props.match.params.user_id === undefined) return;
+    try {
+      let user = await getUser(this.props.match.params.user_id);
+      user = user.data;
+      this.setState({ user });
+    } catch (ex) {
+      console.log(ex.message);
+    }
   }
 
   handleContentEditable = e => {
@@ -95,7 +95,9 @@ class Profile extends Form {
     this.setState({ user });
 
     try {
-      await http.put(config.apiUrl + "/users" +"/" + user._id, {[property]: value});
+      await http.put(config.apiUrl + "/users/" + user._id, {
+        [property]: value
+      });
     } catch (ex) {
       alert("Something went wrong while deleting the post.");
       this.setState({ user: originalUser });
@@ -123,8 +125,10 @@ class Profile extends Form {
 
   render() {
     const { first_name, last_name, added_date, email } = this.state.user;
+
     let db_date = new Date(added_date);
     db_date = db_date.toDateString();
+
     return (
       <React.Fragment>
         <table className="table">

@@ -1,18 +1,20 @@
-import ContentEditable from "react-contenteditable";import Joi from "joi-browser";
+import ContentEditable from "react-contenteditable";
+import Joi from "joi-browser";
 import React from "react";
 import { paginate } from "../utils/paginate";
 import Pagination from "./common/pagination";
 import http from "../services/httpService";
 import config from "../config.json";
 import Form from "./common/form";
+import { getUser } from "../services/userService";
 
 class Todos extends Form {
   state = {
     todos: [],
+    errors: [],
     pageSize: 5,
     currentPage: 1,
-    data: { title: "" },
-    errors: []
+    data: { title: "" }
   };
 
   schema = {
@@ -24,9 +26,24 @@ class Todos extends Form {
   };
 
   async componentDidMount() {
-    const { data: todos } = await http.get(config.apiEndpoint);
-    todos.reverse();
-    this.setState({ todos });
+    if (this.props.match.params.user_id === undefined) return;
+    try {
+      let user = await getUser(this.props.match.params.user_id);
+      user = user.data;
+      this.setState({ user });
+    } catch (ex) {
+      console.log(ex.message);
+    }
+
+    try {
+      const { data: todos } = await http.get(
+        config.apiEndpoint + "/" + this.props.match.params.user_id
+      );
+      todos.reverse();
+      this.setState({ todos });
+    } catch (ex) {
+      console.log(ex.message);
+    }
   }
 
   // handle page change
@@ -38,6 +55,7 @@ class Todos extends Form {
   doSubmit = async () => {
     try {
       const obj = this.state.data;
+      obj.user_id = this.state.user._id;
       const { data: todo } = await http.post(config.apiEndpoint, obj);
       const todos = [todo, ...this.state.todos];
       this.setState({ todos });
@@ -63,7 +81,6 @@ class Todos extends Form {
     todos[index].title = this.trimSpaces(todos[index].title);
 
     this.setState({ todos });
-    console.log(todo)
 
     try {
       await http.put(config.apiEndpoint + "/" + todo._id, todo);
@@ -200,7 +217,10 @@ class Todos extends Form {
                   <button
                     onClick={() => this.handleUpdate(todo)}
                     className="btn btn-sm btn-secondary"
-                    disabled={this.state.errors.title && this.state.errors.id === todo._id}
+                    disabled={
+                      this.state.errors.title &&
+                      this.state.errors.id === todo._id
+                    }
                   >
                     Edit
                   </button>

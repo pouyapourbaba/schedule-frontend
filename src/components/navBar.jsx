@@ -37,10 +37,13 @@ class NavBar extends Component {
             )}
             {this.props.user && (
               <React.Fragment>
-                <NavLink className="nav-link" to="/dashboard">
+                <NavLink className="nav-link" to={`/dashboard`}>
                   Dashboard
                 </NavLink>
-                <NavLink className="nav-link" to="/profile">
+                <NavLink
+                  className="nav-link"
+                  to={`/profile/${this.props.user._id}`}
+                >
                   {this.props.user.first_name}
                 </NavLink>
                 <NavLink className="nav-link" to="/logout">
