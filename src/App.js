@@ -12,6 +12,7 @@ import auth from "./services/authService";
 import Dashboard from "./components/dashboard";
 import SideBar from "./components/sideBar";
 import { getUser } from "./services/userService";
+import Scheduler from './components/scheduler';
 import "./App.css";
 
 class App extends Component {
@@ -55,6 +56,7 @@ class App extends Component {
               <Switch>
                 <Route path="/profile/:user_id" component={Profile} />
                 <Route path="/todos/:user_id" component={Todos} />
+                <Route path="/scheduler/:user_id" component={Scheduler} />
                 <Route path="/logout" component={Logout} />
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/not-found" component={NotFound} />
@@ -69,6 +71,7 @@ class App extends Component {
             <Switch>
               <Route path="/profile" component={Profile} />
               <Route path="/todos" component={Todos} />
+              <Route path="/scheduler" component={Scheduler} />
               <Route path="/dashboard" component={Dashboard} />
               <Route path="/register" component={RegisterForm} />
               <Route path="/login" component={LoginForm} />

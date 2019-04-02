@@ -11,10 +11,10 @@ class SideBar extends Component {
               <NavLink className="sidebar-listitems" to={`/todos/${this.props.user._id}`}>Todos</NavLink>
             </li>
             <li>
-              <NavLink className="sidebar-listitems" to="/scheduler">Scheduler</NavLink>
+              <NavLink className="sidebar-listitems" to={`/scheduler/${this.props.user._id}`}>Scheduler</NavLink>
             </li>
             <li>
-              <NavLink className="sidebar-listitems" to="/timetracker">Time Tracker</NavLink>
+              <NavLink className="sidebar-listitems" to={`/timetracker/${this.props.user._id}`}>Time Tracker</NavLink>
             </li>
           </ul>
         </div>
