@@ -1,8 +1,22 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import { getUser } from "../services/userService";
 
 class NavBar extends Component {
-  state = {};
+  state = { user: { first_name: "", last_name: "", email: "" } };
+
+  async componentDidMount() {
+    // if (this.props.match.params.user_id === undefined) return;
+
+    try {
+      let user = await getUser(this.props.user_id);
+      user = user.data;
+      this.setState({ user });
+    } catch (ex) {
+      console.log(ex.message);
+    }
+  }
+
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -22,10 +36,7 @@ class NavBar extends Component {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="navbar-nav">
-            <NavLink className="nav-link" to="/todos">
-              Todos
-            </NavLink>
-            {!this.props.user && (
+            {!this.props.user_id && (
               <React.Fragment>
                 <NavLink className="nav-link" to="/login">
                   Login
@@ -35,10 +46,16 @@ class NavBar extends Component {
                 </NavLink>
               </React.Fragment>
             )}
-            {this.props.user && (
+            {this.props.user_id && (
               <React.Fragment>
-                <NavLink className="nav-link" to="/profile">
-                  {this.props.user.first_name}
+                <NavLink className="nav-link" to={`/dashboard`}>
+                  Dashboard
+                </NavLink>
+                <NavLink
+                  className="nav-link"
+                  to={`/profile/${this.props.user_id}`}
+                >
+                  {this.state.user.first_name}
                 </NavLink>
                 <NavLink className="nav-link" to="/logout">
                   Logout

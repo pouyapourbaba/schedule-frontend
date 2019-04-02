@@ -35,3 +35,39 @@
 .container {
   margin-top: 20px;
 }
+
+/* Sidebar */
+#sidebar {
+  position: "fixed";
+  height: 89.8vh;
+  background: #282c34;
+  padding: "10px"
+}
+#sidebar ul {
+  padding: 10px;
+}
+#sidebar ul li {
+  padding: 10px;
+}
+.sidebar-listitems {
+  color: #fff;
+}
+.sidebar-listitems:hover {
+  color: rgb(76, 180, 250);
+  text-decoration: none;
+}
+
+/* Content Editable */
+.content-editable {
+  padding: 0.2rem;
+  border-radius: 2%;
+}
+.content-editable:hover {
+  background: #f7f7f7;
+}
+.content-editable:focus {
+  background: #f7f7f7;
+  border: solid 0.05rem #3d3d4b;
+  /* color: #f7f7f7; */
+  outline: 0;
+}

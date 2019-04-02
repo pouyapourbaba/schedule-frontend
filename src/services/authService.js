@@ -1,9 +1,7 @@
 import http from "./httpService";
-import axios from "axios";
 import jwtDecode from "jwt-decode";
-// import {apiUrl} from "../config.json"
+import {apiUrl} from "../config.json"
 
-const apiUrl = " http://localhost:3000/api";
 const apiEndpoint = apiUrl + "/login";
 const tokenKey =  "token";
 
