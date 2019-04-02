@@ -71,3 +71,17 @@
   /* color: #f7f7f7; */
   outline: 0;
 }
+
+/* Scheduler table */
+#scheduler-table thead { text-align: center; }
+#scheduler-table td { text-align: center; }
+/* #scheduler-table table { border-collapse: collapse } */
+/* #scheduler-table tr { border: 3px solid rgb(22, 22, 116)} */
+.week-in-table {
+  display: inline-block;
+  margin: auto;
+  height: 20px;
+  width: 20px;
+  background-color: #3d3d4b;
+  border-radius: 10%
+}

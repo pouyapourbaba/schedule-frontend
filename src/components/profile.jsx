@@ -105,9 +105,12 @@ class Profile extends Form {
 
   render() {
     const { first_name, last_name, added_date, email } = this.state.user;
-
+ console.log("added_date ", added_date);
+    
     let db_date = new Date(added_date);
+ console.log("db_date ", db_date);
     db_date = db_date.toDateString();
+ console.log("db_date ", db_date);
 
     return (
       <React.Fragment>

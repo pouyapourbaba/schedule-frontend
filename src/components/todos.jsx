@@ -3,13 +3,9 @@ import Joi from "joi-browser";
 import React from "react";
 import { paginate } from "../utils/paginate";
 import Pagination from "./common/pagination";
-import http from "../services/httpService";
-import { apiUrl } from "../config.json";
 import Form from "./common/form";
 import { getUser } from "../services/userService";
 import todoService from "./../services/todoService";
-
-const apiEndpoint = apiUrl + "/todos";
 
 class Todos extends Form {
   state = {
