@@ -23,8 +23,13 @@ class App extends Component {
   // to find a way to pass the edited data from the Profile component to
   // the NavBar component.
   componentWillMount() {
-    const { _id } = auth.getCurrentUser();
-    this.setState({ _id });
+    try {
+      const user = auth.getCurrentUser();
+      this.setState({ _id: user._id });
+      
+    } catch (ex) {
+      
+    }
   }
 
   async componentDidMount() {
