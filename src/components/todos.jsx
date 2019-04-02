@@ -4,9 +4,12 @@ import React from "react";
 import { paginate } from "../utils/paginate";
 import Pagination from "./common/pagination";
 import http from "../services/httpService";
-import config from "../config.json";
+import { apiUrl } from "../config.json";
 import Form from "./common/form";
 import { getUser } from "../services/userService";
+import todoService from "./../services/todoService";
+
+const apiEndpoint = apiUrl + "/todos";
 
 class Todos extends Form {
   state = {
@@ -36,8 +39,8 @@ class Todos extends Form {
     }
 
     try {
-      const { data: todos } = await http.get(
-        config.apiEndpoint + "/" + this.props.match.params.user_id
+      const { data: todos } = await todoService.getTodos(
+        this.props.match.params.user_id
       );
       todos.reverse();
       this.setState({ todos });
@@ -56,7 +59,7 @@ class Todos extends Form {
     try {
       const obj = this.state.data;
       obj.user_id = this.state.user._id;
-      const { data: todo } = await http.post(config.apiEndpoint, obj);
+      const { data: todo } = await todoService.postTodo(obj);
       const todos = [todo, ...this.state.todos];
       this.setState({ todos });
     } catch (ex) {
@@ -68,7 +71,7 @@ class Todos extends Form {
     }
   };
 
-  // handle edit
+  // handle update
   handleUpdate = async todo => {
     // Optimistic Update
     const originalTodos = this.state.todos;
@@ -83,7 +86,7 @@ class Todos extends Form {
     this.setState({ todos });
 
     try {
-      await http.put(config.apiEndpoint + "/" + todo._id, todo);
+      await todoService.updateTodo(todo._id, todo);
     } catch (ex) {
       alert("Something went wrong while deleting the post.");
       this.setState({ todos: originalTodos });
@@ -99,7 +102,7 @@ class Todos extends Form {
     this.setState({ todos });
 
     try {
-      await http.delete(config.apiEndpoint + "/" + todo._id);
+      await todoService.deleteTodo(todo._id);
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         alert("This todo has already been deleted.");

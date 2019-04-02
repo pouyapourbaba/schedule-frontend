@@ -8,9 +8,9 @@ import Form from "./common/form";
 
 class Profile extends Form {
   state = {
-    user: [],
-    errors: []
-  };
+    user: { first_name: "", last_name: "", email: "" },
+    errors: {}
+  }
 
   schema = {
     first_name: Joi.string()
@@ -28,27 +28,6 @@ class Profile extends Form {
       .email()
   };
 
-  // user validator by Joi
-  validateUser(user) {
-    const schema = {
-      first_name: Joi.string()
-        .min(4)
-        .max(255)
-        .required(),
-      last_name: Joi.string()
-        .min(4)
-        .max(255)
-        .required(),
-      email: Joi.string()
-        .min(6)
-        .max(255)
-        .required()
-        .email()
-    };
-
-    return Joi.validate(user, schema);
-  }
-
   // validate each field when its value changes
   validateProperty = (name, value) => {
     const obj = { [name]: value };
@@ -60,6 +39,7 @@ class Profile extends Form {
 
   async componentDidMount() {
     if (this.props.match.params.user_id === undefined) return;
+    
     try {
       let user = await getUser(this.props.match.params.user_id);
       user = user.data;
@@ -83,7 +63,7 @@ class Profile extends Form {
     this.setState({ user, errors });
   };
 
-  // handle edit
+  // handle udate
   handleUpdate = async (property, value) => {
     // Optimistic Update
     const originalUser = this.state.user;
@@ -228,43 +208,6 @@ class Profile extends Form {
               <td>Join Date</td>
               <td>{db_date}</td>
             </tr>
-            {/* <td>
-                  <ContentEditable
-                    html={todo.title}
-                    data-column={todo._id}
-                    className="content-editable"
-                    onChange={this.handleContentEditable}
-                    onKeyPress={this.disableNewlines}
-                  />
-                  {this.state.errors.title &&
-                    this.state.errors.id === todo._id && (
-                      <div className="alert alert-danger">
-                        {this.state.errors.title}
-                      </div>
-
-                </td> */}
-            {/* <td>
-                  <button
-                    onClick={() => this.handleUpdate(todo)}
-                    className="btn btn-sm btn-secondary"
-                    disabled={
-                      this.state.errors.title &&
-                      this.state.errors.id === todo._id
-                    }
-                  >
-                    Edit
-                  </button>
-                </td>
-                <td>
-                  <button
-                    onClick={() => this.handleDelete(todo)}
-                    className="btn btn-sm btn-danger"
-                  >
-                    Delete
-                  </button>
-                </td> */}
-            {/* </tr> */}
-            {/* ))} */}
           </tbody>
         </table>
       </React.Fragment>
