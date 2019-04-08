@@ -10,9 +10,9 @@ import RegisterForm from "./components/registerForm";
 import Logout from "./components/logout";
 import auth from "./services/authService";
 import Dashboard from "./components/dashboard";
-import SideBar from "./components/sideBar";
+// import SideBar from "./components/sideBar";
 import { getUser } from "./services/userService";
-import Scheduler from './components/scheduler';
+import Todo from './components/todo';
 import "./App.css";
 
 class App extends Component {
@@ -49,14 +49,14 @@ class App extends Component {
         <NavBar user_id={this.state._id} />
         {this.state.user && (
           <div className="row">
-            <div className="col-sm-3 col-lg-2">
+            {/* <div className="col-sm-3 col-lg-2">
               <SideBar user={this.state.user} />
-            </div>
-            <main className="col-9 container">
+            </div> */}
+            <main className="col-11 container">
               <Switch>
                 <Route path="/profile/:user_id" component={Profile} />
-                <Route path="/todos/:user_id" component={Todos} />
-                <Route path="/scheduler/:user_id" component={Scheduler} />
+                {/* <Route path="/todos/:user_id" component={Todos} /> */}
+                <Route path="/todo/:user_id" component={Todo} />
                 <Route path="/logout" component={Logout} />
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/not-found" component={NotFound} />
@@ -70,8 +70,8 @@ class App extends Component {
           <main className="container">
             <Switch>
               <Route path="/profile" component={Profile} />
-              <Route path="/todos" component={Todos} />
-              <Route path="/scheduler" component={Scheduler} />
+              {/* <Route path="/todos" component={Todos} /> */}
+              <Route path="/todo" component={Todo} />
               <Route path="/dashboard" component={Dashboard} />
               <Route path="/register" component={RegisterForm} />
               <Route path="/login" component={LoginForm} />

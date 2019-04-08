@@ -1,55 +1,17 @@
 import React, { Component } from "react";
-import moment from "moment";
-import _ from "lodash";
-import TodoForm from "./todoForm";
+import moment from 'moment';
+import _ from "lodash"
 
-class Scheduler extends Component {
+class WeekTable extends Component {
   state = {
-    months: [
-      { name: "Jan", index: 1 },
-      { name: "Feb", index: 2 },
-      { name: "Mar", index: 3 },
-      { name: "apr", index: 4 },
-      { name: "May", index: 5 },
-      { name: "Jun", index: 6 },
-      { name: "Jul", index: 7 },
-      { name: "Aug", index: 8 },
-      { name: "Sep", index: 9 },
-      { name: "Oct", index: 10 },
-      { name: "Nov", index: 11 },
-      { name: "Dec", index: 12 }
-    ],
-    weeksOfYear: [],
-    seasons: [1, 2, 3, 4],
-    year: "2019"
+      weeksOfYear: []
   };
 
   componentDidMount() {
     const currentWeek = parseInt(moment().format("W"));
+    const currentYear = parseInt(moment().format("YYYY"));
     const numberOfWeeks = moment().isoWeeksInYear();
-    this.setState({ currentWeek, year: "2019", numberOfWeeks });
-
-    const months = [...this.state.months];
-
-    // calculate the number of days for each months
-    this.state.months.map(month => {
-      // create the date for the begining of each month
-      const m = moment(`${this.state.year}-${month.index}-01`, "YYYY-MM-DD");
-
-      // format the date of the start and end of each month
-      const startOfMonth = moment(m)
-        .startOf("month")
-        .format("DD");
-      const endOfMonth = moment(m)
-        .endOf("month")
-        .format("DD");
-
-      // find the number of days for each month
-      const days = endOfMonth - startOfMonth + 1;
-
-      return (month.days = days);
-    });
-    this.setState({ months });
+    this.setState({ currentWeek, year: currentYear, numberOfWeeks });
 
     const rangeOfWeeks = _.range(numberOfWeeks);
     const range = rangeOfWeeks.map(week => {
@@ -64,24 +26,7 @@ class Scheduler extends Component {
     this.setState({ weeksOfYear: range });
   }
 
-  keys = _.range(54);
-
-  // time() {
-  //   const firstDay = moment().startOf("month");
-  //   const endDay = moment().endOf("month");
-  //   const now = moment();
-  //   const week = now.week();
-  //   // console.log("week ", week);
-  //   // console.log(now);
-
-  //   const date = moment("2019-04-01T09:38:01.655Z");
-  //   // console.log("date ", date.format("W"));
-  // }
-
   handleClick = week => {
-    // console.log("week", (month.index - 1) * 4 + week);
-    // console.log("month", month.name);
-    // console.log("year", this.state.year);
     const startOfWeek = moment(this.state.year, "YYYY")
       .add(week.index - 1, "weeks")
       .startOf("isoWeek");
@@ -91,7 +36,7 @@ class Scheduler extends Component {
       .add(week.index, "weeks")
       .startOf("week");
     console.log("endOfWeek: ", endOfWeek.format("YYYY.MM.DD"));
-
+    
     const weekToBeDisplayed = {
       startOfWeek: startOfWeek.format("YYYY.MM.DD"),
       endOfWeek: endOfWeek.format("YYYY.MM.DD"),
@@ -112,20 +57,18 @@ class Scheduler extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <h6>By choosing the week from the table you can see the list of todos for that week.</h6>
-        <table
-          className="table"
-          id="scheduler-table"
-          style={{ backgroundColor: "#eee", padding: "15px" }}
-        >
-          <thead>
-            <tr>
-              <th>Months</th>
-              <th>Weeks</th>
-            </tr>
-          </thead>
-          <tbody>
+      <table
+        className="table"
+        id="scheduler-table"
+        style={{ backgroundColor: "#eee", padding: "15px" }}
+      >
+        <thead>
+          <tr>
+            <th>Months</th>
+            <th>Weeks</th>
+          </tr>
+        </thead>
+        <tbody>
             <tr>
               <td>Jan - Mar</td>
               <td>
@@ -138,7 +81,7 @@ class Scheduler extends Component {
                       <button
                         key={week.index}
                         className={this.buttonClass(week)}
-                        onClick={() => this.handleClick(week)}
+                        onClick={() => this.props.onWeekChange(week)}
                       >
                         {week.index < 10 ? `0${week.index}` : week.index}
                       </button>
@@ -158,7 +101,7 @@ class Scheduler extends Component {
                       <button
                         key={week.index}
                         className={this.buttonClass(week)}
-                        onClick={() => this.handleClick(week)}
+                        onClick={() => this.props.onWeekChange(week)}
                       >
                         {week.index}
                       </button>
@@ -178,7 +121,7 @@ class Scheduler extends Component {
                       <button
                         key={week.index}
                         className={this.buttonClass(week)}
-                        onClick={() => this.handleClick(week)}
+                        onClick={() => this.props.onWeekChange(week)}
                       >
                         {week.index}
                       </button>
@@ -198,7 +141,7 @@ class Scheduler extends Component {
                       <button
                         key={week.index}
                         className={this.buttonClass(week)}
-                        onClick={() => this.handleClick(week)}
+                        onClick={() => this.props.onWeekChange(week)}
                       >
                         {week.index}
                       </button>
@@ -207,38 +150,9 @@ class Scheduler extends Component {
               </td>
             </tr>
           </tbody>
-        </table>
-        <div>
-          {this.state.weekToBeDisplayed && (
-            <React.Fragment>
-              <div>
-                <h2>
-                  Week{" "}
-                  <span className="badge badge-success">
-                    #{this.state.weekToBeDisplayed.index}
-                  </span>{" "}
-                </h2>
-                <h4>
-                  From{" "}
-                  <span className="badge badge-primary">
-                    {this.state.weekToBeDisplayed.startOfWeek}
-                  </span>{" "}
-                  to{" "}
-                  <span className="badge badge-primary">
-                    {this.state.weekToBeDisplayed.endOfWeek}
-                  </span>
-                </h4>
-              </div>
-              <TodoForm
-                user_id={this.props.match.params.user_id}
-                weekNumber={this.state.weekToBeDisplayed ? this.state.weekToBeDisplayed.index : this.state.currentWeek}
-                />
-            </React.Fragment>
-          )}
-        </div>
-      </React.Fragment>
+      </table>
     );
   }
 }
 
-export default Scheduler;
+export default WeekTable;

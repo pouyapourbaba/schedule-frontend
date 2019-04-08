@@ -5,11 +5,11 @@ class Calendar extends Component {
   state = {};
   time() {
     const now = moment();
-    const week = now.week();
+    // const week = now.week();
     // console.log("week ", week);
     // console.log(now);
 
-    const date = moment("2019-04-01T09:38:01.655Z");
+    // const date = moment("2019-04-01T09:38:01.655Z");
     return {
       start: now.startOf("isoWeek").format("ddd, MMM Do YYYY, h:mm:ss a"),
       end: now.endOf("isoWeek").format("ddd, MMM Do YYYY, h:mm:ss a"),
