@@ -1,3 +1,4 @@
+import moment from "moment";
 import ContentEditable from "react-contenteditable";
 import Joi from "joi-browser";
 import React from "react";
@@ -24,22 +25,63 @@ class Todos extends Form {
       .label("Title")
   };
 
-  async componentDidMount() {
-    if (this.props.match.params.user_id === undefined) return;
+  async componentWillReceiveProps(newProps) {
+    this.setState({ weekNumber: newProps.weekNumber });
+    // const weekNumber = this.state.weekNumber;
+    console.log(
+      "weekNumber from componentWillReceiveProps ",
+      newProps.weekNumber
+    );
     try {
-      let user = await getUser(this.props.match.params.user_id);
+      const { data: todos } = await todoService.getTodos(
+        newProps.user_id,
+        newProps.weekNumber
+      );
+      todos.reverse();
+      this.setState({ todos });
+      console.log("todos ", todos);
+    } catch (ex) {
+      console.log(ex.message);
+    }
+  }
+
+  shouldComponentUpdate(newProps, newState) {
+    return true;
+  }
+
+  async componentWillMount() {
+    const weekNumber = this.props.weekNumber;
+    console.log("weekNumber from componentWillMount", weekNumber);
+    this.setState({ weekNumber });
+  }
+
+  async componentDidMount() {
+    let user_id;
+    if (this.props.match && this.props.match.params.user_id === undefined)
+      return;
+    else {
+      user_id = this.props.user_id;
+    }
+    try {
+      let user = await getUser(user_id);
       user = user.data;
       this.setState({ user });
     } catch (ex) {
       console.log(ex.message);
     }
 
+    // const weekNumber = this.props.weekNumber;
+    // const weekNumber = this.state.weekNumber ? this.state.weekNumber : this.props.weekNumber;
+    const weekNumber = this.state.weekNumber;
+    console.log("weekNumber from componentDidMount ", weekNumber);
     try {
       const { data: todos } = await todoService.getTodos(
-        this.props.match.params.user_id
+        user_id,
+        this.state.weekNumber
       );
       todos.reverse();
       this.setState({ todos });
+      console.log("todos ", todos);
     } catch (ex) {
       console.log(ex.message);
     }
@@ -54,8 +96,14 @@ class Todos extends Form {
   doSubmit = async () => {
     try {
       const obj = this.state.data;
-      obj.user_id = this.state.user._id;
-      const { data: todo } = await todoService.postTodo(obj);
+      const user_id = this.state.user._id;
+      const weekNumber = this.state.weekNumber;
+      console.log("weekNumber submitted", weekNumber);
+      obj.year = moment().format("YYYY");
+      obj.month = moment().format("M");
+      obj.weekInYear = weekNumber;
+
+      const { data: todo } = await todoService.postTodo(obj, user_id);
       const todos = [todo, ...this.state.todos];
       this.setState({ todos });
     } catch (ex) {
@@ -183,6 +231,7 @@ class Todos extends Form {
 
     return (
       <React.Fragment>
+        {this.state.weekNumber}
         {this.renderNumberOfTodoElemensts()}
         <table className="table">
           <thead>

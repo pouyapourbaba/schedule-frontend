@@ -6,15 +6,15 @@ const apiEndpoint = apiUrl + "/todos";
 /* *************************************
 // GET all the todos of the current user
 ** ************************************/
-export function getTodos(user_id) {
-  return http.get(apiEndpoint + "/" + user_id);
+export function getTodos(user_id, weekNumber) {
+  return http.get(apiEndpoint + "/" + user_id + "/" + weekNumber);
 }
 
 /* *************************************
 // POST a new todo
 ** ************************************/
-export function postTodo(todoObj) {
-  return http.post(apiEndpoint, todoObj);
+export function postTodo(todoObj, user_id) {
+  return http.post(apiEndpoint + "/" + user_id, todoObj);
 }
 
 /* *************************************
