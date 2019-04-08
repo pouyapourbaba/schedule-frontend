@@ -285,7 +285,7 @@ class Todos extends Form {
           />
         </React.Fragment>}
         <form onSubmit={this.handleSubmit}>
-          {this.renderInput("title", "Title", false)}
+          {this.renderInput("title", "New Todo", false)}
           {this.renderButton("Submit")}
         </form>
       </React.Fragment>

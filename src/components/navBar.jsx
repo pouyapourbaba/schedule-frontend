@@ -54,9 +54,6 @@ class NavBar extends Component {
                 <NavLink className="nav-link" to={`/todo/${this.props.user_id}`}>
                   Todos
                 </NavLink>
-                <NavLink className="nav-link" to={`/scheduler/${this.props.user_id}`}>
-                  Scheduler
-                </NavLink>
                 <NavLink
                   className="nav-link"
                   to={`/profile/${this.props.user_id}`}

@@ -7,7 +7,7 @@ class Dashboard extends Component {
     return (
       <React.Fragment>
         <h1>Dashboard</h1>
-        <Calendar />
+        <p>Something cool is gonna happen in this page, stay tuned...</p>
       </React.Fragment>
     );
   }

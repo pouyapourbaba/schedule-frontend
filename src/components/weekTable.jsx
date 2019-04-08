@@ -79,6 +79,7 @@ class WeekTable extends Component {
                   .map(week => {
                     return (
                       <button
+                      style={{margin: "0 5px"}}
                         key={week.index}
                         className={this.buttonClass(week)}
                         onClick={() => this.props.onWeekChange(week)}
@@ -99,6 +100,7 @@ class WeekTable extends Component {
                   .map(week => {
                     return (
                       <button
+                      style={{margin: "0 5px"}}
                         key={week.index}
                         className={this.buttonClass(week)}
                         onClick={() => this.props.onWeekChange(week)}
@@ -119,6 +121,7 @@ class WeekTable extends Component {
                   .map(week => {
                     return (
                       <button
+                      style={{margin: "0 5px"}}
                         key={week.index}
                         className={this.buttonClass(week)}
                         onClick={() => this.props.onWeekChange(week)}
@@ -139,6 +142,7 @@ class WeekTable extends Component {
                   .map(week => {
                     return (
                       <button
+                      style={{margin: "0 5px"}}
                         key={week.index}
                         className={this.buttonClass(week)}
                         onClick={() => this.props.onWeekChange(week)}
