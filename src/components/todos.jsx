@@ -44,13 +44,12 @@ class Todos extends Component {
     };
 
     this.setState({ weekToBeDisplayed });
-    console.log("weekToBeDisplayed ", weekToBeDisplayed);
   };
 
   render() {
     return (
       <React.Fragment>
-        <h1>Todo</h1>
+        <h3 style={{margin:"20px 0"}}>Select a week to see the Todos of that week</h3>
         <WeekTable onWeekChange={this.handleWeekChange} />
         <div className="row" style={{textAlign: "center", margin: "50px 0 30px 0", padding:"20px 0 10px 0", backgroundColor:"#eee"}}>
           <div className="col-5" style={{textAlign: "center"}}>

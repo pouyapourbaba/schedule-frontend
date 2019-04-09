@@ -51,10 +51,10 @@ class App extends Component {
             {/* <div className="col-sm-3 col-lg-2">
               <SideBar user={this.state.user} />
             </div> */}
-            <main className="col-10 container">
+            <main className="col-8 container">
               <Switch>
                 <Route path="/profile/:user_id" component={Profile} />
-                <Route path="/todo/:user_id" component={Todos} />
+                <Route path="/todos/:user_id" component={Todos} />
                 <Route path="/logout" component={Logout} />
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/not-found" component={NotFound} />

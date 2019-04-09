@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Calendar from "./calendar";
 
 class Dashboard extends Component {
   state = {};

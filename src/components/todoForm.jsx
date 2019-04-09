@@ -1,3 +1,4 @@
+import { Checkbox } from "pretty-checkbox-react";
 import moment from "moment";
 import ContentEditable from "react-contenteditable";
 import Joi from "joi-browser";
@@ -8,7 +9,7 @@ import Form from "./common/form";
 import { getUser } from "../services/userService";
 import todoService from "./../services/todoService";
 
-class Todos extends Form {
+class TodosForm extends Form {
   state = {
     todos: [],
     errors: [],
@@ -22,16 +23,14 @@ class Todos extends Form {
       .min(2)
       .max(512)
       .required()
-      .label("Title")
+      .label("Title"),
+    year: Joi.number(),
+    month: Joi.number(),
+    weekInYear: Joi.number()
   };
 
   async componentWillReceiveProps(newProps) {
     this.setState({ weekNumber: newProps.weekNumber });
-    // const weekNumber = this.state.weekNumber;
-    console.log(
-      "weekNumber from componentWillReceiveProps ",
-      newProps.weekNumber
-    );
     try {
       const { data: todos } = await todoService.getTodos(
         newProps.user_id,
@@ -39,7 +38,6 @@ class Todos extends Form {
       );
       todos.reverse();
       this.setState({ todos });
-      console.log("todos ", todos);
     } catch (ex) {
       console.log(ex.message);
     }
@@ -90,10 +88,11 @@ class Todos extends Form {
       const obj = this.state.data;
       const user_id = this.state.user._id;
       const weekNumber = this.state.weekNumber;
-      console.log("weekNumber submitted", weekNumber);
+
       obj.year = moment().format("YYYY");
       obj.month = moment().format("M");
       obj.weekInYear = weekNumber;
+      obj.isDone = false;
 
       const { data: todo } = await todoService.postTodo(obj, user_id);
       const todos = [todo, ...this.state.todos];
@@ -105,6 +104,12 @@ class Todos extends Form {
         this.setState({ errors });
       }
     }
+
+    const data = this.state.data;
+    data.title = "";
+    this.setState({
+      data
+    });
   };
 
   // handle update
@@ -161,7 +166,7 @@ class Todos extends Form {
       return <h5>There are no elements in the todo list.</h5>;
     if (todos.length === 1) {
       return (
-        <h5 contentEditable="true">
+        <h5>
           There is <span className={this.getSpannClasses()}>1</span> element in
           the todo list.
         </h5>
@@ -215,6 +220,26 @@ class Todos extends Form {
       .replace(/&lt;/g, "<");
   };
 
+  handleCheckBox = async (todo) => {
+    todo.isDone = !todo.isDone;
+    const originalTodos = this.state.todos;
+    const todos = [...this.state.todos];
+    const index = todos.indexOf(todo);
+    todos[index] = { ...todo };
+    this.setState({todos})
+
+    // call the server and 
+    try {
+      const newTodo = await todoService.updateStatus(todo._id, todo.isDone);
+//  console.log("newTodo ", newTodo);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        alert("This todo has already been deleted.");
+      }
+      this.setState({ todos: originalTodos });
+    }
+  };
+
   render() {
     const { length: count } = this.state.todos;
     const { pageSize, currentPage, todos: allTodos } = this.state;
@@ -224,66 +249,79 @@ class Todos extends Form {
     return (
       <React.Fragment>
         {this.renderNumberOfTodoElemensts()}
-        {this.state.todos.length !==0 && <React.Fragment>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th />
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {todos.map(todo => (
-                <tr key={todo._id}>
-                  <td>{this.state.todos.indexOf(todo) + 1}</td>
-                  <td>
-                    <ContentEditable
-                      html={todo.title}
-                      data-column={todo._id}
-                      className="content-editable"
-                      onChange={this.handleContentEditable}
-                      onKeyPress={this.disableNewlines}
-                    />
-                    {this.state.errors.title &&
-                      this.state.errors.id === todo._id && (
-                        <div className="alert alert-danger">
-                          {this.state.errors.title}
-                        </div>
-                      )}
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => this.handleUpdate(todo)}
-                      className="btn btn-sm btn-secondary"
-                      disabled={
-                        this.state.errors.title &&
-                        this.state.errors.id === todo._id
-                      }
-                    >
-                      Edit
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => this.handleDelete(todo)}
-                      className="btn btn-sm btn-danger"
-                    >
-                      Delete
-                    </button>
-                  </td>
+        {this.state.todos.length !== 0 && (
+          <React.Fragment>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th />
+                  <th />
+                  <th />
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination
-            itemsCount={count}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            onPageChange={this.handlePageChange}
-          />
-        </React.Fragment>}
+              </thead>
+              <tbody>
+                {todos.map(todo => (
+                  <tr key={todo._id}>
+                    <td>{this.state.todos.indexOf(todo) + 1}</td>
+                    <td>
+                      <ContentEditable
+                        html={todo.title}
+                        data-column={todo._id}
+                        className="content-editable"
+                        onChange={this.handleContentEditable}
+                        onKeyPress={this.disableNewlines}
+                      />
+                      {this.state.errors.title &&
+                        this.state.errors.id === todo._id && (
+                          <div className="alert alert-danger">
+                            {this.state.errors.title}
+                          </div>
+                        )}
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => this.handleUpdate(todo)}
+                        className="btn btn-sm btn-secondary"
+                        disabled={
+                          this.state.errors.title &&
+                          this.state.errors.id === todo._id
+                        }
+                      >
+                        Edit
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => this.handleDelete(todo)}
+                        className="btn btn-sm btn-danger"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                    <td>
+                      <Checkbox
+                        shape="round"
+                        color="success"
+                        icon={<i className="mdi mdi-check" />}
+                        animation="jelly"
+                        onChange={() => this.handleCheckBox(todo)}
+                        checked={todo.isDone}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              itemsCount={count}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={this.handlePageChange}
+            />
+          </React.Fragment>
+        )}
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("title", "New Todo", false)}
           {this.renderButton("Submit")}
@@ -293,4 +331,4 @@ class Todos extends Form {
   }
 }
 
-export default Todos;
+export default TodosForm;

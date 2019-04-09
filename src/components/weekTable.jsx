@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import moment from 'moment';
-import _ from "lodash"
+import moment from "moment";
+import _ from "lodash";
 
 class WeekTable extends Component {
   state = {
-      weeksOfYear: []
+    weeksOfYear: []
   };
 
   componentDidMount() {
@@ -30,27 +30,40 @@ class WeekTable extends Component {
     const startOfWeek = moment(this.state.year, "YYYY")
       .add(week.index - 1, "weeks")
       .startOf("isoWeek");
-    console.log("startOfWeek:", startOfWeek.format("YYYY.MM.DD"));
 
     const endOfWeek = moment(this.state.year, "YYYY")
       .add(week.index, "weeks")
       .startOf("week");
-    console.log("endOfWeek: ", endOfWeek.format("YYYY.MM.DD"));
-    
+
     const weekToBeDisplayed = {
       startOfWeek: startOfWeek.format("YYYY.MM.DD"),
       endOfWeek: endOfWeek.format("YYYY.MM.DD"),
       index: week.index
     };
 
-    this.setState({ weekToBeDisplayed });
+    this.setState({ weekToBeDisplayed,  });
   };
 
   buttonClass = week => {
-    let classes = "btn btn-";
+    let classes = "btn btn-sm btn-";
     classes +=
       // this.state.currentWeek == (month.index - 1) * 4 + week
       this.state.currentWeek === week.index ? "primary" : "secondary";
+    // this.state.weekToBeDisplayed.index === week.index ? "primary" : "secondary";
+
+    return classes;
+  };
+
+  buttonClassAfterSelection = week => {
+    let classes = "btn-";
+    if (this.state.weekToBeDisplayed) {
+      console.log(week.index)
+      classes +=
+        this.state.weekToBeDisplayed.index === week.index
+          ? "success"
+          : "secondary";
+    }
+    
 
     return classes;
   };
@@ -69,91 +82,93 @@ class WeekTable extends Component {
           </tr>
         </thead>
         <tbody>
-            <tr>
-              <td>Jan - Mar</td>
-              <td>
-                {this.state.weeksOfYear
-                  .filter(week => {
-                    return week.index >= 0 && week.index <= 13;
-                  })
-                  .map(week => {
-                    return (
-                      <button
-                      style={{margin: "0 5px"}}
-                        key={week.index}
-                        className={this.buttonClass(week)}
-                        onClick={() => this.props.onWeekChange(week)}
-                      >
-                        {week.index < 10 ? `0${week.index}` : week.index}
-                      </button>
-                    );
-                  })}
-              </td>
-            </tr>
-            <tr>
-              <td>Apr - Jun</td>
-              <td>
-                {this.state.weeksOfYear
-                  .filter(week => {
-                    return week.index >= 14 && week.index <= 26;
-                  })
-                  .map(week => {
-                    return (
-                      <button
-                      style={{margin: "0 5px"}}
-                        key={week.index}
-                        className={this.buttonClass(week)}
-                        onClick={() => this.props.onWeekChange(week)}
-                      >
-                        {week.index}
-                      </button>
-                    );
-                  })}
-              </td>
-            </tr>
-            <tr>
-              <td>Jul - Sep</td>
-              <td>
-                {this.state.weeksOfYear
-                  .filter(week => {
-                    return week.index >= 27 && week.index <= 39;
-                  })
-                  .map(week => {
-                    return (
-                      <button
-                      style={{margin: "0 5px"}}
-                        key={week.index}
-                        className={this.buttonClass(week)}
-                        onClick={() => this.props.onWeekChange(week)}
-                      >
-                        {week.index}
-                      </button>
-                    );
-                  })}
-              </td>
-            </tr>
-            <tr>
-              <td>Oct - Dec</td>
-              <td>
-                {this.state.weeksOfYear
-                  .filter(week => {
-                    return week.index >= 40 && week.index <= 52;
-                  })
-                  .map(week => {
-                    return (
-                      <button
-                      style={{margin: "0 5px"}}
-                        key={week.index}
-                        className={this.buttonClass(week)}
-                        onClick={() => this.props.onWeekChange(week)}
-                      >
-                        {week.index}
-                      </button>
-                    );
-                  })}
-              </td>
-            </tr>
-          </tbody>
+          <tr>
+            <td>Jan - Mar</td>
+            <td>
+              {this.state.weeksOfYear
+                .filter(week => {
+                  return week.index >= 0 && week.index <= 13;
+                })
+                .map(week => {
+                  return (
+                    <button
+                      style={{ margin: "0 2px" }}
+                      key={week.index}
+                      className={`${this.buttonClass(
+                        week
+                      )} ${this.buttonClassAfterSelection(week)}`}
+                      onClick={() => this.props.onWeekChange(week)}
+                    >
+                      {week.index < 10 ? `0${week.index}` : week.index}
+                    </button>
+                  );
+                })}
+            </td>
+          </tr>
+          <tr>
+            <td>Apr - Jun</td>
+            <td>
+              {this.state.weeksOfYear
+                .filter(week => {
+                  return week.index >= 14 && week.index <= 26;
+                })
+                .map(week => {
+                  return (
+                    <button
+                      style={{ margin: "0 2px" }}
+                      key={week.index}
+                      className={this.buttonClass(week)}
+                      onClick={() => this.props.onWeekChange(week)}
+                    >
+                      {week.index}
+                    </button>
+                  );
+                })}
+            </td>
+          </tr>
+          <tr>
+            <td>Jul - Sep</td>
+            <td>
+              {this.state.weeksOfYear
+                .filter(week => {
+                  return week.index >= 27 && week.index <= 39;
+                })
+                .map(week => {
+                  return (
+                    <button
+                      style={{ margin: "0 2px" }}
+                      key={week.index}
+                      className={this.buttonClass(week)}
+                      onClick={() => this.props.onWeekChange(week)}
+                    >
+                      {week.index}
+                    </button>
+                  );
+                })}
+            </td>
+          </tr>
+          <tr>
+            <td>Oct - Dec</td>
+            <td>
+              {this.state.weeksOfYear
+                .filter(week => {
+                  return week.index >= 40 && week.index <= 52;
+                })
+                .map(week => {
+                  return (
+                    <button
+                      style={{ margin: "0 2px" }}
+                      key={week.index}
+                      className={this.buttonClass(week)}
+                      onClick={() => this.props.onWeekChange(week)}
+                    >
+                      {week.index}
+                    </button>
+                  );
+                })}
+            </td>
+          </tr>
+        </tbody>
       </table>
     );
   }
