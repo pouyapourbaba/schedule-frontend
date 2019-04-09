@@ -25,6 +25,13 @@ export function updateTodo(todo_id, todoObj) {
 }
 
 /* *************************************
+// UPDATE the status of a todo
+** ************************************/
+export function updateStatus(todo_id, isDone) {
+  return http.put(apiEndpoint + "/status/" + todo_id, isDone);
+}
+
+/* *************************************
 // DELETE a todo
 ** ************************************/
 export function deleteTodo(todo_id) {
@@ -35,5 +42,6 @@ export default {
   getTodos,
   postTodo,
   updateTodo,
-  deleteTodo
+  deleteTodo,
+  updateStatus
 };
