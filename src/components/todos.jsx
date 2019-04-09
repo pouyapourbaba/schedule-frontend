@@ -55,7 +55,7 @@ class Todos extends Component {
           <div className="col-5" style={{textAlign: "center"}}>
             <h2>
               Week{" "}
-              <span className="badge badge-success">
+              <span className="badge badge-info">
                 #{this.state.weekToBeDisplayed.index}
               </span>{" "}
             </h2>
@@ -63,11 +63,11 @@ class Todos extends Component {
           <div className="col-7" style={{textAlign: "center"}}>
             <h4>
               From{" "}
-              <span className="badge badge-primary">
+              <span className="badge badge-info">
                 {this.state.weekToBeDisplayed.startOfWeek}
               </span>{" "}
               to{" "}
-              <span className="badge badge-primary">
+              <span className="badge badge-info">
                 {this.state.weekToBeDisplayed.endOfWeek}
               </span>
             </h4>
