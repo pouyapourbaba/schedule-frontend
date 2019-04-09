@@ -51,6 +51,9 @@ class NavBar extends Component {
                 <NavLink className="nav-link" to={`/dashboard`}>
                   Dashboard
                 </NavLink>
+                <NavLink className="nav-link" to={`/todos/${this.props.user_id}`}>
+                  Todos
+                </NavLink>
                 <NavLink
                   className="nav-link"
                   to={`/profile/${this.props.user_id}`}
