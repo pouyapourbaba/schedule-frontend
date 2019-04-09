@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import { getUser } from "../services/userService";
+import TimeTracker from './timeTracker';
 
 class NavBar extends Component {
   state = { user: { first_name: "", last_name: "", email: "" } };
@@ -53,6 +54,9 @@ class NavBar extends Component {
                 </NavLink>
                 <NavLink className="nav-link" to={`/todos/${this.props.user_id}`}>
                   Todos
+                </NavLink>
+                <NavLink className="nav-link" to={`/timetracker/${this.props.user_id}`}>
+                  TimeTracker
                 </NavLink>
                 <NavLink
                   className="nav-link"
