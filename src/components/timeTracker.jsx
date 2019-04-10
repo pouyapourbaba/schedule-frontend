@@ -44,6 +44,7 @@ class TimeTracker extends Component {
 
     this.setState({ weekToBeDisplayed });
   };
+
   render() {
     return (
       <React.Fragment>
@@ -81,7 +82,14 @@ class TimeTracker extends Component {
             </h4>
           </div>
         </div>
-        <TimeTrackerTable />
+        <TimeTrackerTable
+          user_id={this.props.match.params.user_id}
+          weekNumber={
+            this.state.weekToBeDisplayed
+              ? this.state.weekToBeDisplayed.index
+              : this.state.currentWeek
+          }
+        />
       </React.Fragment>
     );
   }

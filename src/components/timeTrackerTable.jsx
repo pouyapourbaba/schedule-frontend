@@ -6,25 +6,11 @@ import { paginate } from "../utils/paginate";
 import Pagination from "./common/pagination";
 import Form from "./common/form";
 import { getUser } from "../services/userService";
-import todoService from "../services/todoService";
+import taskService from "../services/taskService";
 
 class TimeTrackerTable extends Form {
   state = {
-    tasks: [
-      {
-        name: "math",
-        days: [
-          { day: "monday", hour: 10 },
-          { day: "tuesday", hour: 10 },
-          { day: "wednesday", hour: 10 },
-          { day: "thursday", hour: 10 },
-          { day: "friday", hour: 10 },
-          { day: "saturday", hour: 10 },
-          { day: "sunday", hour: 10 }
-        ],
-        _id: 1
-      }
-    ],
+    tasks: [],
     errors: [],
     pageSize: 5,
     currentPage: 1,
@@ -45,12 +31,12 @@ class TimeTrackerTable extends Form {
   async componentWillReceiveProps(newProps) {
     this.setState({ weekNumber: newProps.weekNumber });
     try {
-      const { data: todos } = await todoService.getTodos(
+      const { data: tasks } = await taskService.getTasks(
         newProps.user_id,
         newProps.weekNumber
       );
-      todos.reverse();
-      this.setState({ todos });
+      tasks.reverse();
+      this.setState({ tasks });
     } catch (ex) {
       console.log(ex.message);
     }
@@ -79,12 +65,12 @@ class TimeTrackerTable extends Form {
     }
 
     try {
-      const { data: todos } = await todoService.getTodos(
+      const { data: tasks } = await taskService.getTasks(
         user_id,
         this.state.weekNumber
       );
-      todos.reverse();
-      this.setState({ todos });
+      tasks.reverse();
+      this.setState({ tasks });
     } catch (ex) {
       console.log(ex.message);
     }
@@ -98,18 +84,26 @@ class TimeTrackerTable extends Form {
   // handle add a new todo
   doSubmit = async () => {
     try {
-      const obj = this.state.data;
+      const obj = { title: this.state.data.title };
       const user_id = this.state.user._id;
       const weekNumber = this.state.weekNumber;
 
       obj.year = moment().format("YYYY");
       obj.month = moment().format("M");
       obj.weekInYear = weekNumber;
-      obj.isDone = false;
+      obj.days = [
+        { day: "monday", duration: 0 },
+        { day: "tuesday", duration: 0 },
+        { day: "wednesday", duration: 0 },
+        { day: "thursday", duration: 0 },
+        { day: "friday", duration: 0 },
+        { day: "saturday", duration: 0 },
+        { day: "sunday", duration: 0 }
+      ];
 
-      const { data: todo } = await todoService.postTodo(obj, user_id);
-      const todos = [todo, ...this.state.todos];
-      this.setState({ todos });
+      const { data: task } = await taskService.postTask(obj, user_id);
+      const tasks = [task, ...this.state.tasks];
+      this.setState({ tasks: tasks });
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
@@ -126,42 +120,42 @@ class TimeTrackerTable extends Form {
   };
 
   // handle update
-  handleUpdate = async todo => {
+  handleUpdate = async task => {
     // Optimistic Update
-    const originalTodos = this.state.todos;
+    const originalTasks = this.state.tasks;
 
-    const todos = [...this.state.todos];
-    const index = todos.indexOf(todo);
-    todos[index] = { ...todo };
+    const tasks = [...this.state.tasks];
+    const index = tasks.indexOf(task);
+    tasks[index] = { ...task };
 
     // trim the possible spaces added to the title in the ContentEditable
-    todos[index].title = this.trimSpaces(todos[index].title);
+    tasks[index].title = this.trimSpaces(tasks[index].title);
 
-    this.setState({ todos });
+    this.setState({ tasks });
 
     try {
-      await todoService.updateTodo(todo._id, todo);
+      await taskService.updateTask(task._id, task);
     } catch (ex) {
       alert("Something went wrong while deleting the post.");
-      this.setState({ todos: originalTodos });
+      this.setState({ tasks: originalTasks });
     }
   };
 
   // handle delete
-  handleDelete = async todo => {
+  handleDelete = async task => {
     // Optimistic Delete
-    const originalTodos = this.state.todos;
+    const originalTasks = this.state.tasks;
 
-    const todos = this.state.todos.filter(t => t._id !== todo._id);
-    this.setState({ todos });
+    const tasks = this.state.tasks.filter(t => t._id !== task._id);
+    this.setState({ tasks });
 
     try {
-      await todoService.deleteTodo(todo._id);
+      await taskService.deleteTask(task._id);
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        alert("This todo has already been deleted.");
+        alert("This task has already been deleted.");
       }
-      this.setState({ todos: originalTodos });
+      this.setState({ tasks: originalTasks });
     }
   };
 
@@ -197,21 +191,38 @@ class TimeTrackerTable extends Form {
 
   handleContentEditable = e => {
     const errors = { ...this.state.errors };
-    const todos = this.state.todos;
-    const index = todos.findIndex(
-      todo => todo._id === e.currentTarget.dataset.column
+    const tasks = this.state.tasks;
+    const index = tasks.findIndex(
+      task => task._id === e.currentTarget.dataset.task
     );
-    todos[index].title = e.target.value;
-    const obj = { title: e.target.value };
-    const { error } = Joi.validate(obj, this.schema);
-    const errorMessage = error ? error.details[0].message : null;
 
-    if (errorMessage) {
-      errors["title"] = errorMessage;
-      errors["id"] = todos[index]._id;
-    } else delete errors["title"];
+    if (!e.currentTarget.dataset.day) {
+      console.log("e.currentTarget.dataset.column ", e);
+      tasks[index].title = e.target.value;
+      const obj = { title: e.target.value };
+      const { error } = Joi.validate(obj, this.schema);
+      const errorMessage = error ? error.details[0].message : null;
 
-    this.setState({ todos, errors });
+      if (errorMessage) {
+        errors["title"] = errorMessage;
+        errors["id"] = tasks[index]._id;
+      } else delete errors["title"];
+
+      this.setState({ tasks, errors });
+    } else {
+      const dayIndex = tasks[index].days.findIndex(
+        day => day._id === e.currentTarget.dataset.day
+      );
+      console.log("e.target.value ", e.target.value);
+      if (e.target.value == "") {
+        tasks[index].days[dayIndex].duration = 0;
+      } else {
+        tasks[index].days[dayIndex].duration = parseInt(e.target.value);
+      }
+      // validation
+      // ....
+      this.setState({ tasks, errors });
+    }
   };
 
   // disable new lines in the ContentEditable
@@ -231,26 +242,6 @@ class TimeTrackerTable extends Form {
       .replace(/&amp;/g, "&")
       .replace(/&gt;/g, ">")
       .replace(/&lt;/g, "<");
-  };
-
-  handleCheckBox = async todo => {
-    todo.isDone = !todo.isDone;
-    const originalTodos = this.state.todos;
-    const todos = [...this.state.todos];
-    const index = todos.indexOf(todo);
-    todos[index] = { ...todo };
-    this.setState({ todos });
-
-    // call the server and
-    try {
-      const newTodo = await todoService.updateStatus(todo._id, todo.isDone);
-      //  console.log("newTodo ", newTodo);
-    } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        alert("This todo has already been deleted.");
-      }
-      this.setState({ todos: originalTodos });
-    }
   };
 
   render() {
@@ -275,29 +266,42 @@ class TimeTrackerTable extends Form {
                 <th>Saturday</th>
                 <th>Sunday</th>
                 <th>Total</th>
-                <th></th>
-                <th></th>
+                <th />
+                <th />
               </tr>
             </thead>
             <tbody>
               {tasks.map(task => (
                 <tr key={task._id}>
-                  <td>{task.name}</td>
-                  {task.days.map(day => (<td> <ContentEditable
-                      html={day.hour}
-                      data-column={task._id}
-                      className="content-editable"
-                      onChange={this.handleContentEditable}
-                      onKeyPress={this.disableNewlines}
-                    /></td>))}
                   <td>
                     <ContentEditable
-                      html={task.hours}
-                      data-column={task._id}
+                      html={String(task.title)}
+                      data-task={task._id}
                       className="content-editable"
                       onChange={this.handleContentEditable}
                       onKeyPress={this.disableNewlines}
                     />
+                  </td>
+                  {task.days.map(day => (
+                    <td key={day._id}>
+                      {" "}
+                      <ContentEditable
+                        html={String(day.duration)}
+                        data-task={task._id}
+                        data-day={day._id}
+                        className="content-editable"
+                        onChange={this.handleContentEditable}
+                        onKeyPress={this.disableNewlines}
+                      />
+                    </td>
+                  ))}
+                  <td>
+                    {task.days
+                      .map(d => d.duration)
+                      .reduce(
+                        (accumulator, currentValue) =>
+                          accumulator + currentValue
+                      )}
                     {this.state.errors.title &&
                       this.state.errors.id === task._id && (
                         <div className="alert alert-danger">
