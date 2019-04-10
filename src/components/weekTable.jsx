@@ -26,46 +26,49 @@ class WeekTable extends Component {
     this.setState({ weeksOfYear: range });
   }
 
-  handleClick = week => {
-    const startOfWeek = moment(this.state.year, "YYYY")
-      .add(week.index - 1, "weeks")
-      .startOf("isoWeek");
+  // handleClick = week => {
+  //   const startOfWeek = moment(this.state.year, "YYYY")
+  //     .add(week.index - 1, "weeks")
+  //     .startOf("isoWeek");
 
-    const endOfWeek = moment(this.state.year, "YYYY")
-      .add(week.index, "weeks")
-      .startOf("week");
+  //   const endOfWeek = moment(this.state.year, "YYYY")
+  //     .add(week.index, "weeks")
+  //     .startOf("week");
 
-    const weekToBeDisplayed = {
-      startOfWeek: startOfWeek.format("YYYY.MM.DD"),
-      endOfWeek: endOfWeek.format("YYYY.MM.DD"),
-      index: week.index
-    };
+  //   const weekToBeDisplayed = {
+  //     startOfWeek: startOfWeek.format("YYYY.MM.DD"),
+  //     endOfWeek: endOfWeek.format("YYYY.MM.DD"),
+  //     index: week.index
+  //   };
 
-    this.setState({ weekToBeDisplayed,  });
-  };
+  //   this.setState({ weekToBeDisplayed  });
+  // };
 
   buttonClass = week => {
     let classes = "btn btn-md btn-";
     classes +=
       // this.state.currentWeek == (month.index - 1) * 4 + week
-      this.state.currentWeek === week.index ? "primary" : "secondary";
+      this.state.currentWeek === week.index ? "dark" : "secondary";
     // this.state.weekToBeDisplayed.index === week.index ? "primary" : "secondary";
 
     return classes;
   };
 
   buttonClassAfterSelection = week => {
-    let classes = "btn-";
-    if (this.state.weekToBeDisplayed) {
-      console.log(week.index)
-      classes +=
-        this.state.weekToBeDisplayed.index === week.index
-          ? "success"
-          : "secondary";
+    let classes = "btn-success";
+    if (this.props.weekToBeDisplayed.index === week.index) {
+      console.log(
+        " IF this.state.weekToBeDisplayed: ",
+        this.props.weekToBeDisplayed
+      );
+      console.log(week.index);
+      // classes +=
+      //   this.state.weekToBeDisplayed.index === week.index
+      //     ? "success"
+      //     : "secondary";
+      //     console.log(classes)
+      return "btn-light";
     }
-    
-
-    return classes;
   };
 
   render() {
@@ -94,9 +97,9 @@ class WeekTable extends Component {
                     <button
                       style={{ margin: "0 2px" }}
                       key={week.index}
-                      className={`${this.buttonClass(
+                      className={`${this.buttonClassAfterSelection(
                         week
-                      )} ${this.buttonClassAfterSelection(week)}`}
+                      )} ${this.buttonClass(week)}`}
                       onClick={() => this.props.onWeekChange(week)}
                     >
                       {week.index < 10 ? `0${week.index}` : week.index}
@@ -117,7 +120,9 @@ class WeekTable extends Component {
                     <button
                       style={{ margin: "0 2px" }}
                       key={week.index}
-                      className={this.buttonClass(week)}
+                      className={`${this.buttonClass(
+                        week
+                      )} ${this.buttonClassAfterSelection(week)}`}
                       onClick={() => this.props.onWeekChange(week)}
                     >
                       {week.index}
@@ -138,7 +143,9 @@ class WeekTable extends Component {
                     <button
                       style={{ margin: "0 2px" }}
                       key={week.index}
-                      className={this.buttonClass(week)}
+                      className={`${this.buttonClass(
+                        week
+                      )} ${this.buttonClassAfterSelection(week)}`}
                       onClick={() => this.props.onWeekChange(week)}
                     >
                       {week.index}
@@ -159,7 +166,9 @@ class WeekTable extends Component {
                     <button
                       style={{ margin: "0 2px" }}
                       key={week.index}
-                      className={this.buttonClass(week)}
+                      className={`${this.buttonClass(
+                        week
+                      )} ${this.buttonClassAfterSelection(week)}`}
                       onClick={() => this.props.onWeekChange(week)}
                     >
                       {week.index}
