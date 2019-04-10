@@ -85,7 +85,7 @@ class TodosForm extends Form {
   // handle add a new todo
   doSubmit = async () => {
     try {
-      const obj = this.state.data;
+      const obj = {title: this.state.data.title};
       const user_id = this.state.user._id;
       const weekNumber = this.state.weekNumber;
 
@@ -220,18 +220,18 @@ class TodosForm extends Form {
       .replace(/&lt;/g, "<");
   };
 
-  handleCheckBox = async (todo) => {
+  handleCheckBox = async todo => {
     todo.isDone = !todo.isDone;
     const originalTodos = this.state.todos;
     const todos = [...this.state.todos];
     const index = todos.indexOf(todo);
     todos[index] = { ...todo };
-    this.setState({todos})
+    this.setState({ todos });
 
-    // call the server and 
+    // call the server and
     try {
       const newTodo = await todoService.updateStatus(todo._id, todo.isDone);
-//  console.log("newTodo ", newTodo);
+      //  console.log("newTodo ", newTodo);
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         alert("This todo has already been deleted.");
@@ -258,7 +258,8 @@ class TodosForm extends Form {
                   <th>Title</th>
                   <th />
                   <th />
-                  <th />
+
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -300,7 +301,7 @@ class TodosForm extends Form {
                         Delete
                       </button>
                     </td>
-                    <td>
+                    <td style={{paddingLeft: "2.5%"}}>
                       <Checkbox
                         shape="round"
                         color="success"
