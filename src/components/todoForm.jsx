@@ -85,7 +85,7 @@ class TodosForm extends Form {
   // handle add a new todo
   doSubmit = async () => {
     try {
-      const obj = this.state.data;
+      const obj = {title: this.state.data.title};
       const user_id = this.state.user._id;
       const weekNumber = this.state.weekNumber;
 

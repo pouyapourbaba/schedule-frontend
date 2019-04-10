@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import LoginForm from "./components/loginForm";
 import NavBar from "./components/navBar";
 import Todos from "./components/todos";
+import TimeTracker from "./components/timeTracker";
 import Profile from "./components/profile";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
@@ -26,10 +27,7 @@ class App extends Component {
     try {
       const user = auth.getCurrentUser();
       this.setState({ _id: user._id });
-      
-    } catch (ex) {
-      
-    }
+    } catch (ex) {}
   }
 
   async componentDidMount() {
@@ -55,6 +53,7 @@ class App extends Component {
               <Switch>
                 <Route path="/profile/:user_id" component={Profile} />
                 <Route path="/todos/:user_id" component={Todos} />
+                <Route path="/timetracker/:user_id" component={TimeTracker} />
                 <Route path="/logout" component={Logout} />
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/not-found" component={NotFound} />
@@ -69,6 +68,7 @@ class App extends Component {
             <Switch>
               <Route path="/profile" component={Profile} />
               <Route path="/todo" component={Todos} />
+              <Route path="/timetracker" component={TimeTracker} />
               <Route path="/dashboard" component={Dashboard} />
               <Route path="/register" component={RegisterForm} />
               <Route path="/login" component={LoginForm} />
