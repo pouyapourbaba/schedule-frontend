@@ -21,7 +21,8 @@ class TimeTracker extends Component {
     const weekToBeDisplayed = {
       startOfWeek: startOfWeek.format("YYYY.MM.DD"),
       endOfWeek: endOfWeek.format("YYYY.MM.DD"),
-      index: currentWeek
+      index: currentWeek,
+      selected: false
     };
 
     this.setState({ weekToBeDisplayed });
@@ -39,7 +40,8 @@ class TimeTracker extends Component {
     const weekToBeDisplayed = {
       startOfWeek: startOfWeek.format("YYYY.MM.DD"),
       endOfWeek: endOfWeek.format("YYYY.MM.DD"),
-      index: week.index
+      index: week.index,
+      selected: true
     };
 
     this.setState({ weekToBeDisplayed });
@@ -49,9 +51,9 @@ class TimeTracker extends Component {
     return (
       <React.Fragment>
         <h3 style={{ margin: "20px 0" }}>
-          Select a week to see the Todos of that week
+          Select a week to see the list of tasks for that week
         </h3>
-        <WeekTable onWeekChange={this.handleWeekChange} />
+        <WeekTable onWeekChange={this.handleWeekChange} weekToBeDisplayed={this.state.weekToBeDisplayed} />
         <div
           className="row"
           style={{
@@ -64,7 +66,7 @@ class TimeTracker extends Component {
           <div className="col-5" style={{ textAlign: "center" }}>
             <h2>
               Week{" "}
-              <span className="badge badge-success">
+              <span className="badge badge-dark">
                 #{this.state.weekToBeDisplayed.index}
               </span>{" "}
             </h2>
@@ -72,11 +74,11 @@ class TimeTracker extends Component {
           <div className="col-7" style={{ textAlign: "center" }}>
             <h4>
               From{" "}
-              <span className="badge badge-primary">
+              <span className="badge badge-dark">
                 {this.state.weekToBeDisplayed.startOfWeek}
               </span>{" "}
               to{" "}
-              <span className="badge badge-primary">
+              <span className="badge badge-dark">
                 {this.state.weekToBeDisplayed.endOfWeek}
               </span>
             </h4>

@@ -197,7 +197,6 @@ class TimeTrackerTable extends Form {
     );
 
     if (!e.currentTarget.dataset.day) {
-      console.log("e.currentTarget.dataset.column ", e);
       tasks[index].title = e.target.value;
       const obj = { title: e.target.value };
       const { error } = Joi.validate(obj, this.schema);
@@ -213,7 +212,6 @@ class TimeTrackerTable extends Form {
       const dayIndex = tasks[index].days.findIndex(
         day => day._id === e.currentTarget.dataset.day
       );
-      console.log("e.target.value ", e.target.value);
       if (e.target.value == "") {
         tasks[index].days[dayIndex].duration = 0;
       } else {
@@ -223,6 +221,14 @@ class TimeTrackerTable extends Form {
       // ....
       this.setState({ tasks, errors });
     }
+  };
+
+  handleBlur = () => {
+    console.log("blured from blur");
+  };
+
+  doEditDUration = () => {
+    console.log("duration edited");
   };
 
   // disable new lines in the ContentEditable
@@ -257,16 +263,23 @@ class TimeTrackerTable extends Form {
           <table className="table">
             <thead>
               <tr>
-                <th>#####</th>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-                <th>Saturday</th>
-                <th>Sunday</th>
-                <th>Total</th>
-                <th />
+                <th>Title</th>
+                <th></th>
+                <th className="text-center">Mon</th>
+                <th className="text-center">Tue</th>
+                <th className="text-center">Wed</th>
+                <th className="text-center">Thu</th>
+                <th className="text-center">Fri</th>
+                <th className="text-center">Sat</th>
+                <th className="text-center">Sun</th>
+                <th className="text-center">
+                  <span
+                    className="badge badge-success"
+                    style={{ fontSize: "15px" }}
+                  >
+                    Total
+                  </span>
+                </th>
                 <th />
               </tr>
             </thead>
@@ -275,42 +288,14 @@ class TimeTrackerTable extends Form {
                 <tr key={task._id}>
                   <td>
                     <ContentEditable
-                      html={String(task.title)}
-                      data-task={task._id}
-                      className="content-editable"
-                      onChange={this.handleContentEditable}
-                      onKeyPress={this.disableNewlines}
-                    />
-                  </td>
-                  {task.days.map(day => (
-                    <td key={day._id}>
-                      {" "}
-                      <ContentEditable
-                        html={String(day.duration)}
+                        html={String(task.title)}
                         data-task={task._id}
-                        data-day={day._id}
                         className="content-editable"
                         onChange={this.handleContentEditable}
                         onKeyPress={this.disableNewlines}
                       />
-                    </td>
-                  ))}
-                  <td>
-                    {task.days
-                      .map(d => d.duration)
-                      .reduce(
-                        (accumulator, currentValue) =>
-                          accumulator + currentValue
-                      )}
-                    {this.state.errors.title &&
-                      this.state.errors.id === task._id && (
-                        <div className="alert alert-danger">
-                          {this.state.errors.title}
-                        </div>
-                      )}
                   </td>
-                  <td>
-                    <button
+                  <td><button
                       onClick={() => this.handleUpdate(task)}
                       className="btn btn-sm btn-secondary"
                       disabled={
@@ -319,7 +304,54 @@ class TimeTrackerTable extends Form {
                       }
                     >
                       Edit
-                    </button>
+                    </button></td>
+                  {task.days.map(day => (
+                    <td key={day._id}>
+                      <div
+                        style={{
+                          width: "55%",
+                          marginRight: "2%",
+                          float: "left"
+                        }}
+                      >
+                        <ContentEditable
+                          html={String(day.duration)}
+                          data-task={task._id}
+                          data-day={day._id}
+                          className="content-editable"
+                          onChange={this.handleContentEditable}
+                          onKeyPress={this.disableNewlines}
+                          onBlur={this.handleBlur}
+                        />
+                      </div>
+                      <div style={{ width: "42%", float: "left" }}>
+                        <button
+                          onClick={() => this.handleUpdate(task)}
+                          className="btn btn-sm btn-secondary"
+                          disabled={
+                            this.state.errors.title &&
+                            this.state.errors.id === task._id
+                          }
+                        >
+                          +
+                        </button>
+                      </div>
+                    </td>
+                  ))}
+                  <td style={{textAlign:"center"}}>
+                  <span className="badge badge-success" style={{fontSize:"16px"}}>{task.days
+                      .map(d => d.duration)
+                      .reduce(
+                        (accumulator, currentValue) =>
+                          accumulator + currentValue
+                      )}</span>
+                    
+                    {this.state.errors.title &&
+                      this.state.errors.id === task._id && (
+                        <div className="alert alert-danger">
+                          {this.state.errors.title}
+                        </div>
+                      )}
                   </td>
                   <td>
                     <button
