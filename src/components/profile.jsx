@@ -1,9 +1,7 @@
 import Joi from "joi-browser";
 import ContentEditable from "react-contenteditable";
 import React from "react";
-import http from "../services/httpService";
-import { getUser } from "../services/userService";
-import config from "../config.json";
+import userService from "../services/userService";
 import Form from "./common/form";
 
 class Profile extends Form {
@@ -41,7 +39,7 @@ class Profile extends Form {
     if (this.props.match.params.user_id === undefined) return;
     
     try {
-      let user = await getUser(this.props.match.params.user_id);
+      let user = await userService.getUser(this.props.match.params.user_id);
       user = user.data;
       this.setState({ user });
     } catch (ex) {
@@ -75,11 +73,11 @@ class Profile extends Form {
     this.setState({ user });
 
     try {
-      await http.put(config.apiUrl + "/users/" + user._id, {
+      await userService.updateUser(user._id, {
         [property]: value
       });
     } catch (ex) {
-      alert("Something went wrong while deleting the post.");
+      alert("Something went wrong while updating the profile.");
       this.setState({ user: originalUser });
     }
   };
@@ -105,7 +103,7 @@ class Profile extends Form {
 
   render() {
     const { first_name, last_name, added_date, email } = this.state.user;
-
+  
     let db_date = new Date(added_date);
     db_date = db_date.toDateString();
 

@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import moment from "moment";
 import WeekTable from "./weekTable";
-import TodoForm from "./todoForm";
+import TimeTrackerTable from "./timeTrackerTable";
 
-class Todos extends Component {
+class TimeTracker extends Component {
   state = {};
-
   componentWillMount() {
     const currentWeek = parseInt(moment().format("W"));
     const currentYear = parseInt(moment().format("YYYY"));
@@ -23,7 +22,7 @@ class Todos extends Component {
       startOfWeek: startOfWeek.format("YYYY.MM.DD"),
       endOfWeek: endOfWeek.format("YYYY.MM.DD"),
       index: currentWeek,
-      selected: true
+      selected: false
     };
 
     this.setState({ weekToBeDisplayed });
@@ -51,10 +50,20 @@ class Todos extends Component {
   render() {
     return (
       <React.Fragment>
-        <h3 style={{margin:"20px 0"}}>Select a week to see the list of Todos for that week</h3>
+        <h3 style={{ margin: "20px 0" }}>
+          Select a week to see the list of tasks for that week
+        </h3>
         <WeekTable onWeekChange={this.handleWeekChange} weekToBeDisplayed={this.state.weekToBeDisplayed} />
-        <div className="row" style={{textAlign: "center", margin: "50px 0 30px 0", padding:"20px 0 10px 0", backgroundColor:"#eee"}}>
-          <div className="col-5" style={{textAlign: "center"}}>
+        <div
+          className="row"
+          style={{
+            textAlign: "center",
+            margin: "50px 0 30px 0",
+            padding: "20px 0 10px 0",
+            backgroundColor: "#eee"
+          }}
+        >
+          <div className="col-5" style={{ textAlign: "center" }}>
             <h2>
               Week{" "}
               <span className="badge badge-dark">
@@ -62,7 +71,7 @@ class Todos extends Component {
               </span>{" "}
             </h2>
           </div>
-          <div className="col-7" style={{textAlign: "center"}}>
+          <div className="col-7" style={{ textAlign: "center" }}>
             <h4>
               From{" "}
               <span className="badge badge-dark">
@@ -75,7 +84,7 @@ class Todos extends Component {
             </h4>
           </div>
         </div>
-        <TodoForm
+        <TimeTrackerTable
           user_id={this.props.match.params.user_id}
           weekNumber={
             this.state.weekToBeDisplayed
@@ -88,4 +97,4 @@ class Todos extends Component {
   }
 }
 
-export default Todos;
+export default TimeTracker;

@@ -6,7 +6,7 @@ class NavBar extends Component {
   state = { user: { first_name: "", last_name: "", email: "" } };
 
   async componentDidMount() {
-    // if (this.props.match.params.user_id === undefined) return;
+    if (this.props.user_id === undefined) return;
 
     try {
       let user = await getUser(this.props.user_id);
@@ -50,6 +50,12 @@ class NavBar extends Component {
               <React.Fragment>
                 <NavLink className="nav-link" to={`/dashboard`}>
                   Dashboard
+                </NavLink>
+                <NavLink className="nav-link" to={`/todos/${this.props.user_id}`}>
+                  Todos
+                </NavLink>
+                <NavLink className="nav-link" to={`/timetracker/${this.props.user_id}`}>
+                  TimeTracker
                 </NavLink>
                 <NavLink
                   className="nav-link"

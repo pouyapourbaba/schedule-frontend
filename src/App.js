@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import LoginForm from "./components/loginForm";
 import NavBar from "./components/navBar";
 import Todos from "./components/todos";
+import TimeTracker from "./components/timeTracker";
 import Profile from "./components/profile";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
@@ -10,7 +11,7 @@ import RegisterForm from "./components/registerForm";
 import Logout from "./components/logout";
 import auth from "./services/authService";
 import Dashboard from "./components/dashboard";
-import SideBar from "./components/sideBar";
+// import SideBar from "./components/sideBar";
 import { getUser } from "./services/userService";
 import "./App.css";
 
@@ -23,11 +24,14 @@ class App extends Component {
   // to find a way to pass the edited data from the Profile component to
   // the NavBar component.
   componentWillMount() {
-    const { _id } = auth.getCurrentUser();
-    this.setState({ _id });
+    try {
+      const user = auth.getCurrentUser();
+      this.setState({ _id: user._id });
+    } catch (ex) {}
   }
 
   async componentDidMount() {
+    if (this.state._id === undefined) return null;
     try {
       let user = await getUser(this.state._id);
       user = user.data;
@@ -43,13 +47,14 @@ class App extends Component {
         <NavBar user_id={this.state._id} />
         {this.state.user && (
           <div className="row">
-            <div className="col-sm-3 col-lg-2">
+            {/* <div className="col-sm-3 col-lg-2">
               <SideBar user={this.state.user} />
-            </div>
-            <main className="col-9 container">
+            </div> */}
+            <main className="col-8 container">
               <Switch>
                 <Route path="/profile/:user_id" component={Profile} />
                 <Route path="/todos/:user_id" component={Todos} />
+                <Route path="/timetracker/:user_id" component={TimeTracker} />
                 <Route path="/logout" component={Logout} />
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/not-found" component={NotFound} />
@@ -64,6 +69,7 @@ class App extends Component {
             <Switch>
               <Route path="/profile" component={Profile} />
               <Route path="/todos" component={Todos} />
+              <Route path="/timetracker" component={TimeTracker} />
               <Route path="/dashboard" component={Dashboard} />
               <Route path="/register" component={RegisterForm} />
               <Route path="/login" component={LoginForm} />

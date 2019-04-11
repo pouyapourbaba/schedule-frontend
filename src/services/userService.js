@@ -1,10 +1,12 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
 
-const apiEndpoint = apiUrl + "/users";
+const apiEndpoint = "/users";
 
+/*
+ * register a new user
+ */
 export function register(user) {
-  return http.post(apiEndpoint, {
+  return http.post(apiEndpoint + "/register", {
     first_name: user.first_name,
     last_name: user.last_name,
     email: user.email,
@@ -12,6 +14,22 @@ export function register(user) {
   });
 }
 
-export function getUser(id) {
-  return http.get(apiEndpoint + "/" + id)
+/*
+ * get a user
+ */
+export function getUser(user_id) {
+  return http.get(apiEndpoint + "/" + user_id)
 }
+
+/*
+* update a user
+*/
+export function updateUser(user_id, obj) {
+  return http.put(apiEndpoint + "/update/" + user_id, obj);
+}
+
+export default {
+  register,
+  getUser,
+  updateUser
+};
