@@ -8,7 +8,8 @@ class TimeTracker extends Component {
   componentWillMount() {
     const currentWeek = parseInt(moment().format("W"));
     const currentYear = parseInt(moment().format("YYYY"));
-    this.setState({ currentWeek, year: currentYear });
+    const currentMonth = parseInt(moment().format("M"));
+    this.setState({ currentWeek, year: currentYear, currentMonth });
 
     const startOfWeek = moment()
       .add(currentWeek, "weeks")
@@ -21,6 +22,7 @@ class TimeTracker extends Component {
     const weekToBeDisplayed = {
       startOfWeek: startOfWeek.format("YYYY.MM.DD"),
       endOfWeek: endOfWeek.format("YYYY.MM.DD"),
+      currentMonth,
       index: currentWeek,
       selected: false
     };
@@ -37,9 +39,12 @@ class TimeTracker extends Component {
       .add(week.index, "weeks")
       .startOf("week");
 
+ console.log("startOfWeek.format() ", startOfWeek.format("M"));
+
     const weekToBeDisplayed = {
       startOfWeek: startOfWeek.format("YYYY.MM.DD"),
       endOfWeek: endOfWeek.format("YYYY.MM.DD"),
+      currentMonth: startOfWeek.format("M"),
       index: week.index,
       selected: true
     };
@@ -90,6 +95,11 @@ class TimeTracker extends Component {
             this.state.weekToBeDisplayed
               ? this.state.weekToBeDisplayed.index
               : this.state.currentWeek
+          }
+          currentMonth={
+            this.state.weekToBeDisplayed
+              ? this.state.weekToBeDisplayed.currentMonth
+              : this.state.currentMonth
           }
         />
       </React.Fragment>

@@ -29,7 +29,7 @@ class TimeTrackerTable extends Form {
   };
 
   async componentWillReceiveProps(newProps) {
-    this.setState({ weekNumber: newProps.weekNumber });
+    this.setState({ weekNumber: newProps.weekNumber, currentMonth: newProps.currentMonth });
     try {
       const { data: tasks } = await taskService.getTasks(
         newProps.user_id,
@@ -87,9 +87,11 @@ class TimeTrackerTable extends Form {
       const obj = { title: this.state.data.title };
       const user_id = this.state.user._id;
       const weekNumber = this.state.weekNumber;
+      const monthNumber = this.state.currentMonth;
 
       obj.year = moment().format("YYYY");
-      obj.month = moment().format("M");
+      obj.month = monthNumber;
+ console.log("month ", obj.month);
       obj.weekInYear = weekNumber;
       obj.days = [
         { day: "monday", duration: 0 },
