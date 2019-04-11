@@ -55,18 +55,7 @@ class WeekTable extends Component {
   };
 
   buttonClassAfterSelection = week => {
-    let classes = "btn-success";
     if (this.props.weekToBeDisplayed.index === week.index) {
-      console.log(
-        " IF this.state.weekToBeDisplayed: ",
-        this.props.weekToBeDisplayed
-      );
-      console.log(week.index);
-      // classes +=
-      //   this.state.weekToBeDisplayed.index === week.index
-      //     ? "success"
-      //     : "secondary";
-      //     console.log(classes)
       return "btn-light";
     }
   };
@@ -86,7 +75,11 @@ class WeekTable extends Component {
         </thead>
         <tbody>
           <tr>
-            <td><h3><span className="badge badge-pill badge-light">Jan - Mar</span></h3></td>
+            <td>
+              <h3>
+                <span className="badge badge-pill badge-light">Jan - Mar</span>
+              </h3>
+            </td>
             <td>
               {this.state.weeksOfYear
                 .filter(week => {
@@ -109,7 +102,11 @@ class WeekTable extends Component {
             </td>
           </tr>
           <tr>
-          <td><h3><span className="badge badge-pill badge-light">Apr - Jun</span></h3></td>
+            <td>
+              <h3>
+                <span className="badge badge-pill badge-light">Apr - Jun</span>
+              </h3>
+            </td>
             <td>
               {this.state.weeksOfYear
                 .filter(week => {
@@ -132,7 +129,11 @@ class WeekTable extends Component {
             </td>
           </tr>
           <tr>
-          <td><h3><span className="badge badge-pill badge-light">Jul - Sep</span></h3></td>
+            <td>
+              <h3>
+                <span className="badge badge-pill badge-light">Jul - Sep</span>
+              </h3>
+            </td>
             <td>
               {this.state.weeksOfYear
                 .filter(week => {
@@ -155,7 +156,11 @@ class WeekTable extends Component {
             </td>
           </tr>
           <tr>
-          <td><h3><span className="badge badge-pill badge-light">Oct - Dec</span></h3></td>
+            <td>
+              <h3>
+                <span className="badge badge-pill badge-light">Oct - Dec</span>
+              </h3>
+            </td>
             <td>
               {this.state.weeksOfYear
                 .filter(week => {

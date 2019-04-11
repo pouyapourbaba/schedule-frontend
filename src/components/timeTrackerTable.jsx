@@ -212,7 +212,7 @@ class TimeTrackerTable extends Form {
       const dayIndex = tasks[index].days.findIndex(
         day => day._id === e.currentTarget.dataset.day
       );
-      if (e.target.value == "") {
+      if (e.target.value === "") {
         tasks[index].days[dayIndex].duration = 0;
       } else {
         tasks[index].days[dayIndex].duration = parseInt(e.target.value);
