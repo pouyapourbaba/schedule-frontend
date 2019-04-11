@@ -3,7 +3,26 @@ import * as d3 from "d3";
 import taskService from "../services/taskService";
 
 class BarChart extends Component {
-  state = {width: 700, height: 1500, durations: [0,0,0,0,0,0,0,0,0,0,0,0]};
+  state = {
+    width: 700,
+    height: 1500,
+    durations: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  };
+
+  groupBy(list, keyGetter) {
+    const map = new Map();
+    list.forEach(item => {
+      const key = keyGetter(item);
+      const collection = map.get(key);
+      if (!collection) {
+        map.set(key, [item]);
+      } else {
+        collection.push(item);
+      }
+    });
+    return map;
+  }
+
   async componentWillReceiveProps(newProps) {
     this.setState({ user_id: newProps.user_id });
 
@@ -12,49 +31,53 @@ class BarChart extends Component {
       try {
         const { data: tasks } = await taskService.getAllTasks(newProps.user_id);
         tasks.reverse();
-        this.setState({ tasks });
-        const data = [
-            { month: "january", month_id: 1, totalDurationForThatMonth: 0 },
-            { month: "february", month_id: 2 , totalDurationForThatMonth: 0},
-            { month: "march", month_id: 3 , totalDurationForThatMonth: 0},
-            { month: "april", month_id: 4 , totalDurationForThatMonth: 0},
-            { month: "may", month_id: 5 , totalDurationForThatMonth: 0},
-            { month: "june", month_id: 6 , totalDurationForThatMonth: 0},
-            { month: "july", month_id: 7 , totalDurationForThatMonth: 0},
-            { month: "august", month_id: 8 , totalDurationForThatMonth: 0},
-            { month: "september", month_id: 9 , totalDurationForThatMonth: 0},
-            { month: "october", month_id: 10, totalDurationForThatMonth: 0 },
-            { month: "november", month_id: 11, totalDurationForThatMonth: 0 },
-            { month: "december", month_id: 12, totalDurationForThatMonth: 0 }
-          ];
-    
-    
-          let totalDurationForThatMonth = 0;
-          for (let item of data) {
-            item.tasksInMonth = tasks.filter(task => task.month === item.month_id);
-            item.days = item.tasksInMonth.map(task => task.days);
-            for (let i of item.days) {
-                const taskDuration = i.map(dd => parseInt(dd.duration))
-                totalDurationForThatMonth += taskDuration.reduce(
-                  (accumulator, currentValue) =>
-                    accumulator + currentValue
-                )
-            item.totalDurationForThatMonth =   totalDurationForThatMonth;  
-          }}
+        console.log("tasks ", tasks);
 
-          console.log(data)
-          
-          const durations = data.map(data => parseInt(data.totalDurationForThatMonth))
-          this.setState({durations})
+        const weeklyGroups = this.groupBy(tasks, task => task.weekInYear);
+        for (let week of weeklyGroups)
+            console.log("week ", week);
+        // this.setState({ tasks });
+        // const data = [
+        //   { month: "january", month_id: 1, totalDurationForThatMonth: 0 },
+        //   { month: "february", month_id: 2, totalDurationForThatMonth: 0 },
+        //   { month: "march", month_id: 3, totalDurationForThatMonth: 0 },
+        //   { month: "april", month_id: 4, totalDurationForThatMonth: 0 },
+        //   { month: "may", month_id: 5, totalDurationForThatMonth: 0 },
+        //   { month: "june", month_id: 6, totalDurationForThatMonth: 0 },
+        //   { month: "july", month_id: 7, totalDurationForThatMonth: 0 },
+        //   { month: "august", month_id: 8, totalDurationForThatMonth: 0 },
+        //   { month: "september", month_id: 9, totalDurationForThatMonth: 0 },
+        //   { month: "october", month_id: 10, totalDurationForThatMonth: 0 },
+        //   { month: "november", month_id: 11, totalDurationForThatMonth: 0 },
+        //   { month: "december", month_id: 12, totalDurationForThatMonth: 0 }
+        // ];
 
-          this.drawChart(this.state.durations);
+        // let totalDurationForThatMonth = 0;
+        // for (let item of data) {
+        //   item.tasksInMonth = tasks.filter(
+        //     task => task.month === item.month_id
+        //   );
+        //   item.days = item.tasksInMonth.map(task => task.days);
+        //   for (let i of item.days) {
+        //     const taskDuration = i.map(dd => parseInt(dd.duration));
+        //     totalDurationForThatMonth += taskDuration.reduce(
+        //       (accumulator, currentValue) => accumulator + currentValue
+        //     );
+        //     item.totalDurationForThatMonth = totalDurationForThatMonth;
+        //   }
+        // }
 
+        // console.log(data);
+
+        // const durations = data.map(data =>
+        //   parseInt(data.totalDurationForThatMonth)
+        // );
+        // this.setState({ durations });
+
+        //   this.drawChart(this.state.durations);
       } catch (ex) {
         console.log(ex.message);
       }
-
-        
-    
     }
   }
 
@@ -63,20 +86,21 @@ class BarChart extends Component {
   }
 
   async componenDidtMount() {
-      console.log("hello")
-      console.log(this.state)
+    console.log("hello");
+    console.log(this.state);
     this.drawChart(this.state.durations);
   }
 
   drawChart(data) {
-    if (!this.state.durations) { return
+    if (!this.state.durations) {
+      return;
     } else {
       const w = this.state.width;
       const h = this.state.height;
       // const data = this.props.data;
       // const data = [0, 0, 0, 20, 15, 0, 0, 0, 0, 0, 0, 0];
       const data = this.state.durations;
- console.log("data ", data);
+      console.log("data ", data);
       // console.log("this.props.data ", this.props.data);
 
       const svg = d3
