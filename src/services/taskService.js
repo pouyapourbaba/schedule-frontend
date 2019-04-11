@@ -1,8 +1,6 @@
 import http from "./httpService";
-import { apiUrl, apiUrlProd } from "../config.json";
 
-const apiEndpoint = apiUrl + "/tasks";
-// const apiEndpoint = "/tasks";
+const apiEndpoint = "/tasks";
 
 /*
  * GET all the tasks of the current user

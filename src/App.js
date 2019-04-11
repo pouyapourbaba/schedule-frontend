@@ -31,6 +31,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
+    if (this.state._id === undefined) return null;
     try {
       let user = await getUser(this.state._id);
       user = user.data;

@@ -1,8 +1,6 @@
 import http from "./httpService";
-import { apiUrl, apiUrlProd } from "../config.json";
 
-const apiEndpoint = apiUrl + "/users";
-// const apiEndpoint = "/users";
+const apiEndpoint = "/users";
 
 /*
  * register a new user

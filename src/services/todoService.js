@@ -1,8 +1,6 @@
 import http from "./httpService";
-import { apiUrl, apiUrlProd } from "../config.json";
 
-const apiEndpoint = apiUrl + "/todos";
-// const apiEndpoint = "/todos";
+const apiEndpoint = "/todos";
 
 /*
  * GET all the todos of the current user
