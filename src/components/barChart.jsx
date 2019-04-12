@@ -34,8 +34,12 @@ class BarChart extends Component {
         console.log("tasks ", tasks);
 
         const weeklyGroups = this.groupBy(tasks, task => task.weekInYear);
-        for (let week of weeklyGroups)
-            console.log("week ", week);
+        console.log("weeklyGroups ", weeklyGroups);
+
+        for (let week of weeklyGroups) {
+          console.log("keys ", week[0]);
+          console.log("data", week[1])
+        }
         // this.setState({ tasks });
         // const data = [
         //   { month: "january", month_id: 1, totalDurationForThatMonth: 0 },
