@@ -37,8 +37,19 @@ class BarChart extends Component {
         console.log("weeklyGroups ", weeklyGroups);
 
         for (let week of weeklyGroups) {
-          console.log("keys ", week[0]);
-          console.log("data", week[1])
+          // gives the number of the week
+          let weekNumber = week[0];
+          console.log("week number ", weekNumber);
+          // should go through the object and get the durations
+          let weekData = week[1];
+          let sum = 0;
+          for (let data of weekData) {
+            let days = data.days;
+            for (let day of days) {
+              sum += day.duration;
+            }
+          }
+          console.log("week sum", sum);
         }
         // this.setState({ tasks });
         // const data = [
