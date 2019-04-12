@@ -76,6 +76,7 @@ class Profile extends Form {
       await userService.updateUser(user._id, {
         [property]: value
       });
+      window.location.reload()
     } catch (ex) {
       alert("Something went wrong while updating the profile.");
       this.setState({ user: originalUser });
