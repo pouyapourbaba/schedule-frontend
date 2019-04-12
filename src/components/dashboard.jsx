@@ -8,6 +8,8 @@ class Dashboard extends Component {
   
   
   async componentDidMount() {
+  console.log("componentDidMount Dashboard");
+    
     let user_id;
     if (this.props.match.params.user_id === undefined) return;
     else user_id = this.props.match.params.user_id;

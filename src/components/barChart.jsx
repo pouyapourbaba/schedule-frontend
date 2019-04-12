@@ -5,8 +5,9 @@ import taskService from "../services/taskService";
 class BarChart extends Component {
   state = {
     width: 700,
-    height: 1500,
-    durations: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    height: 300,
+    weeklyDurations: new Array(52).fill(0),
+    monthlyDurations: new Array(12).fill(0)
   };
 
   groupBy(list, keyGetter) {
@@ -31,15 +32,17 @@ class BarChart extends Component {
       try {
         const { data: tasks } = await taskService.getAllTasks(newProps.user_id);
         tasks.reverse();
-        console.log("tasks ", tasks);
 
+        const monthlyDurations = this.state.monthlyDurations;
+        const weeklyDurations = this.state.weeklyDurations;
+
+        // Weekly Data
         const weeklyGroups = this.groupBy(tasks, task => task.weekInYear);
-        console.log("weeklyGroups ", weeklyGroups);
 
+        let weeklyData = [];
         for (let week of weeklyGroups) {
           // gives the number of the week
           let weekNumber = week[0];
-          console.log("week number ", weekNumber);
           // should go through the object and get the durations
           let weekData = week[1];
           let sum = 0;
@@ -49,47 +52,34 @@ class BarChart extends Component {
               sum += day.duration;
             }
           }
-          console.log("week sum", sum);
+          weeklyDurations[weekNumber - 1] = sum;
+          weeklyData.push({ weekNumber, sum });
         }
-        // this.setState({ tasks });
-        // const data = [
-        //   { month: "january", month_id: 1, totalDurationForThatMonth: 0 },
-        //   { month: "february", month_id: 2, totalDurationForThatMonth: 0 },
-        //   { month: "march", month_id: 3, totalDurationForThatMonth: 0 },
-        //   { month: "april", month_id: 4, totalDurationForThatMonth: 0 },
-        //   { month: "may", month_id: 5, totalDurationForThatMonth: 0 },
-        //   { month: "june", month_id: 6, totalDurationForThatMonth: 0 },
-        //   { month: "july", month_id: 7, totalDurationForThatMonth: 0 },
-        //   { month: "august", month_id: 8, totalDurationForThatMonth: 0 },
-        //   { month: "september", month_id: 9, totalDurationForThatMonth: 0 },
-        //   { month: "october", month_id: 10, totalDurationForThatMonth: 0 },
-        //   { month: "november", month_id: 11, totalDurationForThatMonth: 0 },
-        //   { month: "december", month_id: 12, totalDurationForThatMonth: 0 }
-        // ];
+        console.log("weeklyDurations ", weeklyDurations);
 
-        // let totalDurationForThatMonth = 0;
-        // for (let item of data) {
-        //   item.tasksInMonth = tasks.filter(
-        //     task => task.month === item.month_id
-        //   );
-        //   item.days = item.tasksInMonth.map(task => task.days);
-        //   for (let i of item.days) {
-        //     const taskDuration = i.map(dd => parseInt(dd.duration));
-        //     totalDurationForThatMonth += taskDuration.reduce(
-        //       (accumulator, currentValue) => accumulator + currentValue
-        //     );
-        //     item.totalDurationForThatMonth = totalDurationForThatMonth;
-        //   }
-        // }
+        console.log("Weekly Data", weeklyData);
 
-        // console.log(data);
-
-        // const durations = data.map(data =>
-        //   parseInt(data.totalDurationForThatMonth)
-        // );
+        // Monthly Data
+        const monthlyGroups = this.groupBy(tasks, task => task.month);
+        let monthlyData = [];
+        for (let month of monthlyGroups) {
+          let monthNumber = month[0];
+          let monthData = month[1];
+          let sum = 0;
+          for (let data of monthData) {
+            let days = data.days;
+            for (let day of days) {
+              sum += day.duration;
+            }
+          }
+          monthlyDurations[monthNumber - 1] = sum;
+          monthlyData.push({ monthNumber, sum });
+        }
+        console.log("monthlyData ", monthlyData);
+        console.log("monthly durations ", monthlyDurations);
         // this.setState({ durations });
 
-        //   this.drawChart(this.state.durations);
+          this.drawChart(monthlyDurations);
       } catch (ex) {
         console.log(ex.message);
       }
@@ -107,14 +97,14 @@ class BarChart extends Component {
   }
 
   drawChart(data) {
-    if (!this.state.durations) {
-      return;
-    } else {
+    // if (this.state.durations) {
+    //   return;
+    // } else {
       const w = this.state.width;
       const h = this.state.height;
       // const data = this.props.data;
       // const data = [0, 0, 0, 20, 15, 0, 0, 0, 0, 0, 0, 0];
-      const data = this.state.durations;
+      // const data = data;
       console.log("data ", data);
       // console.log("this.props.data ", this.props.data);
 
@@ -132,14 +122,14 @@ class BarChart extends Component {
         .append("rect")
         .attr("x", (d, i) => i * 70)
         .attr("y", (d, i) => h - 10 * d)
-        .attr("width", 65)
+        .attr("width", 30)
         .attr("height", (d, i) => d * 10)
         .attr("fill", "green");
-    }
+    // }
   }
 
   render() {
-    return <div />;
+    return <div style={{border: "1px solid red"}} />;
   }
 }
 
