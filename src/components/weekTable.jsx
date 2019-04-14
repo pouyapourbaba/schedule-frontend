@@ -56,7 +56,6 @@ class WeekTable extends Component {
   };
 
   buttonClassAfterSelection = week => {
-    let classes = "btn-success";
     if (this.props.weekToBeDisplayed.index === week.index) {
       console.log(
         " IF this.state.weekToBeDisplayed: ",

@@ -10,126 +10,115 @@ class BarChart extends Component {
     monthlyDurations: new Array(12).fill(0)
   };
 
-  groupBy(list, keyGetter) {
-    const map = new Map();
-    list.forEach(item => {
-      const key = keyGetter(item);
-      const collection = map.get(key);
-      if (!collection) {
-        map.set(key, [item]);
-      } else {
-        collection.push(item);
-      }
-    });
-    return map;
-  }
+  async componentDidMount() {
+    if (this.props.user_id) {
+      const monthlyDurations = this.state.monthlyDurations;
 
-  async componentWillReceiveProps(newProps) {
-    this.setState({ user_id: newProps.user_id });
+      const monthlyData = await taskService.getMonthlyTotalDurations(
+        this.props.user_id
+      );
 
-    if (!newProps.user_id) return;
-    else {
-      try {
-        const { data: tasks } = await taskService.getAllTasks(newProps.user_id);
-        tasks.reverse();
+      for (let month of monthlyData.data)
+        monthlyDurations[month._id - 1] = month.total;
 
-        const monthlyDurations = this.state.monthlyDurations;
-        const weeklyDurations = this.state.weeklyDurations;
-
-        // Weekly Data
-        const weeklyGroups = this.groupBy(tasks, task => task.weekInYear);
-
-        let weeklyData = [];
-        for (let week of weeklyGroups) {
-          // gives the number of the week
-          let weekNumber = week[0];
-          // should go through the object and get the durations
-          let weekData = week[1];
-          let sum = 0;
-          for (let data of weekData) {
-            let days = data.days;
-            for (let day of days) {
-              sum += day.duration;
-            }
-          }
-          weeklyDurations[weekNumber - 1] = sum;
-          weeklyData.push({ weekNumber, sum });
-        }
-        console.log("weeklyDurations ", weeklyDurations);
-
-        console.log("Weekly Data", weeklyData);
-
-        // Monthly Data
-        const monthlyGroups = this.groupBy(tasks, task => task.month);
-        let monthlyData = [];
-        for (let month of monthlyGroups) {
-          let monthNumber = month[0];
-          let monthData = month[1];
-          let sum = 0;
-          for (let data of monthData) {
-            let days = data.days;
-            for (let day of days) {
-              sum += day.duration;
-            }
-          }
-          monthlyDurations[monthNumber - 1] = sum;
-          monthlyData.push({ monthNumber, sum });
-        }
-        console.log("monthlyData ", monthlyData);
-        console.log("monthly durations ", monthlyDurations);
-        // this.setState({ durations });
-
-          this.drawChart(monthlyDurations);
-      } catch (ex) {
-        console.log(ex.message);
-      }
+      this.drawChart(monthlyDurations);
     }
   }
 
-  shouldComponentUpdate(newProps, newState) {
-    return true;
-  }
-
-  async componenDidtMount() {
-    console.log("hello");
-    console.log(this.state);
-    this.drawChart(this.state.durations);
-  }
-
   drawChart(data) {
-    // if (this.state.durations) {
-    //   return;
-    // } else {
-      const w = this.state.width;
-      const h = this.state.height;
-      // const data = this.props.data;
-      // const data = [0, 0, 0, 20, 15, 0, 0, 0, 0, 0, 0, 0];
-      // const data = data;
-      console.log("data ", data);
-      // console.log("this.props.data ", this.props.data);
+    // var margin = { top: 20, right: 20, bottom: 70, left: 40 },
+    //   width = 1000 - margin.left - margin.right,
+    //   height = 300 - margin.top - margin.bottom;
 
-      const svg = d3
-        .select("body")
-        .append("svg")
-        .attr("width", w)
-        .attr("height", h)
-        .style("margin-left", 100);
+    d3.select("BarChart").style("background-color", "red");
 
-      svg
-        .selectAll("rect")
-        .data(data)
-        .enter()
-        .append("rect")
-        .attr("x", (d, i) => i * 70)
-        .attr("y", (d, i) => h - 10 * d)
-        .attr("width", 30)
-        .attr("height", (d, i) => d * 10)
-        .attr("fill", "green");
-    // }
+    var svg = d3.select("svg"),
+      margin = {
+        top: 20,
+        right: 20,
+        bottom: 30,
+        left: 50
+      },
+      width = +svg.attr("width") - margin.left - margin.right,
+      height = +svg.attr("height") - margin.top - margin.bottom,
+      g = svg
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var x = d3
+      .scaleBand()
+      .rangeRound([0, width])
+      .padding(0.1);
+
+    var y = d3.scaleLinear().rangeRound([height, 0]);
+
+    x.domain(
+      data.map(function(d, i) {
+        return i;
+      })
+    );
+    y.domain([
+      0,
+      d3.max(data, function(d) {
+        return Number(d);
+      })
+    ]);
+
+    g.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x))
+      .append("text")
+      .attr("fill", "#000")
+      .attr("text-anchor", "end")
+      .attr("x", 630)
+      .attr("y", 25)
+      .text("months");
+
+    g.append("g")
+      .call(d3.axisLeft(y))
+      .append("text")
+      .attr("fill", "#000")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", "0.71em")
+      .attr("text-anchor", "end")
+      .text("hours");
+
+    g.selectAll(".bar")
+      .data(data)
+      .enter()
+      .append("rect")
+      .style("fill", "steelblue")
+      .attr("class", "bar")
+      .attr("x", function(d, i) {
+        return x(i);
+      })
+      .attr("y", function(d) {
+        return y(Number(d));
+      })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) {
+        return height - y(Number(d));
+      });
+
+      g.selectAll(".text")
+      .data(data)
+      .enter()
+      .append("text")
+      .text(d => d)
+      .attr("y", function(d) {
+        return y(Number(d))+20;
+      })
+      .attr("x", function(d, i) {
+        return x(i)+7;
+      })
+      .attr("fill", "#fff");
   }
 
   render() {
-    return <div style={{border: "1px solid red"}} />;
+    return (
+      <svg width="700" height="500" style={{ border: "1px solid #ccc" }} />
+    );
   }
 }
 

@@ -230,7 +230,7 @@ class TodosForm extends Form {
 
     // call the server and
     try {
-      const newTodo = await todoService.updateStatus(todo._id, todo.isDone);
+      await todoService.updateStatus(todo._id, todo.isDone);
       //  console.log("newTodo ", newTodo);
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {

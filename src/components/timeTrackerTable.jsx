@@ -14,7 +14,9 @@ class TimeTrackerTable extends Form {
     errors: [],
     pageSize: 5,
     currentPage: 1,
-    data: { title: "" }
+    data: { title: "" },
+    weekNumber: parseInt(moment().format("W")),
+    currentMonth: parseInt(moment().format("M"))
   };
 
   schema = {
@@ -47,8 +49,9 @@ class TimeTrackerTable extends Form {
   }
 
   async componentWillMount() {
-    const weekNumber = this.props.weekNumber;
-    this.setState({ weekNumber });
+    // const weekNumber = this.props.weekNumber;
+    // const currentMonth = this.props.monthNumber;
+    // this.setState({ weekNumber,currentMonth });
   }
 
   async componentDidMount() {
@@ -214,7 +217,7 @@ class TimeTrackerTable extends Form {
       const dayIndex = tasks[index].days.findIndex(
         day => day._id === e.currentTarget.dataset.day
       );
-      if (e.target.value == "") {
+      if (e.target.value === "") {
         tasks[index].days[dayIndex].duration = 0;
       } else {
         tasks[index].days[dayIndex].duration = parseInt(e.target.value);
