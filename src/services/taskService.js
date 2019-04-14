@@ -1,7 +1,6 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
 
-const apiEndpoint = apiUrl + "/tasks";
+const apiEndpoint = "/tasks";
 
 /*
  * Get the weekly total

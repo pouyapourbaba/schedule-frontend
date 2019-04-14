@@ -1,7 +1,6 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
 
-const apiEndpoint = apiUrl + "/todos";
+const apiEndpoint = "/todos";
 
 /*
  * GET all the todos of the current user
