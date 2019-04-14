@@ -5,6 +5,7 @@ import TimeTrackerTable from "./timeTrackerTable";
 
 class TimeTracker extends Component {
   state = {};
+
   componentWillMount() {
     const currentWeek = parseInt(moment().format("W"));
     const currentYear = parseInt(moment().format("YYYY"));
@@ -20,14 +21,15 @@ class TimeTracker extends Component {
       .startOf("week");
 
     const weekToBeDisplayed = {
-      startOfWeek: startOfWeek.format("YYYY.MM.DD"),
-      endOfWeek: endOfWeek.format("YYYY.MM.DD"),
+      startOfWeek: startOfWeek.format("DD.MM.YYYY"),
+      endOfWeek: endOfWeek.format("DD.MM.YYYY"),
       currentMonth,
       index: currentWeek,
       selected: false
     };
 
     this.setState({ weekToBeDisplayed });
+    console.log("weekToBeDisplayed ", weekToBeDisplayed);
   }
 
   handleWeekChange = week => {
@@ -39,7 +41,7 @@ class TimeTracker extends Component {
       .add(week.index, "weeks")
       .startOf("week");
 
- console.log("startOfWeek.format() ", startOfWeek.format("M"));
+    console.log("startOfWeek.format() ", startOfWeek.format("M"));
 
     const weekToBeDisplayed = {
       startOfWeek: startOfWeek.format("YYYY.MM.DD"),
@@ -58,7 +60,10 @@ class TimeTracker extends Component {
         <h3 style={{ margin: "20px 0" }}>
           Select a week to see the list of tasks for that week
         </h3>
-        <WeekTable onWeekChange={this.handleWeekChange} weekToBeDisplayed={this.state.weekToBeDisplayed} />
+        <WeekTable
+          onWeekChange={this.handleWeekChange}
+          weekToBeDisplayed={this.state.weekToBeDisplayed}
+        />
         <div
           className="row"
           style={{

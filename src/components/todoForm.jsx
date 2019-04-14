@@ -255,10 +255,9 @@ class TodosForm extends Form {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Title</th>
+                  <th style={{textAlign: "center"}}>Title</th>
                   <th />
                   <th />
-
                   <th>Status</th>
                 </tr>
               </thead>
@@ -281,7 +280,7 @@ class TodosForm extends Form {
                           </div>
                         )}
                     </td>
-                    <td>
+                    <td style={{textAlign: "center"}}>
                       <button
                         onClick={() => this.handleUpdate(todo)}
                         className="btn btn-sm btn-secondary"
@@ -293,7 +292,7 @@ class TodosForm extends Form {
                         Edit
                       </button>
                     </td>
-                    <td>
+                    <td style={{textAlign: "center"}}>
                       <button
                         onClick={() => this.handleDelete(todo)}
                         className="btn btn-sm btn-danger"
@@ -301,7 +300,7 @@ class TodosForm extends Form {
                         Delete
                       </button>
                     </td>
-                    <td style={{ paddingLeft: "2.5%" }}>
+                    <td style={{ paddingLeft: "2.5%"}}>
                       <Checkbox
                         shape="round"
                         color="success"

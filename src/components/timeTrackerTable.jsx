@@ -228,8 +228,10 @@ class TimeTrackerTable extends Form {
     }
   };
 
-  handleBlur = () => {
+  handleBlur = (task) => {
     console.log("blured from blur");
+    console.log(task._id)
+    this.handleUpdate(task)
   };
 
   doEditDUration = () => {
@@ -237,7 +239,7 @@ class TimeTrackerTable extends Form {
   };
 
   // disable new lines in the ContentEditable
-  disableNewlines = event => {
+  disableNewlines = (event) => {
     const keyCode = event.keyCode || event.which;
 
     if (keyCode === 13) {
@@ -245,6 +247,11 @@ class TimeTrackerTable extends Form {
       if (event.preventDefault) event.preventDefault();
     }
   };
+
+  // handle key down event
+  handleKeyDown = () => {
+    console.log("key down")
+  }
 
   // trim the spaces in the ContentEditable
   trimSpaces = string => {
@@ -269,7 +276,6 @@ class TimeTrackerTable extends Form {
             <thead>
               <tr>
                 <th>Title</th>
-                <th></th>
                 <th className="text-center">Mon</th>
                 <th className="text-center">Tue</th>
                 <th className="text-center">Wed</th>
@@ -298,9 +304,12 @@ class TimeTrackerTable extends Form {
                         className="content-editable"
                         onChange={this.handleContentEditable}
                         onKeyPress={this.disableNewlines}
+                        onKeyDown={this.handleKeyDown}
+                        onBlur={() => this.handleBlur(task)}
                       />
                   </td>
-                  <td><button
+                  {/* <td
+                  ><button
                       onClick={() => this.handleUpdate(task)}
                       className="btn btn-sm btn-secondary"
                       disabled={
@@ -309,16 +318,16 @@ class TimeTrackerTable extends Form {
                       }
                     >
                       Edit
-                    </button></td>
+                    </button></td> */}
                   {task.days.map(day => (
-                    <td key={day._id}>
-                      <div
-                        style={{
-                          width: "55%",
-                          marginRight: "2%",
-                          float: "left"
-                        }}
-                      >
+                    <td key={day._id} style={{textAlign: "center"}}>
+                       {/* <div
+                        // style={{
+                        //   width: "55%",
+                        //   marginRight: "2%",
+                        //   float: "left"
+                        // }}
+                      > */}
                         <ContentEditable
                           html={String(day.duration)}
                           data-task={task._id}
@@ -326,10 +335,10 @@ class TimeTrackerTable extends Form {
                           className="content-editable"
                           onChange={this.handleContentEditable}
                           onKeyPress={this.disableNewlines}
-                          onBlur={this.handleBlur}
+                          onBlur={() => this.handleBlur(task)}
                         />
-                      </div>
-                      <div style={{ width: "42%", float: "left" }}>
+                      {/* </div> */}
+                      {/* <div style={{ width: "42%", float: "left" }}>
                         <button
                           onClick={() => this.handleUpdate(task)}
                           className="btn btn-sm btn-secondary"
@@ -340,7 +349,7 @@ class TimeTrackerTable extends Form {
                         >
                           +
                         </button>
-                      </div>
+                      </div> */}
                     </td>
                   ))}
                   <td style={{textAlign:"center"}}>
