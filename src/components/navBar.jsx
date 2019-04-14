@@ -6,10 +6,13 @@ class NavBar extends Component {
   state = { user: { first_name: "", last_name: "", email: "" } };
 
   async componentDidMount() {
-    if (this.props.user_id === undefined) return;
+    // if (this.props.match.params.user_id === undefined) return;
+    let user_id;
+    if (this.props.user_id === undefined) return null;
+    else user_id = this.props.user_id;
 
     try {
-      let user = await getUser(this.props.user_id);
+      let user = await getUser(user_id);
       user = user.data;
       this.setState({ user });
     } catch (ex) {
@@ -48,11 +51,11 @@ class NavBar extends Component {
             )}
             {this.props.user_id && (
               <React.Fragment>
-                <NavLink className="nav-link" to={`/dashboard`}>
+                <NavLink className="nav-link" to={`/dashboard/${this.props.user_id}`}>
                   Dashboard
                 </NavLink>
                 <NavLink className="nav-link" to={`/todos/${this.props.user_id}`}>
-                  Todos
+                  Objectives
                 </NavLink>
                 <NavLink className="nav-link" to={`/timetracker/${this.props.user_id}`}>
                   TimeTracker

@@ -5,22 +5,25 @@ import TimeTrackerTable from "./timeTrackerTable";
 
 class TimeTracker extends Component {
   state = {};
+
   componentWillMount() {
     const currentWeek = parseInt(moment().format("W"));
     const currentYear = parseInt(moment().format("YYYY"));
-    this.setState({ currentWeek, year: currentYear });
+    const currentMonth = parseInt(moment().format("M"));
+    this.setState({ currentWeek, year: currentYear, currentMonth });
 
-    const startOfWeek = moment()
+    const startOfWeek = moment(`${currentYear}-01-01`)
       .add(currentWeek, "weeks")
       .startOf("isoWeek");
 
-    const endOfWeek = moment()
+    const endOfWeek = moment(`${currentYear}-01-01`)
       .add(currentWeek, "weeks")
       .startOf("week");
 
     const weekToBeDisplayed = {
-      startOfWeek: startOfWeek.format("YYYY.MM.DD"),
-      endOfWeek: endOfWeek.format("YYYY.MM.DD"),
+      startOfWeek: startOfWeek.format("DD.MM.YYYY"),
+      endOfWeek: endOfWeek.format("DD.MM.YYYY"),
+      currentMonth,
       index: currentWeek,
       selected: false
     };
@@ -37,9 +40,12 @@ class TimeTracker extends Component {
       .add(week.index, "weeks")
       .startOf("week");
 
+    console.log("startOfWeek.format() ", startOfWeek.format("M"));
+
     const weekToBeDisplayed = {
       startOfWeek: startOfWeek.format("YYYY.MM.DD"),
       endOfWeek: endOfWeek.format("YYYY.MM.DD"),
+      currentMonth: startOfWeek.format("M"),
       index: week.index,
       selected: true
     };
@@ -53,7 +59,10 @@ class TimeTracker extends Component {
         <h3 style={{ margin: "20px 0" }}>
           Select a week to see the list of tasks for that week
         </h3>
-        <WeekTable onWeekChange={this.handleWeekChange} weekToBeDisplayed={this.state.weekToBeDisplayed} />
+        <WeekTable
+          onWeekChange={this.handleWeekChange}
+          weekToBeDisplayed={this.state.weekToBeDisplayed}
+        />
         <div
           className="row"
           style={{
@@ -90,6 +99,11 @@ class TimeTracker extends Component {
             this.state.weekToBeDisplayed
               ? this.state.weekToBeDisplayed.index
               : this.state.currentWeek
+          }
+          currentMonth={
+            this.state.weekToBeDisplayed
+              ? this.state.weekToBeDisplayed.currentMonth
+              : this.state.currentMonth
           }
         />
       </React.Fragment>

@@ -15,13 +15,22 @@ class WeekTable extends Component {
 
     const rangeOfWeeks = _.range(numberOfWeeks);
     const range = rangeOfWeeks.map(week => {
-      return {
+      if (week === currentWeek) {
+        return {
+          startOfWeek: moment(`${this.state.year}-01-01`, "YYYY-MM-DD")
+            .add(week, "weeks")
+            .startOf("isoweek")
+            .toString(),
+          index: week + 1
+        }
+      }
+      else {return {
         startOfWeek: moment(`${this.state.year}-01-01`, "YYYY-MM-DD")
           .add(week, "weeks")
           .startOf("isoweek")
           .toString(),
         index: week + 1
-      };
+      }}
     });
     this.setState({ weeksOfYear: range });
   }
