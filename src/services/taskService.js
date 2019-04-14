@@ -20,7 +20,6 @@ export function getMonthlyTotalDurations(user_id) {
 /*
  * GET all the tasks of the current user based on the week
  */
-
 export function getTasks(user_id, weekNumber) {
   return http.get(apiEndpoint + "/" + user_id + "/" + weekNumber);
 }
@@ -36,7 +35,6 @@ export function getAllTasks(user_id) {
 /*
  * POST a new task
  */
-
 export function postTask(taskObj, user_id) {
   return http.post(apiEndpoint + "/new/" + user_id, taskObj);
 }
@@ -44,7 +42,6 @@ export function postTask(taskObj, user_id) {
 /*
  * UPDATE a task
  */
-
 export function updateTask(task_id, taskObj) {
   return http.put(apiEndpoint + "/update/" + task_id, taskObj);
 }
@@ -52,7 +49,6 @@ export function updateTask(task_id, taskObj) {
 /*
  * UPDATE the status of a task
  */
-
 export function updateStatus(todo_id, isDone) {
   //   return http.put(apiEndpoint + "/status/" + todo_id, isDone);
 }
@@ -60,7 +56,6 @@ export function updateStatus(todo_id, isDone) {
 /*
  * DELETE a task
  */
-
 export function deleteTask(task_id) {
   return http.delete(apiEndpoint + "/delete/" + task_id);
 }
@@ -72,6 +67,5 @@ export default {
   getAllTasks,
   postTask,
   updateTask,
-  deleteTask,
-  updateStatus
+  deleteTask
 };

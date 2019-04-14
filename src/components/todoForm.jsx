@@ -85,7 +85,7 @@ class TodosForm extends Form {
   // handle add a new todo
   doSubmit = async () => {
     try {
-      const obj = {title: this.state.data.title};
+      const obj = { title: this.state.data.title };
       const user_id = this.state.user._id;
       const weekNumber = this.state.weekNumber;
 
@@ -301,7 +301,7 @@ class TodosForm extends Form {
                         Delete
                       </button>
                     </td>
-                    <td style={{paddingLeft: "2.5%"}}>
+                    <td style={{ paddingLeft: "2.5%" }}>
                       <Checkbox
                         shape="round"
                         color="success"

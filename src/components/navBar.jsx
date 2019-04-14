@@ -7,9 +7,12 @@ class NavBar extends Component {
 
   async componentDidMount() {
     // if (this.props.match.params.user_id === undefined) return;
+    let user_id;
+    if (this.props.user_id === undefined) return null;
+    else user_id = this.props.user_id;
 
     try {
-      let user = await getUser(this.props.user_id);
+      let user = await getUser(user_id);
       user = user.data;
       this.setState({ user });
     } catch (ex) {

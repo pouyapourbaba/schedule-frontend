@@ -31,7 +31,9 @@ class App extends Component {
   }
 
   async componentDidMount() {
+    if (this.state._id === undefined) return null;
     try {
+      console.log("user fetcher")
       let user = await getUser(this.state._id);
       user = user.data;
       this.setState({ user });
@@ -67,7 +69,7 @@ class App extends Component {
           <main className="container">
             <Switch>
               <Route path="/profile" component={Profile} />
-              <Route path="/todo" component={Todos} />
+              <Route path="/todos" component={Todos} />
               <Route path="/timetracker" component={TimeTracker} />
               <Route path="/dashboard" component={Dashboard} />
               <Route path="/register" component={RegisterForm} />
