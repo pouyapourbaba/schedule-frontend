@@ -12,6 +12,7 @@ class BarChart extends Component {
 
   async componentDidMount() {
     if (this.props.user_id) {
+      // Get the monthly data
       const monthlyDurations = this.state.monthlyDurations;
 
       const monthlyData = await taskService.getMonthlyTotalDurations(
@@ -21,7 +22,17 @@ class BarChart extends Component {
       for (let month of monthlyData.data)
         monthlyDurations[month._id - 1] = month.total;
 
-      this.drawChart(monthlyDurations);
+      // Get the weekly data
+      const weeklyDurations = this.state.weeklyDurations;
+
+      const weeklyData = await taskService.getWeeklyTotalDurations(
+        this.props.user_id
+      );
+
+      for (let month of weeklyData.data)
+        weeklyDurations[month._id - 1] = month.total;
+
+      this.drawChart(weeklyDurations);
     }
   }
 
@@ -66,13 +77,13 @@ class BarChart extends Component {
 
     g.append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x))
+      .call(d3.axisBottom(x).tickValues(x.domain().filter(function(d,i){ return !(i%2)})))
       .append("text")
       .attr("fill", "#000")
       .attr("text-anchor", "end")
-      .attr("x", 630)
+      .attr("x", 460)
       .attr("y", 25)
-      .text("months");
+      .text("weeks");
 
     g.append("g")
       .call(d3.axisLeft(y))
@@ -99,26 +110,26 @@ class BarChart extends Component {
       .attr("width", x.bandwidth())
       .attr("height", function(d) {
         if (d === 0) return 0;
-        else return height - y(Number(d))
+        else return height - y(Number(d));
       });
 
-      g.selectAll(".text")
+    g.selectAll(".text")
       .data(data)
       .enter()
       .append("text")
       .text(d => d)
       .attr("y", function(d) {
-        return y(Number(d))+20;
+        return y(Number(d)) + 20;
       })
       .attr("x", function(d, i) {
-        return x(i)+7;
+        return x(i) + 3;
       })
       .attr("fill", "#fff");
   }
 
   render() {
     return (
-      <svg width="700" height="500" style={{ border: "1px solid #ccc" }} />
+      <svg width="960" height="500" style={{ border: "1px solid #ccc" }} />
     );
   }
 }

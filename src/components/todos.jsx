@@ -11,11 +11,11 @@ class Todos extends Component {
     const currentYear = parseInt(moment().format("YYYY"));
     this.setState({ currentWeek, year: currentYear });
 
-    const startOfWeek = moment()
+    const startOfWeek = moment(`${currentYear}-01-01`, "YYYY-MM-DD")
       .add(currentWeek, "weeks")
       .startOf("isoWeek");
 
-    const endOfWeek = moment()
+    const endOfWeek = moment(`${currentYear}-01-01`)
       .add(currentWeek, "weeks")
       .startOf("week");
 
