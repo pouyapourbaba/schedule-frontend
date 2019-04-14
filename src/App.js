@@ -57,7 +57,7 @@ class App extends Component {
                 <Route path="/todos/:user_id" component={Todos} />
                 <Route path="/timetracker/:user_id" component={TimeTracker} />
                 <Route path="/logout" component={Logout} />
-                <Route path="/dashboard" component={Dashboard} />
+                <Route path="/dashboard/:user_id" component={Dashboard} />
                 <Route path="/not-found" component={NotFound} />
                 <Route path="/" exact component={Home} />
                 <Redirect to="/not-found" />

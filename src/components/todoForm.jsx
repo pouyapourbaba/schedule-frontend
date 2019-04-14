@@ -230,7 +230,8 @@ class TodosForm extends Form {
 
     // call the server and
     try {
-      await todoService.updateStatus(todo._id, {isDone: todo.isDone});
+      await todoService.updateStatus(todo._id, todo.isDone);
+      //  console.log("newTodo ", newTodo);
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         alert("This todo has already been deleted.");

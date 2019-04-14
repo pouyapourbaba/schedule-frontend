@@ -51,7 +51,7 @@ class NavBar extends Component {
             )}
             {this.props.user_id && (
               <React.Fragment>
-                <NavLink className="nav-link" to={`/dashboard`}>
+                <NavLink className="nav-link" to={`/dashboard/${this.props.user_id}`}>
                   Dashboard
                 </NavLink>
                 <NavLink className="nav-link" to={`/todos/${this.props.user_id}`}>
