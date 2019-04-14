@@ -17,11 +17,11 @@ class Home extends Component {
           done and not done. The TimeTracker page can be used to insert tasks
           for each week and enter the amount of time that you spent working on
           that task each day. You can see the total amount of time that you have
-          worked on a specific task.
+          worked on a specific task as well.
         </p>
         <p>
-          IN the Dashboard page you can see a chart which shows the amount of
-          hours that you have worked or studied duraing each week of the year
+          In the Dashboard page you can see a chart which shows the amount of
+          hours that you have worked or studied during each week of the year
           2019.
         </p>
       </div>
