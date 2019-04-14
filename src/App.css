@@ -60,13 +60,14 @@
 /* Content Editable */
 .content-editable {
   padding: 0.2rem;
-  border-radius: 2%;
+  border-radius: 15%;
+  background: #ebeef7;
 }
 .content-editable:hover {
-  background: #f7f7f7;
+  background: #c7ffcc;
 }
 .content-editable:focus {
-  background: #f7f7f7;
+  background: #b5ffb5;
   border: solid 0.05rem #3d3d4b;
   /* color: #f7f7f7; */
   outline: 0;
