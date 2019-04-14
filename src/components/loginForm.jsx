@@ -22,7 +22,7 @@ class LoginForm extends Form {
     try {
       const { data } = this.state;
       await auth.login(data.email, data.password);
-      window.location = "/dashboard";
+      window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };

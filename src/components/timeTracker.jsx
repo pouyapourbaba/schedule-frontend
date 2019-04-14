@@ -29,7 +29,6 @@ class TimeTracker extends Component {
     };
 
     this.setState({ weekToBeDisplayed });
-    console.log("weekToBeDisplayed ", weekToBeDisplayed);
   }
 
   handleWeekChange = week => {

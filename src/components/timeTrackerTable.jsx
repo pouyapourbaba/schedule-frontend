@@ -94,7 +94,6 @@ class TimeTrackerTable extends Form {
 
       obj.year = moment().format("YYYY");
       obj.month = monthNumber;
- console.log("month ", obj.month);
       obj.weekInYear = weekNumber;
       obj.days = [
         { day: "monday", duration: 0 },
@@ -229,13 +228,10 @@ class TimeTrackerTable extends Form {
   };
 
   handleBlur = (task) => {
-    console.log("blured from blur");
-    console.log(task._id)
     this.handleUpdate(task)
   };
 
   doEditDUration = () => {
-    console.log("duration edited");
   };
 
   // disable new lines in the ContentEditable
@@ -247,11 +243,6 @@ class TimeTrackerTable extends Form {
       if (event.preventDefault) event.preventDefault();
     }
   };
-
-  // handle key down event
-  handleKeyDown = () => {
-    console.log("key down")
-  }
 
   // trim the spaces in the ContentEditable
   trimSpaces = string => {
@@ -304,30 +295,11 @@ class TimeTrackerTable extends Form {
                         className="content-editable"
                         onChange={this.handleContentEditable}
                         onKeyPress={this.disableNewlines}
-                        onKeyDown={this.handleKeyDown}
                         onBlur={() => this.handleBlur(task)}
                       />
                   </td>
-                  {/* <td
-                  ><button
-                      onClick={() => this.handleUpdate(task)}
-                      className="btn btn-sm btn-secondary"
-                      disabled={
-                        this.state.errors.title &&
-                        this.state.errors.id === task._id
-                      }
-                    >
-                      Edit
-                    </button></td> */}
                   {task.days.map(day => (
                     <td key={day._id} style={{textAlign: "center"}}>
-                       {/* <div
-                        // style={{
-                        //   width: "55%",
-                        //   marginRight: "2%",
-                        //   float: "left"
-                        // }}
-                      > */}
                         <ContentEditable
                           html={String(day.duration)}
                           data-task={task._id}
@@ -337,19 +309,6 @@ class TimeTrackerTable extends Form {
                           onKeyPress={this.disableNewlines}
                           onBlur={() => this.handleBlur(task)}
                         />
-                      {/* </div> */}
-                      {/* <div style={{ width: "42%", float: "left" }}>
-                        <button
-                          onClick={() => this.handleUpdate(task)}
-                          className="btn btn-sm btn-secondary"
-                          disabled={
-                            this.state.errors.title &&
-                            this.state.errors.id === task._id
-                          }
-                        >
-                          +
-                        </button>
-                      </div> */}
                     </td>
                   ))}
                   <td style={{textAlign:"center"}}>

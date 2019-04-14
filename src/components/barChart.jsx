@@ -117,12 +117,15 @@ class BarChart extends Component {
       .data(data)
       .enter()
       .append("text")
+      .style("font", "14px times")
       .text(d => d)
       .attr("y", function(d) {
         return y(Number(d)) + 20;
       })
       .attr("x", function(d, i) {
-        return x(i) + 3;
+        if (d<10)
+          return x(i)+4;
+        else return x(i);
       })
       .attr("fill", "#fff");
   }

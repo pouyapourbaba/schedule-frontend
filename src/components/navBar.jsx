@@ -55,7 +55,7 @@ class NavBar extends Component {
                   Dashboard
                 </NavLink>
                 <NavLink className="nav-link" to={`/todos/${this.props.user_id}`}>
-                  Todos
+                  Objectives
                 </NavLink>
                 <NavLink className="nav-link" to={`/timetracker/${this.props.user_id}`}>
                   TimeTracker
