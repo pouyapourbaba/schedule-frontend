@@ -12,11 +12,11 @@ class TimeTracker extends Component {
     const currentMonth = parseInt(moment().format("M"));
     this.setState({ currentWeek, year: currentYear, currentMonth });
 
-    const startOfWeek = moment()
+    const startOfWeek = moment(`${currentYear}-01-01`)
       .add(currentWeek, "weeks")
       .startOf("isoWeek");
 
-    const endOfWeek = moment()
+    const endOfWeek = moment(`${currentYear}-01-01`)
       .add(currentWeek, "weeks")
       .startOf("week");
 

@@ -61,14 +61,15 @@
 .content-editable {
   padding: 0.2rem;
   border-radius: 15%;
-  background: #ebeef7;
+  background: #e4f4fd;
+  border: solid 0.05rem #ccc;
 }
 .content-editable:hover {
-  background: #c7ffcc;
+  background: #ccecff;
 }
 .content-editable:focus {
-  background: #b5ffb5;
-  border: solid 0.05rem #3d3d4b;
+  background: hsl(214, 100%, 68%);
+  border: solid 0.05rem #aaa;
   /* color: #f7f7f7; */
   outline: 0;
 }

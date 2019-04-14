@@ -17,9 +17,8 @@ class Dashboard extends Component {
     return (
       <React.Fragment>
         <h1>Dashboard</h1>
-        <p>The chart below shows the working hours in each month.</p>
-            <BarChart user_id={this.props.match.params.user_id} />
-
+        <p>The chart below shows the working hours in each week of the year 2019.</p>
+        <BarChart user_id={this.props.match.params.user_id} />
       </React.Fragment>
     );
   }
