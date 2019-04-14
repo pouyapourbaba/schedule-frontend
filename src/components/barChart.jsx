@@ -98,7 +98,8 @@ class BarChart extends Component {
       })
       .attr("width", x.bandwidth())
       .attr("height", function(d) {
-        return height - y(Number(d));
+        if (d === 0) return 0;
+        else return height - y(Number(d))
       });
 
       g.selectAll(".text")
