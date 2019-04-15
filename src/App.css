@@ -59,19 +59,20 @@
 
 /* Content Editable */
 .content-editable {
-  padding: 0.2rem;
-  border-radius: 15%;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
   background: #e4f4fd;
   border: solid 0.05rem #ccc;
+  cursor: pointer;
 }
 .content-editable:hover {
-  background: #ccecff;
+  /* background: #ccecff; */
 }
 .content-editable:focus {
-  background: hsl(214, 100%, 68%);
-  border: solid 0.05rem #aaa;
-  /* color: #f7f7f7; */
+  background: #b5e4ff;
+  border: solid 0.1rem #aaa;
   outline: 0;
+  cursor: initial;
 }
 
 /* Scheduler table */

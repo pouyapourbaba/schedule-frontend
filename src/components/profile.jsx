@@ -116,7 +116,6 @@ class Profile extends Form {
               <td>First Name</td>
               <td>
                 <ContentEditable
-                  style={{ borderRadius: "0" }}
                   html={first_name}
                   data-column="first_name"
                   className="content-editable"
@@ -145,7 +144,6 @@ class Profile extends Form {
               <td>Last Name</td>
               <td>
                 <ContentEditable
-                  style={{ borderRadius: "0" }}
                   html={last_name}
                   data-column="last_name"
                   className="content-editable"
@@ -174,7 +172,6 @@ class Profile extends Form {
               <td>Email</td>
               <td>
                 <ContentEditable
-                  style={{ borderRadius: "0" }}
                   html={email}
                   data-column="email"
                   className="content-editable"
