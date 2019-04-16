@@ -4,7 +4,7 @@ import taskService from "../services/taskService";
 
 class BarChart extends Component {
   state = {
-    width: 700,
+    width: 100,
     height: 300,
     weeklyDurations: new Array(52).fill(0),
     monthlyDurations: new Array(12).fill(0)
@@ -40,8 +40,6 @@ class BarChart extends Component {
     // var margin = { top: 20, right: 20, bottom: 70, left: 40 },
     //   width = 1000 - margin.left - margin.right,
     //   height = 300 - margin.top - margin.bottom;
-
-    d3.select("BarChart").style("background-color", "red");
 
     var svg = d3.select("svg"),
       margin = {
@@ -99,7 +97,7 @@ class BarChart extends Component {
       .data(data)
       .enter()
       .append("rect")
-      .style("fill", "steelblue")
+      .style("fill", "#007bff")
       .attr("class", "bar")
       .attr("x", function(d, i) {
         return x(i);
@@ -132,7 +130,7 @@ class BarChart extends Component {
 
   render() {
     return (
-      <svg width="960" height="500" style={{ border: "1px solid #ccc" }} />
+      <svg width="1200" height="450" style={{ border: "1px solid #ccc" }} />
     );
   }
 }

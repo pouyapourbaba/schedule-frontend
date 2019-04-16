@@ -56,6 +56,9 @@ class TimeTracker extends Component {
   render() {
     return (
       <React.Fragment>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1>Time Tracker</h1>
+        </div>
         <h3 style={{ margin: "20px 0" }}>
           Select a week to see the list of tasks for that week
         </h3>

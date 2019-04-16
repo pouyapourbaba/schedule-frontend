@@ -51,10 +51,26 @@ class Todos extends Component {
   render() {
     return (
       <React.Fragment>
-        <h3 style={{margin:"20px 0"}}>Select a week to see the list of Todos for that week</h3>
-        <WeekTable onWeekChange={this.handleWeekChange} weekToBeDisplayed={this.state.weekToBeDisplayed} />
-        <div className="row" style={{textAlign: "center", margin: "50px 0 30px 0", padding:"20px 0 10px 0", backgroundColor:"#eee"}}>
-          <div className="col-5" style={{textAlign: "center"}}>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1>Objectives</h1>
+        </div>
+        <h4 style={{ margin: "20px 0" }}>
+            Select a week to see the list of Todos for that week
+          </h4>
+        <WeekTable
+          onWeekChange={this.handleWeekChange}
+          weekToBeDisplayed={this.state.weekToBeDisplayed}
+        />
+        <div
+          className="row"
+          style={{
+            textAlign: "center",
+            margin: "50px 0 30px 0",
+            padding: "20px 0 10px 0",
+            backgroundColor: "#eee"
+          }}
+        >
+          <div className="col-5" style={{ textAlign: "center" }}>
             <h2>
               Week{" "}
               <span className="badge badge-dark">
@@ -62,7 +78,7 @@ class Todos extends Component {
               </span>{" "}
             </h2>
           </div>
-          <div className="col-7" style={{textAlign: "center"}}>
+          <div className="col-7" style={{ textAlign: "center" }}>
             <h4>
               From{" "}
               <span className="badge badge-dark">

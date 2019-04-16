@@ -11,7 +11,7 @@ import RegisterForm from "./components/registerForm";
 import Logout from "./components/logout";
 import auth from "./services/authService";
 import Dashboard from "./components/dashboard";
-// import SideBar from "./components/sideBar";
+import SideBar from "./components/sideBar";
 import { getUser } from "./services/userService";
 import "./App.css";
 
@@ -46,22 +46,22 @@ class App extends Component {
       <React.Fragment>
         <NavBar user_id={this.state._id} />
         {this.state.user && (
-          <div className="row">
-            {/* <div className="col-sm-3 col-lg-2">
-              <SideBar user={this.state.user} />
-            </div> */}
-            <main className="col-8 container">
-              <Switch>
-                <Route path="/profile/:user_id" component={Profile} />
-                <Route path="/todos/:user_id" component={Todos} />
-                <Route path="/timetracker/:user_id" component={TimeTracker} />
-                <Route path="/logout" component={Logout} />
-                <Route path="/dashboard/:user_id" component={Dashboard} />
-                <Route path="/not-found" component={NotFound} />
-                <Route path="/" exact component={Home} />
-                <Redirect to="/not-found" />
-              </Switch>
-            </main>
+          <div className="container-fluid">
+            <div className="row">
+              <SideBar user_id={this.state._id} />
+              <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <Switch>
+                  <Route path="/profile/:user_id" component={Profile} />
+                  <Route path="/todos/:user_id" component={Todos} />
+                  <Route path="/timetracker/:user_id" component={TimeTracker} />
+                  <Route path="/logout" component={Logout} />
+                  <Route path="/dashboard/:user_id" component={Dashboard} />
+                  <Route path="/not-found" component={NotFound} />
+                  <Route path="/" exact component={Home} />
+                  <Redirect to="/not-found" />
+                </Switch>
+              </main>
+            </div>
           </div>
         )}
         {!this.state.user && (
