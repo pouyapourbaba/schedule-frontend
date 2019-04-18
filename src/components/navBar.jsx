@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-import { getUser } from "../services/userService";
+import {getUser} from "../services/userService"
 
 class NavBar extends Component {
   state = { user: { first_name: "", last_name: "", email: "" } };
 
   async componentDidMount() {
-    if (this.props.user_id === undefined) return;
+    // if (this.props.match.params.user_id === undefined) return;
+    let user_id;
+    if (this.props.user_id === undefined) return null;
+    else user_id = this.props.user_id;
 
     try {
-      let user = await getUser(this.props.user_id);
+      let user = await getUser(user_id);
       user = user.data;
       this.setState({ user });
     } catch (ex) {
@@ -19,57 +22,33 @@ class NavBar extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <NavLink className="navbar-brand" to="/">
+      <nav className="navbar navbar-expand navbar-dark bg-dark fixed-top flex-md-nowrap p-0 shadow justify-content-between">
+        <NavLink className="navbar-brand col-sm-3 col-md-2 mr-0" to="/">
           Schedu
         </NavLink>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <div className="navbar-nav">
-            {!this.props.user_id && (
-              <React.Fragment>
+        {!this.props.user_id && (
+            <ul className="navbar-nav mr-3">
+              <li className="nav-item">
                 <NavLink className="nav-link" to="/login">
                   Login
                 </NavLink>
-                <NavLink className="nav-link" to="/register">
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-item nav-link" to="/register">
                   Register
                 </NavLink>
-              </React.Fragment>
-            )}
-            {this.props.user_id && (
-              <React.Fragment>
-                <NavLink className="nav-link" to={`/dashboard`}>
-                  Dashboard
-                </NavLink>
-                <NavLink className="nav-link" to={`/todos/${this.props.user_id}`}>
-                  Todos
-                </NavLink>
-                <NavLink className="nav-link" to={`/timetracker/${this.props.user_id}`}>
-                  TimeTracker
-                </NavLink>
-                <NavLink
-                  className="nav-link"
-                  to={`/profile/${this.props.user_id}`}
-                >
-                  {this.state.user.first_name}
-                </NavLink>
-                <NavLink className="nav-link" to="/logout">
-                  Logout
-                </NavLink>
-              </React.Fragment>
-            )}
-          </div>
-        </div>
+              </li>
+            </ul>
+        )}
+        {this.props.user_id && (
+          <ul className="navbar-nav mr-3">
+            <li className="nav-item">
+              <NavLink className="nav-link text-nowrap" to="/logout">
+                Logout
+              </NavLink>
+            </li>
+          </ul>
+        )}
       </nav>
     );
   }

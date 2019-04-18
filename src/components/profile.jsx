@@ -8,7 +8,7 @@ class Profile extends Form {
   state = {
     user: { first_name: "", last_name: "", email: "" },
     errors: {}
-  }
+  };
 
   schema = {
     first_name: Joi.string()
@@ -37,7 +37,7 @@ class Profile extends Form {
 
   async componentDidMount() {
     if (this.props.match.params.user_id === undefined) return;
-    
+
     try {
       let user = await userService.getUser(this.props.match.params.user_id);
       user = user.data;
@@ -76,6 +76,7 @@ class Profile extends Form {
       await userService.updateUser(user._id, {
         [property]: value
       });
+      window.location.reload();
     } catch (ex) {
       alert("Something went wrong while updating the profile.");
       this.setState({ user: originalUser });
@@ -103,20 +104,16 @@ class Profile extends Form {
 
   render() {
     const { first_name, last_name, added_date, email } = this.state.user;
-  
+
     let db_date = new Date(added_date);
     db_date = db_date.toDateString();
 
     return (
       <React.Fragment>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1>Profile</h1>
+        </div>
         <table className="table">
-          <thead>
-            <tr>
-              <th />
-              <th />
-              <th />
-            </tr>
-          </thead>
           <tbody>
             <tr>
               <td>First Name</td>

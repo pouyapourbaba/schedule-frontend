@@ -14,7 +14,9 @@ class TimeTrackerTable extends Form {
     errors: [],
     pageSize: 5,
     currentPage: 1,
-    data: { title: "" }
+    data: { title: "" },
+    weekNumber: parseInt(moment().format("W")),
+    currentMonth: parseInt(moment().format("M"))
   };
 
   schema = {
@@ -29,7 +31,7 @@ class TimeTrackerTable extends Form {
   };
 
   async componentWillReceiveProps(newProps) {
-    this.setState({ weekNumber: newProps.weekNumber });
+    this.setState({ weekNumber: newProps.weekNumber, currentMonth: newProps.currentMonth });
     try {
       const { data: tasks } = await taskService.getTasks(
         newProps.user_id,
@@ -47,8 +49,9 @@ class TimeTrackerTable extends Form {
   }
 
   async componentWillMount() {
-    const weekNumber = this.props.weekNumber;
-    this.setState({ weekNumber });
+    // const weekNumber = this.props.weekNumber;
+    // const currentMonth = this.props.monthNumber;
+    // this.setState({ weekNumber,currentMonth });
   }
 
   async componentDidMount() {
@@ -87,9 +90,10 @@ class TimeTrackerTable extends Form {
       const obj = { title: this.state.data.title };
       const user_id = this.state.user._id;
       const weekNumber = this.state.weekNumber;
+      const monthNumber = this.state.currentMonth;
 
       obj.year = moment().format("YYYY");
-      obj.month = moment().format("M");
+      obj.month = monthNumber;
       obj.weekInYear = weekNumber;
       obj.days = [
         { day: "monday", duration: 0 },
@@ -223,16 +227,15 @@ class TimeTrackerTable extends Form {
     }
   };
 
-  handleBlur = () => {
-    console.log("blured from blur");
+  handleBlur = (task) => {
+    this.handleUpdate(task)
   };
 
   doEditDUration = () => {
-    console.log("duration edited");
   };
 
   // disable new lines in the ContentEditable
-  disableNewlines = event => {
+  disableNewlines = (event) => {
     const keyCode = event.keyCode || event.which;
 
     if (keyCode === 13) {
@@ -264,7 +267,6 @@ class TimeTrackerTable extends Form {
             <thead>
               <tr>
                 <th>Title</th>
-                <th></th>
                 <th className="text-center">Mon</th>
                 <th className="text-center">Tue</th>
                 <th className="text-center">Wed</th>
@@ -293,27 +295,11 @@ class TimeTrackerTable extends Form {
                         className="content-editable"
                         onChange={this.handleContentEditable}
                         onKeyPress={this.disableNewlines}
+                        onBlur={() => this.handleBlur(task)}
                       />
                   </td>
-                  <td><button
-                      onClick={() => this.handleUpdate(task)}
-                      className="btn btn-sm btn-secondary"
-                      disabled={
-                        this.state.errors.title &&
-                        this.state.errors.id === task._id
-                      }
-                    >
-                      Edit
-                    </button></td>
                   {task.days.map(day => (
-                    <td key={day._id}>
-                      <div
-                        style={{
-                          width: "55%",
-                          marginRight: "2%",
-                          float: "left"
-                        }}
-                      >
+                    <td key={day._id} style={{textAlign: "center"}}>
                         <ContentEditable
                           html={String(day.duration)}
                           data-task={task._id}
@@ -321,21 +307,8 @@ class TimeTrackerTable extends Form {
                           className="content-editable"
                           onChange={this.handleContentEditable}
                           onKeyPress={this.disableNewlines}
-                          onBlur={this.handleBlur}
+                          onBlur={() => this.handleBlur(task)}
                         />
-                      </div>
-                      <div style={{ width: "42%", float: "left" }}>
-                        <button
-                          onClick={() => this.handleUpdate(task)}
-                          className="btn btn-sm btn-secondary"
-                          disabled={
-                            this.state.errors.title &&
-                            this.state.errors.id === task._id
-                          }
-                        >
-                          +
-                        </button>
-                      </div>
                     </td>
                   ))}
                   <td style={{textAlign:"center"}}>

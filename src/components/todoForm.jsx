@@ -163,12 +163,12 @@ class TodosForm extends Form {
   renderNumberOfTodoElemensts = () => {
     const { todos } = this.state;
     if (todos.length === 0)
-      return <h5>There are no elements in the todo list.</h5>;
+      return <h5>There are no elements in the objective list.</h5>;
     if (todos.length === 1) {
       return (
         <h5>
           There is <span className={this.getSpannClasses()}>1</span> element in
-          the todo list.
+          the objective list.
         </h5>
       );
     } else {
@@ -176,7 +176,7 @@ class TodosForm extends Form {
         <h5>
           There are{" "}
           <span className={this.getSpannClasses()}>{todos.length}</span>{" "}
-          elements in the todo list.
+          elements in the objective list.
         </h5>
       );
     }
@@ -230,10 +230,11 @@ class TodosForm extends Form {
 
     // call the server and
     try {
-      await todoService.updateStatus(todo._id, {isDone: todo.isDone});
+      await todoService.updateStatus(todo._id, todo.isDone);
+      //  console.log("newTodo ", newTodo);
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        alert("This todo has already been deleted.");
+        alert("This goal has already been deleted.");
       }
       this.setState({ todos: originalTodos });
     }
@@ -254,10 +255,9 @@ class TodosForm extends Form {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Title</th>
+                  <th style={{textAlign: "center"}}>Title</th>
                   <th />
                   <th />
-
                   <th>Status</th>
                 </tr>
               </thead>
@@ -280,7 +280,7 @@ class TodosForm extends Form {
                           </div>
                         )}
                     </td>
-                    <td>
+                    <td style={{textAlign: "center"}}>
                       <button
                         onClick={() => this.handleUpdate(todo)}
                         className="btn btn-sm btn-secondary"
@@ -292,7 +292,7 @@ class TodosForm extends Form {
                         Edit
                       </button>
                     </td>
-                    <td>
+                    <td style={{textAlign: "center"}}>
                       <button
                         onClick={() => this.handleDelete(todo)}
                         className="btn btn-sm btn-danger"
@@ -300,7 +300,7 @@ class TodosForm extends Form {
                         Delete
                       </button>
                     </td>
-                    <td style={{ paddingLeft: "2.5%" }}>
+                    <td style={{ paddingLeft: "2.5%"}}>
                       <Checkbox
                         shape="round"
                         color="success"
@@ -323,7 +323,7 @@ class TodosForm extends Form {
           </React.Fragment>
         )}
         <form onSubmit={this.handleSubmit}>
-          {this.renderInput("title", "New Todo", false)}
+          {this.renderInput("title", "Insert New Objective", false)}
           {this.renderButton("Submit")}
         </form>
       </React.Fragment>
