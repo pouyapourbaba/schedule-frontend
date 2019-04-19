@@ -5,7 +5,7 @@ export function drawMonthlyBarChart(data) {
   const canvas = d3.select(".canvas-monthly").node();
   const canvasBoundaries = canvas.getBoundingClientRect();
   const w = canvasBoundaries.width;
-  const h = 500;
+  const h = 350;
   const months = [
     { name: "Jan", _id: 1 },
     { name: "Feb", _id: 2 },
@@ -87,14 +87,15 @@ export function drawMonthlyBarChart(data) {
   yAxisGroup.call(yAxis);
 }
 
-
-
+/*
+ * Weekly bar chart
+ */
 export function drawWeeklyBarChart(data) {
  console.log("data ", data);
   const canvas = d3.select(".canvas-weekly").node();
   const canvasBoundaries = canvas.getBoundingClientRect();
   const w = canvasBoundaries.width;
-  const h = 500;
+  const h = 350;
   const weeks = _.range(1,54)
   // add the name of the months to the data
 //   data.map(d => (d.month = months[d._id - 1].name));
