@@ -49,7 +49,7 @@ class App extends Component {
           <div className="container-fluid">
             <div className="row">
               <SideBar user_id={this.state._id} />
-              <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+              <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <Switch>
                   <Route path="/profile/:user_id" component={Profile} />
                   <Route path="/todos/:user_id" component={Todos} />
