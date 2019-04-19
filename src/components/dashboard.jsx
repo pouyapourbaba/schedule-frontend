@@ -20,7 +20,7 @@ class Dashboard extends Component {
           <h1>Dashboard</h1>
         </div>
         <p>
-          The chart below shows the working hours in each week of the year 2019.
+          The charts below show the working hours based on month and week.
         </p>
         <BarChart
           user_id={this.props.match.params.user_id}
