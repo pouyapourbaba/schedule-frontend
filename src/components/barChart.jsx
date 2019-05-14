@@ -24,9 +24,9 @@ class BarChart extends Component {
   render() {
     return (
       <React.Fragment>
-        <h1><span className="badge badge-info">MONTHLY</span></h1>
+        <h1><span className="badge badge-dark">MONTHLY</span></h1>
         <div className="canvas-monthly" style={{ border: "1px solid #ccc" }} />
-        <h1><span className="badge badge-info">WEEKLY</span></h1>
+        <h1><span className="badge badge-dark">WEEKLY</span></h1>
         <div className="canvas-weekly" style={{ border: "1px solid #ccc" }} />
       </React.Fragment>
     );
