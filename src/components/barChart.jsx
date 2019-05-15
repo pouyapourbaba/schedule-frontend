@@ -1,136 +1,34 @@
 import React, { Component } from "react";
-import * as d3 from "d3";
 import taskService from "../services/taskService";
+import { drawMonthlyBarChart, drawWeeklyBarChart } from "../utils/barChart";
 
 class BarChart extends Component {
-  state = {
-    width: 100,
-    height: 300,
-    weeklyDurations: new Array(52).fill(0),
-    monthlyDurations: new Array(12).fill(0)
-  };
+  state = {};
 
   async componentDidMount() {
     if (this.props.user_id) {
       // Get the monthly data
-      const monthlyDurations = this.state.monthlyDurations;
-
       const monthlyData = await taskService.getMonthlyTotalDurations(
         this.props.user_id
       );
-
-      for (let month of monthlyData.data)
-        monthlyDurations[month._id - 1] = month.total;
+      drawMonthlyBarChart(monthlyData.data);
 
       // Get the weekly data
-      const weeklyDurations = this.state.weeklyDurations;
-
       const weeklyData = await taskService.getWeeklyTotalDurations(
         this.props.user_id
       );
-
-      for (let month of weeklyData.data)
-        weeklyDurations[month._id - 1] = month.total;
-
-      this.drawChart(weeklyDurations);
+      drawWeeklyBarChart(weeklyData.data);
     }
-  }
-
-  drawChart(data) {
-    // var margin = { top: 20, right: 20, bottom: 70, left: 40 },
-    //   width = 1000 - margin.left - margin.right,
-    //   height = 300 - margin.top - margin.bottom;
-
-    var svg = d3.select("svg"),
-      margin = {
-        top: 20,
-        right: 20,
-        bottom: 30,
-        left: 50
-      },
-      width = +svg.attr("width") - margin.left - margin.right,
-      height = +svg.attr("height") - margin.top - margin.bottom,
-      g = svg
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    var x = d3
-      .scaleBand()
-      .rangeRound([0, width])
-      .padding(0.1);
-
-    var y = d3.scaleLinear().rangeRound([height, 0]);
-
-    x.domain(
-      data.map(function(d, i) {
-        return i;
-      })
-    );
-    y.domain([
-      0,
-      d3.max(data, function(d) {
-        return Number(d);
-      })
-    ]);
-
-    g.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).tickValues(x.domain().filter(function(d,i){ return !(i%2)})))
-      .append("text")
-      .attr("fill", "#000")
-      .attr("text-anchor", "end")
-      .attr("x", 460)
-      .attr("y", 25)
-      .text("weeks");
-
-    g.append("g")
-      .call(d3.axisLeft(y))
-      .append("text")
-      .attr("fill", "#000")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", "0.71em")
-      .attr("text-anchor", "end")
-      .text("hours");
-
-    g.selectAll(".bar")
-      .data(data)
-      .enter()
-      .append("rect")
-      .style("fill", "#007bff")
-      .attr("class", "bar")
-      .attr("x", function(d, i) {
-        return x(i);
-      })
-      .attr("y", function(d) {
-        return y(Number(d));
-      })
-      .attr("width", x.bandwidth())
-      .attr("height", function(d) {
-        if (d === 0) return 0;
-        else return height - y(Number(d));
-      });
-
-    g.selectAll(".text")
-      .data(data)
-      .enter()
-      .append("text")
-      .style("font", "14px times")
-      .text(d => d)
-      .attr("y", function(d) {
-        return y(Number(d)) + 20;
-      })
-      .attr("x", function(d, i) {
-        if (d<10)
-          return x(i)+4;
-        else return x(i);
-      })
-      .attr("fill", "#fff");
   }
 
   render() {
     return (
-      <svg width="1200" height="450" style={{ border: "1px solid #ccc" }} />
+      <React.Fragment>
+        <h1><span className="badge badge-info">MONTHLY</span></h1>
+        <div className="canvas-monthly" style={{ border: "1px solid #ccc" }} />
+        <h1><span className="badge badge-info">WEEKLY</span></h1>
+        <div className="canvas-weekly" style={{ border: "1px solid #ccc" }} />
+      </React.Fragment>
     );
   }
 }
