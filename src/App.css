@@ -1,3 +1,8 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   text-align: center;
 }
@@ -142,5 +147,5 @@
 * Bar Chart
 */
 rect:hover {
-  fill: #007bff
+  fill: #007bff;
 }

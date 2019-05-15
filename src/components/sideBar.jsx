@@ -1,25 +1,11 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-import { getUser } from "../services/userService";
 
 class SideBar extends Component {
-  state = { user: { first_name: "", last_name: "", email: "" } };
-
-  async componentDidMount() {
-    // if (this.props.match.params.user_id === undefined) return;
-    let user_id;
-    if (this.props.user_id === undefined) return null;
-    else user_id = this.props.user_id;
-
-    try {
-      let user = await getUser(user_id);
-      user = user.data;
-      this.setState({ user });
-    } catch (ex) {
-      console.log(ex.message);
-    }
-  }
   render() {
+    // if no user, do not show the sideBar
+    if (!this.props.user_id) return null;
+
     return (
       <nav className="col-md-2 d-none d-md-block bg-light sidebar">
         <div className="sidebar-sticky">
