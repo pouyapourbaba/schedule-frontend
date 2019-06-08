@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import { getUser } from "../services/userService";
+import styles from "../styles/sidebar.module.css";
 
 class SideBar extends Component {
   state = { user: { first_name: "", last_name: "", email: "" } };
@@ -21,49 +22,96 @@ class SideBar extends Component {
   }
   render() {
     return (
-      <nav className="col-md-2 d-none d-md-block bg-light sidebar">
-        <div className="sidebar-sticky">
-          <ul className="nav flex-column">
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/" exact={true}>
-                <i className="fa fa-home" aria-hidden="true" /> Home
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                className="nav-link"
-                to={`/dashboard/${this.props.user_id}`}
-              >
-                <i className="fa fa-tachometer" aria-hidden="true" /> Dashboard
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                className="nav-link"
-                to={`/timetracker/${this.props.user_id}`}
-              >
-                <i className="fa fa-hourglass-start" aria-hidden="true" />{" "}
-                TimeTracker
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to={`/todos/${this.props.user_id}`}>
-                <i className="fa fa-tasks" aria-hidden="true" /> Objectives
-              </NavLink>
-            </li>
-            <li className="nav-item ">
-              <NavLink
-                className="nav-link nav-item-profile"
-                to={`/profile/${this.props.user_id}`}
-              >
-                <i className="fa fa-user-circle-o" aria-hidden="true" /> Profile
-              </NavLink>
-            </li>
-          </ul>
-        </div>
+      <nav className={styles["sidebar"]}>
+        <NavLink
+          className={styles["sidebar-item"]}
+          activeClassName={styles["active-item"]}
+          to="/"
+          exact={true}
+        >
+          <i className="fa fa-home" aria-hidden="true" />{" "}
+          <span className={styles["nav-title"]}>Home</span>
+        </NavLink>
+        <NavLink
+          className={styles["sidebar-item"]}
+          activeClassName={styles["active-item"]}
+          to={`/dashboard/${this.props.user_id}`}
+        >
+          <i className="fa fa-tachometer" aria-hidden="true" />{" "}
+          <span className={styles["nav-title"]}>Dashboard</span>
+        </NavLink>
+        <NavLink
+          className={styles["sidebar-item"]}
+          activeClassName={styles["active-item"]}
+          to={`/timetracker/${this.props.user_id}`}
+        >
+          <i className="fa fa-hourglass-start" aria-hidden="true" />{" "}
+          <span className={styles["nav-title"]}>TimeTracker</span>
+        </NavLink>
+        <NavLink
+          className={styles["sidebar-item"]}
+          activeClassName={styles["active-item"]}
+          to={`/todos/${this.props.user_id}`}
+        >
+          <i className="fa fa-tasks" aria-hidden="true" />{" "}
+          <span className={styles["nav-title"]}>Objectives</span>
+        </NavLink>
+        <NavLink
+          className={styles["sidebar-item"]}
+          activeClassName={styles["active-item"]}
+          to={`/profile/${this.props.user_id}`}
+        >
+          <i className="fa fa-user-circle-o" aria-hidden="true" />{" "}
+          <span className={styles["nav-title"]}>Profile</span>
+        </NavLink>
       </nav>
     );
   }
+
+  // render() {
+  //   return (
+  //     <nav className={styles["sidebar"]}>
+  //       <ul>
+  //         <li>
+  //           <NavLink className={styles["sidebar-item"]} activeClassName={styles["active-item"]} to="/" exact={true}>
+  //             <i className="fa fa-home" aria-hidden="true" /> Home
+  //           </NavLink>
+  //         </li>
+  //         <li>
+  //           <NavLink
+  //             className={styles["sidebar-item"]}
+  //             to={`/dashboard/${this.props.user_id}`}
+  //           >
+  //             <i className="fa fa-tachometer" aria-hidden="true" /> Dashboard
+  //           </NavLink>
+  //         </li>
+  //         <li>
+  //           <NavLink
+  //             className={styles["sidebar-item"]}
+  //             to={`/timetracker/${this.props.user_id}`}
+  //           >
+  //             <i className="fa fa-hourglass-start" aria-hidden="true" />{" "}
+  //             TimeTracker
+  //           </NavLink>
+  //         </li>
+  //         <li>
+  //           <NavLink className={styles["sidebar-item"]}  to={`/todos/${this.props.user_id}`}>
+  //             <i className="fa fa-tasks" aria-hidden="true" /> Objectives
+  //           </NavLink>
+  //         </li>
+  //         <li>
+  //           <NavLink
+  //             className={styles["sidebar-item"]}
+  //             to={`/profile/${this.props.user_id}`}
+  //           >
+  //             <i className="fa fa-user-circle-o" aria-hidden="true" /> Profile
+  //           </NavLink>
+  //         </li>
+  //       </ul>
+  //       {/* </div> */}
+  //     </nav>
+  //   );
+  // }
 }
 
 export default SideBar;

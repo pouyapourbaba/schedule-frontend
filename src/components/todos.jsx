@@ -51,7 +51,7 @@ class Todos extends Component {
   render() {
     return (
       <React.Fragment>
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div class="border-bottom">
           <h1>Objectives</h1>
         </div>
         <h4 style={{ margin: "20px 0" }}>

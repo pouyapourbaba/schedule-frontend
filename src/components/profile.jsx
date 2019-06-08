@@ -3,6 +3,7 @@ import ContentEditable from "react-contenteditable";
 import React from "react";
 import userService from "../services/userService";
 import Form from "./common/form";
+import styles from "../styles/profile.module.css"
 
 class Profile extends Form {
   state = {
@@ -110,7 +111,7 @@ class Profile extends Form {
 
     return (
       <React.Fragment>
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div >
           <h1>Profile</h1>
         </div>
         <table className="table">
@@ -121,7 +122,7 @@ class Profile extends Form {
                 <ContentEditable
                   html={first_name}
                   data-column="first_name"
-                  className="content-editable"
+                  className={styles["content-editable"]}
                   onChange={this.handleContentEditable}
                   onKeyPress={this.disableNewlines}
                 />
@@ -149,7 +150,7 @@ class Profile extends Form {
                 <ContentEditable
                   html={last_name}
                   data-column="last_name"
-                  className="content-editable"
+                  className={styles["content-editable"]}
                   onChange={this.handleContentEditable}
                   onKeyPress={this.disableNewlines}
                 />
@@ -177,7 +178,7 @@ class Profile extends Form {
                 <ContentEditable
                   html={email}
                   data-column="email"
-                  className="content-editable"
+                  className={styles["content-editable"]}
                   onChange={this.handleContentEditable}
                   onKeyPress={this.disableNewlines}
                 />
@@ -189,6 +190,7 @@ class Profile extends Form {
               </td>
               <td>
                 <button
+                type="button"
                   onClick={() => this.handleUpdate("email", email)}
                   className="btn btn-sm btn-secondary"
                   //   disabled={
