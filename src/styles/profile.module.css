@@ -1,0 +1,16 @@
+.content-editable {
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  background: #eee;
+  border: solid 0.05rem #eee;
+  cursor: pointer;
+  /* text-align: center; */
+}
+
+.content-editable:focus {
+  background: #fff;
+  border: solid 0.1rem #ddd;
+  text-align: left;
+  cursor: text;
+  outline: none;
+}

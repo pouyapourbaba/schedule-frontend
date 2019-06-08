@@ -13,7 +13,8 @@ import auth from "./services/authService";
 import Dashboard from "./components/dashboard";
 import SideBar from "./components/sideBar";
 import { getUser } from "./services/userService";
-import "./App.css";
+// import "./App.css";
+import styles from "./styles/app.module.css";
 
 class App extends Component {
   // set the state to get the user information
@@ -44,41 +45,44 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <NavBar user_id={this.state._id} />
+        <header>
+          <NavBar user_id={this.state._id} />
+        </header>
         {this.state.user && (
-          <div className="container-fluid">
-            <div className="row">
-              <SideBar user_id={this.state._id} />
-              <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
-                <Switch>
-                  <Route path="/profile/:user_id" component={Profile} />
-                  <Route path="/todos/:user_id" component={Todos} />
-                  <Route path="/timetracker/:user_id" component={TimeTracker} />
-                  <Route path="/logout" component={Logout} />
-                  <Route path="/dashboard/:user_id" component={Dashboard} />
-                  <Route path="/not-found" component={NotFound} />
-                  <Route path="/" exact component={Home} />
-                  <Redirect to="/not-found" />
-                </Switch>
-              </main>
-            </div>
+          <div className={styles["content"]}>
+            <SideBar className={styles["sidebar"]} user_id={this.state._id} />
+            <main>
+              <Switch>
+                <Route path="/profile/:user_id" component={Profile} />
+                <Route path="/todos/:user_id" component={Todos} />
+                <Route path="/timetracker/:user_id" component={TimeTracker} />
+                <Route path="/logout" component={Logout} />
+                <Route path="/dashboard/:user_id" component={Dashboard} />
+                <Route path="/not-found" component={NotFound} />
+                <Route path="/" exact component={Home} />
+                <Redirect to="/not-found" />
+              </Switch>
+            </main>
           </div>
         )}
-        {!this.state.user && (
-          <main className="container">
-            <Switch>
-              <Route path="/profile" component={Profile} />
-              <Route path="/todos" component={Todos} />
-              <Route path="/timetracker" component={TimeTracker} />
-              <Route path="/dashboard" component={Dashboard} />
-              <Route path="/register" component={RegisterForm} />
-              <Route path="/login" component={LoginForm} />
-              <Route path="/not-found" component={NotFound} />
-              <Route path="/" exact component={Home} />
-              <Redirect to="/not-found" />
-            </Switch>
-          </main>
-        )}
+        <footer />
+
+        {/* </React.Fragment> */}
+        {/* {!this.state.user && (
+           <main className="container">
+             <Switch>
+               <Route path="/profile" component={Profile} />
+               <Route path="/todos" component={Todos} />
+               <Route path="/timetracker" component={TimeTracker} />
+               <Route path="/dashboard" component={Dashboard} />
+               <Route path="/register" component={RegisterForm} />
+               <Route path="/login" component={LoginForm} />
+               <Route path="/not-found" component={NotFound} />
+               <Route path="/" exact component={Home} />
+               <Redirect to="/not-found" />
+             </Switch>
+           </main> */}
+        {/* )} */}
       </React.Fragment>
     );
   }
