@@ -1,9 +1,10 @@
 import React from "react";
-import { Redirect } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 import Joi from "joi-browser";
 import Form from "./common/form";
 import * as userService from "../services/userService";
 import auth from "../services/authService";
+import styles from "../styles/RegisterForm.module.css";
 
 class RegisterForm extends Form {
   state = {
@@ -53,7 +54,7 @@ class RegisterForm extends Form {
     if (this.props.user_id) return <Redirect to="/" />;
 
     return (
-      <div>
+      <div className={styles["register-form"]}>
         <h1>Registration Page</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("first_name", "First name")}

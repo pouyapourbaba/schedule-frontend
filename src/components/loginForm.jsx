@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import Joi from "joi-browser";
 import Form from "./common/form";
 import auth from "../services/authService";
+import styles from "../styles/LoginForm.module.css"
 
 class LoginForm extends Form {
   state = {
@@ -36,7 +37,7 @@ class LoginForm extends Form {
   render() {
     if (this.props.user_id) return <Redirect to="/" />
     return (
-      <div>
+      <div className={styles["login-form"]}>
         <h1>Login Page</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("email", "email")}
