@@ -1,10 +1,11 @@
 import React from "react";
+import { Redirect } from 'react-router-dom';
 import Joi from "joi-browser";
 import Form from "./common/form";
 import * as userService from "../services/userService";
-import auth from "../services/authService"
+import auth from "../services/authService";
 
-class LoginForm extends Form {
+class RegisterForm extends Form {
   state = {
     data: { first_name: "", last_name: "", email: "", password: "" },
     errors: {}
@@ -49,6 +50,8 @@ class LoginForm extends Form {
   };
 
   render() {
+    if (this.props.user_id) return <Redirect to="/" />;
+
     return (
       <div>
         <h1>Registration Page</h1>
@@ -64,4 +67,4 @@ class LoginForm extends Form {
   }
 }
 
-export default LoginForm;
+export default RegisterForm;

@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from 'react-router-dom';
 import Joi from "joi-browser";
 import Form from "./common/form";
 import auth from "../services/authService";
@@ -33,6 +34,7 @@ class LoginForm extends Form {
   };
 
   render() {
+    if (this.props.user_id) return <Redirect to="/" />
     return (
       <div>
         <h1>Login Page</h1>
