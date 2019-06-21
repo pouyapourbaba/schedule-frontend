@@ -4,9 +4,17 @@ import PropTypes from "prop-types";
 
 // Own & Redux
 import { connect } from "react-redux";
-import { createProfile } from "../../redux/actions/profileActions";
+import {
+  createProfile,
+  getCurrentProfile
+} from "../../redux/actions/profileActions";
 
-const CreateProfile = ({ createProfile, history }) => {
+const EditProfile = ({
+  profile: { profile, loading },
+  createProfile,
+  getCurrentProfile,
+  history
+}) => {
   const [formData, setFormData] = React.useState({
     phone: "",
     address: "",
@@ -27,6 +35,28 @@ const CreateProfile = ({ createProfile, history }) => {
 
   const [displaySocialInouts, toggleSocialInputs] = React.useState(false);
 
+  React.useEffect(() => {
+    getCurrentProfile();
+
+    setFormData({
+      phone: loading || !profile.phone ? "" : profile.phone,
+      address: loading || !profile.address ? "" : profile.address,
+      birthday: loading || !profile.birthday ? "" : profile.birthday,
+      country: loading || !profile.country ? "" : profile.country,
+      city: loading || !profile.city ? "" : profile.city,
+      postal_code: loading || !profile.postal_code ? "" : profile.postal_code,
+      nationality: loading || !profile.nationality ? "" : profile.nationality,
+      occupation: loading || !profile.occupation ? "" : profile.occupation,
+      about: loading || !profile.about ? "" : profile.about,
+      twitter: loading || !profile.social ? "" : profile.social.twitter,
+      facebook: loading || !profile.social ? "" : profile.social.facebook,
+      linkedin: loading || !profile.social ? "" : profile.social.linkedin,
+      github: loading || !profile.social ? "" : profile.social.github,
+      youtube: loading || !profile.social ? "" : profile.social.youtube,
+      instagram: loading || !profile.social ? "" : profile.social.instagram
+    });
+  }, [loading]);
+
   const {
     phone,
     address,
@@ -46,13 +76,12 @@ const CreateProfile = ({ createProfile, history }) => {
   } = formData;
 
   const handleChange = e => {
-    console.log({ [e.target.name]: e.target.value });
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    createProfile(formData, history);
+    createProfile(formData, history, true);
   };
 
   return (
@@ -69,6 +98,7 @@ const CreateProfile = ({ createProfile, history }) => {
             type="text"
             placeholder="Phone number"
             name="phone"
+            value={phone}
           />
         </div>
         <div className="form-group">
@@ -77,6 +107,7 @@ const CreateProfile = ({ createProfile, history }) => {
             type="text"
             placeholder="Address"
             name="address"
+            value={address}
           />
         </div>
         <div className="form-group">
@@ -85,6 +116,7 @@ const CreateProfile = ({ createProfile, history }) => {
             type="text"
             placeholder="Birthday"
             name="birthday"
+            value={birthday}
           />
         </div>
         <div className="form-group">
@@ -93,6 +125,7 @@ const CreateProfile = ({ createProfile, history }) => {
             type="text"
             placeholder="Country of residence"
             name="country"
+            value={country}
           />
         </div>
         <div className="form-group">
@@ -100,6 +133,7 @@ const CreateProfile = ({ createProfile, history }) => {
             onChange={e => handleChange(e)}
             placeholder="City"
             name="city"
+            value={city}
           />
         </div>
         <div className="form-group">
@@ -107,6 +141,7 @@ const CreateProfile = ({ createProfile, history }) => {
             onChange={e => handleChange(e)}
             placeholder="Postal Code"
             name="postal_code"
+            value={postal_code}
           />
         </div>
         <div className="form-group">
@@ -114,6 +149,7 @@ const CreateProfile = ({ createProfile, history }) => {
             onChange={e => handleChange(e)}
             placeholder="Nationality"
             name="nationality"
+            value={nationality}
           />
         </div>
         <div className="form-group">
@@ -121,12 +157,15 @@ const CreateProfile = ({ createProfile, history }) => {
             onChange={e => handleChange(e)}
             placeholder="Occupation"
             name="occupation"
+            value={occupation}
           />
         </div>
         <div className="form-group">
           <textarea
+            onChange={e => handleChange(e)}
             placeholder="Tell us briefley about yourself"
             name="about"
+            value={about}
           />
         </div>
 
@@ -150,6 +189,7 @@ const CreateProfile = ({ createProfile, history }) => {
                 type="text"
                 placeholder="Twitter URL"
                 name="twitter"
+                value={twitter}
               />
             </div>
 
@@ -160,6 +200,7 @@ const CreateProfile = ({ createProfile, history }) => {
                 type="text"
                 placeholder="Facebook URL"
                 name="facebook"
+                value={facebook}
               />
             </div>
 
@@ -170,6 +211,7 @@ const CreateProfile = ({ createProfile, history }) => {
                 type="text"
                 placeholder="YouTube URL"
                 name="youtube"
+                value={youtube}
               />
             </div>
 
@@ -180,6 +222,7 @@ const CreateProfile = ({ createProfile, history }) => {
                 type="text"
                 placeholder="Linkedin URL"
                 name="linkedin"
+                value={linkedin}
               />
             </div>
 
@@ -190,6 +233,17 @@ const CreateProfile = ({ createProfile, history }) => {
                 type="text"
                 placeholder="Instagram URL"
                 name="instagram"
+                value={instagram}
+              />
+            </div>
+            <div className="form-group social-input">
+              <i className="fa fa-github fa-2x" />
+              <input
+                onChange={e => handleChange(e)}
+                type="text"
+                placeholder="Github URL"
+                name="github"
+                value={github}
               />
             </div>
           </React.Fragment>
@@ -204,11 +258,17 @@ const CreateProfile = ({ createProfile, history }) => {
   );
 };
 
-CreateProfile.propTypes = {
-  createProfile: PropTypes.func.isRequired
+EditProfile.propTypes = {
+  createProfile: PropTypes.func.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired
 };
 
+const mapStateToPropf = state => ({
+  profile: state.profile
+});
+
 export default connect(
-  null,
-  { createProfile }
-)(withRouter(CreateProfile));
+  mapStateToPropf,
+  { createProfile, getCurrentProfile }
+)(withRouter(EditProfile));

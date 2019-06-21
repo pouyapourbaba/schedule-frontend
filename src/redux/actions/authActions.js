@@ -72,10 +72,8 @@ export const login = ({ email, password }) => async dispatch => {
     });
 
     dispatch(loadUser());
-  } catch (err) {
-    const errors = err.response.data.errors;
-
-    if (errors) console.log("errors ", errors);
+  } catch (error) {
+    const errors = error.response.data.errors;
 
     errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
     dispatch({ type: LOGIN_FAIL });
@@ -84,6 +82,6 @@ export const login = ({ email, password }) => async dispatch => {
 
 // Logout / Clear Profile
 export const logout = () => dispatch => {
-  dispatch({type: CLEAR_PROFILE})
-  dispatch({type: LOGOUT})
-}
+  dispatch({ type: CLEAR_PROFILE });
+  dispatch({ type: LOGOUT });
+};

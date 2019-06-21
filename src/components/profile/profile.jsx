@@ -9,7 +9,10 @@ import Spinner from "../layout/Spinner";
 
 // Own Redux
 import { connect } from "react-redux";
-import { getCurrentProfile } from "../../redux/actions/profileActions";
+import {
+  getCurrentProfile,
+  deleteAccount
+} from "../../redux/actions/profileActions";
 
 class Profile extends Component {
   componentDidMount() {
@@ -40,7 +43,6 @@ class Profile extends Component {
 
     // destructure profile
     const { profile, loading } = this.props.profile;
-    console.log("profile ", profile);
 
     if (!isAuthenticated) return null;
 
@@ -117,7 +119,19 @@ class Profile extends Component {
           <Button>Submit</Button>
         </Form>
         {profile !== null ? (
-          <React.Fragment>{profile.about}</React.Fragment>
+          <React.Fragment>
+            <Link to="/edit-profile" className="btn btn-primary">
+              Edit Profile
+            </Link>
+            <div>
+              <button
+                className="btn btn-danger"
+                onClick={() => this.props.deleteAccount()}
+              >
+                <i className="fa fa-user-minus">Delete My Account</i>
+              </button>
+            </div>
+          </React.Fragment>
         ) : (
           <React.Fragment>
             <p>You have not yet setup a profile, you can add your info via</p>
@@ -133,8 +147,9 @@ class Profile extends Component {
 
 Profile.propTypes = {
   auth: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired,
-  getCurrentProfile: PropTypes.func.isRequired
+  profile: PropTypes.object.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
+  deleteAccount: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -144,5 +159,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCurrentProfile }
+  { getCurrentProfile, deleteAccount }
 )(Profile);
