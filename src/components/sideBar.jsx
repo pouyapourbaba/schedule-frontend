@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import PropTypes from "prop-types";
+// Own Redux
+import { connect } from "react-redux";
 
 class SideBar extends Component {
   render() {
+    const {isAuthenticated, user} = this.props.auth
     // if no user, do not show the sideBar
-    if (!this.props.user_id) return null;
+    if (!isAuthenticated) return null;
 
     return (
       <nav className="col-md-2 d-none d-md-block bg-light sidebar">
@@ -18,7 +22,7 @@ class SideBar extends Component {
             <li className="nav-item">
               <NavLink
                 className="nav-link"
-                to={`/dashboard/${this.props.user_id}`}
+                to={`/dashboard/${user._id}`}
               >
                 <i className="fa fa-tachometer" aria-hidden="true" /> Dashboard
               </NavLink>
@@ -26,21 +30,21 @@ class SideBar extends Component {
             <li className="nav-item">
               <NavLink
                 className="nav-link"
-                to={`/timetracker/${this.props.user_id}`}
+                to={`/timetracker/${user._id}`}
               >
                 <i className="fa fa-hourglass-start" aria-hidden="true" />{" "}
                 TimeTracker
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to={`/todos/${this.props.user_id}`}>
+              <NavLink className="nav-link" to={`/todos/${user._id}`}>
                 <i className="fa fa-tasks" aria-hidden="true" /> Objectives
               </NavLink>
             </li>
             <li className="nav-item ">
               <NavLink
                 className="nav-link nav-item-profile"
-                to={`/profile/${this.props.user_id}`}
+                to={`/profile`}
               >
                 <i className="fa fa-user-circle-o" aria-hidden="true" /> Profile
               </NavLink>
@@ -52,4 +56,14 @@ class SideBar extends Component {
   }
 }
 
-export default SideBar;
+SideBar.propTypes = {
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps
+)(SideBar);

@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import { logout } from "../redux/actions/authActions";
 
 const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
-  console.log(isAuthenticated)
   const guestLinks = (
     <ul className="navbar-nav mr-3">
       <li className="nav-item">
@@ -24,8 +23,8 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
 
   const authLinks = (
     <ul className="navbar-nav mr-3">
-      <li className="nav-item">
-        <NavLink className="nav-link text-nowrap" to="/logout">
+      <li className="nav-item" onClick={logout}>
+        <NavLink className="nav-link text-nowrap" to="#!">
           <i className="fa fa-sign-out-alt" /> Logout
         </NavLink>
       </li>
