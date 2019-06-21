@@ -6,7 +6,8 @@ import LoginForm from "./components/loginForm";
 import NavBar from "./components/navBar";
 import Todos from "./components/todos";
 import TimeTracker from "./components/timeTracker";
-import Profile from "./components/profile";
+import Profile from "./components/profile/profile";
+import CreateProfile from "./components/profile/CreateProfile";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
 import RegisterForm from "./components/registerForm";
@@ -43,6 +44,7 @@ class App extends Component {
                 <Alert />
                 <Switch>
                   <ProtectedRoute path="/profile" component={Profile} />
+                  <ProtectedRoute path="/create-profile" component={CreateProfile} />
                   <ProtectedRoute path="/todos/:user_id" component={Todos} />
                   <ProtectedRoute
                     path="/timetracker/:user_id"

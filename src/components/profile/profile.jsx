@@ -5,11 +5,11 @@ import { Col, Form, FormGroup, Label, Button, Input } from "reactstrap";
 import PropTypes from "prop-types";
 
 // Own
-import Spinner from "./layout/Spinner";
+import Spinner from "../layout/Spinner";
 
 // Own Redux
 import { connect } from "react-redux";
-import { getCurrentProfile } from "./../redux/actions/profileActions";
+import { getCurrentProfile } from "../../redux/actions/profileActions";
 
 class Profile extends Component {
   componentDidMount() {
