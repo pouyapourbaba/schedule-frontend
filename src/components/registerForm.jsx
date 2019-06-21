@@ -1,11 +1,17 @@
+// 3rd party
 import React from "react";
 import { Redirect } from "react-router-dom";
 import Joi from "joi-browser";
-import Form from "./common/form";
-import * as userService from "../services/userService";
-import auth from "../services/authService";
+import PropTypes from "prop-types";
 
-class LoginForm extends Form {
+// Own
+import Form from "./common/form";
+
+// Own Redux
+import { connect } from "react-redux";
+import { register } from "./../redux/actions/authActions";
+
+class RegisterForm extends Form {
   state = {
     data: { first_name: "", last_name: "", email: "", password: "" },
     errors: {}
@@ -35,22 +41,14 @@ class LoginForm extends Form {
       .label("Password")
   };
 
-  doSubmit = async () => {
-    try {
-      const response = await userService.register(this.state.data);
-      auth.loginWithJwt(response.headers["x-auth-token"]);
-      window.location = "/";
-    } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        const errors = { ...this.state.errors };
-        errors.email = ex.response.data;
-        this.setState({ errors });
-      }
-    }
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.register(this.state.data);
   };
 
   render() {
-    if (auth.getCurrentUser()) return <Redirect to="/" />;
+    // Redirect if logged in
+    if (this.props.isAuthenticated) return <Redirect to="/" />;
 
     return (
       <div>
@@ -67,4 +65,16 @@ class LoginForm extends Form {
   }
 }
 
-export default LoginForm;
+RegisterForm.propTypes = {
+  register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(
+  mapStateToProps,
+  { register }
+)(RegisterForm);

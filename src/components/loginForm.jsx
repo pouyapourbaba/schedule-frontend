@@ -1,8 +1,15 @@
 import React from "react";
-import { Redirect } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 import Joi from "joi-browser";
+import PropTypes from "prop-types";
+
+// Own
 import Form from "./common/form";
+
+// Own Redux
 import auth from "../services/authService";
+import { connect } from "react-redux";
+import { login } from "./../redux/actions/authActions";
 
 class LoginForm extends Form {
   state = {
@@ -20,21 +27,13 @@ class LoginForm extends Form {
   };
 
   doSubmit = async () => {
-    try {
-      const { data } = this.state;
-      await auth.login(data.email, data.password);
-      window.location = "/";
-    } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        const errors = { ...this.state.errors };
-        errors.email = ex.response.data;
-        this.setState({ errors });
-      }
-    }
+    this.props.login(this.state.data);
   };
 
   render() {
-    if(auth.getCurrentUser()) return <Redirect to="/" />
+    // Redirect if logged in
+    if (this.props.isAuthenticated) return <Redirect to="/" />;
+
     return (
       <div>
         <h1>Login Page</h1>
@@ -48,4 +47,16 @@ class LoginForm extends Form {
   }
 }
 
-export default LoginForm;
+LoginForm.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(
+  mapStateToProps,
+  { login }
+)(LoginForm);
