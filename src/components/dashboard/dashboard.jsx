@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import BarChart from "./barChart";
+import BarChart from "../barChart";
 
 class Dashboard extends Component {
   state = {

@@ -1,84 +1,72 @@
 import React, { Component } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import _ from "lodash";
+
 import LoginForm from "./components/loginForm";
 import NavBar from "./components/navBar";
 import Todos from "./components/todos";
 import TimeTracker from "./components/timeTracker";
-import Profile from "./components/profile";
+import Profile from "./components/profile/profile";
+import CreateProfile from "./components/profile/CreateProfile";
+import EditProfile from "./components/profile/EditProfile";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
 import RegisterForm from "./components/registerForm";
-import Logout from "./components/logout";
-import auth from "./services/authService";
-import Dashboard from "./components/dashboard";
+import Dashboard from "./components/dashboard/dashboard";
 import SideBar from "./components/sideBar";
-import { getUser } from "./services/userService";
-// import "./App.css";
-import styles from "./styles/app.module.css";
+import Alert from "./components/layout/Alert";
+import ProtectedRoute from "./components/common/protectedRoute";
+
+// Redux Init
+import { Provider } from "react-redux";
+import store from "./store";
+
+import { loadUser } from "./redux/actions/authActions";
+import setAuthToken from "./utils/setAuthToken";
+
+import "./App.css";
+
+if (localStorage.token) setAuthToken(localStorage.token);
 
 class App extends Component {
-  // set the state to get the user information
-  state = {};
-
-  // get user information from the JWT
-  // I have put this functionality inside the componentWillMount method
-  // to find a way to pass the edited data from the Profile component to
-  // the NavBar component.
-  componentWillMount() {
-    try {
-      const user = auth.getCurrentUser();
-      this.setState({ _id: user._id });
-    } catch (ex) {}
+  componentDidMount() {
+    store.dispatch(loadUser());
   }
-
-  async componentDidMount() {
-    if (this.state._id === undefined) return null;
-    try {
-      let user = await getUser(this.state._id);
-      user = user.data;
-      this.setState({ user });
-    } catch (ex) {
-      console.log(ex.message);
-    }
-  }
-
   render() {
+    const user = {};
     return (
-      <React.Fragment>
-        <header>
-          <NavBar user_id={this.state._id} />
-        </header>
-        <div className={styles["content"]}>
-          {this.state._id && (
-            <SideBar className={styles["sidebar"]} user_id={this.state._id} />
-          )}
-          <main>
-            <Switch>
-              <Route path="/profile/:user_id" component={Profile} />
-              <Route path="/todos/:user_id" component={Todos} />
-              <Route path="/timetracker/:user_id" component={TimeTracker} />
-              <Route path="/logout" component={Logout} />
-              <Route
-                path="/register"
-                render={props => (
-                  <RegisterForm {...props} user_id={this.state._id} />
-                )}
-              />
-              <Route
-                path="/login"
-                render={props => (
-                  <LoginForm {...props} user_id={this.state._id} />
-                )}
-              />
-              <Route path="/dashboard/:user_id" component={Dashboard} />
-              <Route path="/not-found" component={NotFound} />
-              <Route path="/" exact component={Home} />
-              <Redirect to="/not-found" />
-            </Switch>
-          </main>
-        </div>
-        <footer />
-      </React.Fragment>
+      <Provider store={store}>
+        <BrowserRouter>
+          <NavBar />
+          <div className="container-fluid">
+            <div className="row">
+              <SideBar />
+              <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <Alert />
+                <Switch>
+                  <ProtectedRoute path="/profile" component={Profile} />
+                  <ProtectedRoute path="/create-profile" component={CreateProfile} />
+                  <ProtectedRoute path="/edit-profile" component={EditProfile} />
+                  <ProtectedRoute path="/todos/:user_id" component={Todos} />
+                  <ProtectedRoute
+                    path="/timetracker/:user_id"
+                    component={TimeTracker}
+                  />
+                  <ProtectedRoute
+                    path="/dashboard/:user_id"
+                    component={Dashboard}
+                  />
+                  <Route path="/register" component={RegisterForm} />
+                  <Route path="/login" component={LoginForm} />
+                  <Route path="/not-found" component={NotFound} />
+                  <Route path="/" exact component={Home} />
+                  <Redirect to="/not-found" />
+                </Switch>
+              </main>
+            </div>
+          </div>
+        </BrowserRouter>
+      </Provider>
     );
   }
 }

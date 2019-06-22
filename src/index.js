@@ -1,16 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import "./index.css";
 import App from "./App";
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
 import "pretty-checkbox/dist/pretty-checkbox.min.css";
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+import "bootstrap/dist/js/bootstrap.bundle.min";
 
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById("root")
-);
+ReactDOM.render(<App />, document.getElementById("root"));
