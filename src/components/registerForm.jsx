@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 
 // Own
 import Form from "./common/form";
+import styles from "../styles/RegisterForm.module.css"
 
 // Own Redux
 import { connect } from "react-redux";
@@ -51,7 +52,7 @@ class RegisterForm extends Form {
     if (this.props.isAuthenticated) return <Redirect to="/" />;
 
     return (
-      <div>
+      <div className={styles["register-form"]}>
         <h1>Registration Page</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("first_name", "First name")}
@@ -78,3 +79,4 @@ export default connect(
   mapStateToProps,
   { register }
 )(RegisterForm);
+

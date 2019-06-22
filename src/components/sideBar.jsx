@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 // Own Redux
 import { connect } from "react-redux";
 
+
 class SideBar extends Component {
   render() {
     const {isAuthenticated, user} = this.props.auth

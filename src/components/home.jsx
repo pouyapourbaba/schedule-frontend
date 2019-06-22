@@ -1,14 +1,15 @@
 import React, { Component } from "react";
+import styles from "../styles/home.module.css";
 
 class Home extends Component {
   state = {};
   render() {
     return (
-      <div>
+      <div className={styles["home-content"]}>
         <h1>Welcome to Schedu</h1>
         <p>
-          Schedu is a platform where you can set up weekly goals for yourself and
-          keep track of your tasks by storing the number of hours that you
+          Schedu is a platform where you can set up weekly goals for yourself
+          and keep track of your tasks by storing the number of hours that you
           work on a specific task in one week.
         </p>
         <p>
