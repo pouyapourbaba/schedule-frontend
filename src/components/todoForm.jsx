@@ -6,8 +6,12 @@ import React from "react";
 import { paginate } from "../utils/paginate";
 import Pagination from "./common/pagination";
 import Form from "./common/form";
-import { getUser } from "../services/userService";
 import todoService from "./../services/todoService";
+import PropTypes from "prop-types";
+
+// Redux
+import { connect } from "react-redux";
+import { getTodosForWeek, createNewTodo } from "../redux/actions/todoActions";
 
 class TodosForm extends Form {
   state = {
@@ -29,54 +33,6 @@ class TodosForm extends Form {
     weekInYear: Joi.number()
   };
 
-  async componentWillReceiveProps(newProps) {
-    this.setState({ weekNumber: newProps.weekNumber });
-    try {
-      const { data: todos } = await todoService.getTodos(
-        newProps.user_id,
-        newProps.weekNumber
-      );
-      todos.reverse();
-      this.setState({ todos });
-    } catch (ex) {
-      console.log(ex.message);
-    }
-  }
-
-  shouldComponentUpdate(newProps, newState) {
-    return true;
-  }
-
-  async componentWillMount() {
-    const weekNumber = this.props.weekNumber;
-    this.setState({ weekNumber });
-  }
-
-  async componentDidMount() {
-    let user_id;
-    if (this.props.user_id === undefined) return;
-    else user_id = this.props.user_id;
-
-    try {
-      let user = await getUser(user_id);
-      user = user.data;
-      this.setState({ user });
-    } catch (ex) {
-      console.log(ex.message);
-    }
-
-    try {
-      const { data: todos } = await todoService.getTodos(
-        user_id,
-        this.state.weekNumber
-      );
-      todos.reverse();
-      this.setState({ todos });
-    } catch (ex) {
-      console.log(ex.message);
-    }
-  }
-
   // handle page change
   handlePageChange = page => {
     this.setState({ currentPage: page });
@@ -84,26 +40,15 @@ class TodosForm extends Form {
 
   // handle add a new todo
   doSubmit = async () => {
-    try {
-      const obj = { title: this.state.data.title };
-      const user_id = this.state.user._id;
-      const weekNumber = this.state.weekNumber;
+    const obj = { title: "todo" };
+    const weekNumber = this.props.date.week;
 
-      obj.year = moment().format("YYYY");
-      obj.month = moment().format("M");
-      obj.weekInYear = weekNumber;
-      obj.isDone = false;
+    obj.year = moment().format("YYYY");
+    obj.month = moment().format("M");
+    obj.weekInYear = weekNumber;
+    obj.isDone = false;
 
-      const { data: todo } = await todoService.postTodo(obj, user_id);
-      const todos = [todo, ...this.state.todos];
-      this.setState({ todos });
-    } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        const errors = { ...this.state.errors };
-        errors.email = ex.response.data;
-        this.setState({ errors });
-      }
-    }
+    this.props.createNewTodo(obj);
 
     const data = this.state.data;
     data.title = "";
@@ -241,21 +186,30 @@ class TodosForm extends Form {
   };
 
   render() {
-    const { length: count } = this.state.todos;
-    const { pageSize, currentPage, todos: allTodos } = this.state;
+    const { length: count } = this.props.todos.todos;
+    const { pageSize, currentPage } = this.state;
+    const { todos: allTodos } = this.props.todos;
 
     const todos = paginate(allTodos, currentPage, pageSize);
 
     return (
       <React.Fragment>
+
+        <div>
+          <form onSubmit={this.handleSubmit}>
+            <input onChnage={this.handleChange} type="text" placeholder="Create new todo"/>
+            <button>Create</button>
+          </form>
+        </div>
+
         {this.renderNumberOfTodoElemensts()}
-        {this.state.todos.length !== 0 && (
+        {this.props.todos.length !== 0 && (
           <React.Fragment>
             <table className="table">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th style={{textAlign: "center"}}>Title</th>
+                  <th style={{ textAlign: "center" }}>Title</th>
                   <th />
                   <th />
                   <th>Status</th>
@@ -280,7 +234,7 @@ class TodosForm extends Form {
                           </div>
                         )}
                     </td>
-                    <td style={{textAlign: "center"}}>
+                    <td style={{ textAlign: "center" }}>
                       <button
                         onClick={() => this.handleUpdate(todo)}
                         className="btn btn-sm btn-secondary"
@@ -292,7 +246,7 @@ class TodosForm extends Form {
                         Edit
                       </button>
                     </td>
-                    <td style={{textAlign: "center"}}>
+                    <td style={{ textAlign: "center" }}>
                       <button
                         onClick={() => this.handleDelete(todo)}
                         className="btn btn-sm btn-danger"
@@ -300,7 +254,7 @@ class TodosForm extends Form {
                         Delete
                       </button>
                     </td>
-                    <td style={{ paddingLeft: "2.5%"}}>
+                    <td style={{ paddingLeft: "2.5%" }}>
                       <Checkbox
                         shape="round"
                         color="success"
@@ -331,4 +285,21 @@ class TodosForm extends Form {
   }
 }
 
-export default TodosForm;
+TodosForm.propTypes = {
+  auth: PropTypes.object.isRequired,
+  date: PropTypes.object.isRequired,
+  todos: PropTypes.object.isRequired,
+  getTodosForWeek: PropTypes.func.isRequired,
+  createNewTodo: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  date: state.date,
+  todos: state.todos
+});
+
+export default connect(
+  mapStateToProps,
+  { getTodosForWeek, createNewTodo }
+)(TodosForm);

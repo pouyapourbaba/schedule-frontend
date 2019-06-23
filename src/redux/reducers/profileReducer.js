@@ -1,5 +1,4 @@
-import { GET_PROFILE, CLEAR_PROFILE } from "../types/types";
-import { PROFILE_ERROR } from "./../types/types";
+import { GET_PROFILE, CLEAR_PROFILE, PROFILE_ERROR } from "../types/types";
 
 const initialState = {
   profile: null,

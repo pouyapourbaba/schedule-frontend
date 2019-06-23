@@ -3,6 +3,12 @@ import styles from "../styles/home.module.css";
 
 class Home extends Component {
   state = {};
+
+  handleSubmit = e => {
+    e.preventDefault();
+    console.log(e.currentTarget.value);
+  };
+
   render() {
     return (
       <div className={styles["home-content"]}>

@@ -27,26 +27,7 @@ const CreateProfile = ({ createProfile, history }) => {
 
   const [displaySocialInouts, toggleSocialInputs] = React.useState(false);
 
-  const {
-    phone,
-    address,
-    birthday,
-    country,
-    city,
-    postal_code,
-    nationality,
-    occupation,
-    about,
-    youtube,
-    twitter,
-    facebook,
-    linkedin,
-    instagram,
-    github
-  } = formData;
-
   const handleChange = e => {
-    console.log({ [e.target.name]: e.target.value });
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 

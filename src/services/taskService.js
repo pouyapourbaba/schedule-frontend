@@ -6,7 +6,7 @@ const apiEndpoint = "/tasks";
  * Get the weekly total
  */
 export function getWeeklyTotalDurations(user_id) {
-  return http.get(apiEndpoint + "/total-weekly-durations/" + user_id)
+  return http.get(apiEndpoint + "/total-weekly-durations/")
 }
 
 /*

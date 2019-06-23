@@ -63,20 +63,20 @@ export function drawMonthlyBarChart(data) {
   const yAxisGroup = graph.append("g");
 
   // create the rects for the bar chart and append them to the graph group
-  const rects = graph
-    .selectAll("rect")
-    .data(data)
-    .enter()
-    .append("rect")
-    .attr("width", x.bandwidth)
-    .attr("height", 0)
-    .attr("fill", "teal")
-    .attr("x", (d, i) => x(d.month))
-    .attr("y", graphHeight)
-    .transition()
-    .duration(500)
-    .attr("y", d => y(d.total))
-    .attr("height", d => graphHeight - y(d.total));
+  // const rects = graph
+  //   .selectAll("rect")
+  //   .data(data)
+  //   .enter()
+  //   .append("rect")
+  //   .attr("width", x.bandwidth)
+  //   .attr("height", 0)
+  //   .attr("fill", "teal")
+  //   .attr("x", (d, i) => x(d.month))
+  //   .attr("y", graphHeight)
+  //   .transition()
+  //   .duration(500)
+  //   .attr("y", d => y(d.total))
+  //   .attr("height", d => graphHeight - y(d.total));
 
   // create and call axis
   const xAxis = d3.axisBottom(x);
@@ -140,20 +140,20 @@ export function drawWeeklyBarChart(data) {
   const yAxisGroup = graph.append("g");
 
   // create the rects for the bar chart and append them to the graph group
-  const rects = graph
-    .selectAll("rect")
-    .data(data)
-    .enter()
-    .append("rect")
-    .attr("width", x.bandwidth)
-    .attr("height", 0)
-    .attr("fill", "teal")
-    .attr("x", (d, i) => x(d._id))
-    .attr("y", graphHeight)
-    .transition()
-    .duration(500)
-    .attr("y", d => y(d.total))
-    .attr("height", d => graphHeight - y(d.total));
+  // const rects = graph
+  //   .selectAll("rect")
+  //   .data(data)
+  //   .enter()
+  //   .append("rect")
+  //   .attr("width", x.bandwidth)
+  //   .attr("height", 0)
+  //   .attr("fill", "teal")
+  //   .attr("x", (d, i) => x(d._id))
+  //   .attr("y", graphHeight)
+  //   .transition()
+  //   .duration(500)
+  //   .attr("y", d => y(d.total))
+  //   .attr("height", d => graphHeight - y(d.total));
 
   // create and call axis
   const xAxis = d3.axisBottom(x);

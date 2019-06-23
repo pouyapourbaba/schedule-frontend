@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 import Form from "./common/form";
 
 // Own Redux
-import auth from "../services/authService";
 import { connect } from "react-redux";
 import { login } from "./../redux/actions/authActions";
 

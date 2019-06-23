@@ -23,7 +23,7 @@ class SideBar extends Component {
             <li className="nav-item">
               <NavLink
                 className="nav-link"
-                to={`/dashboard/${user._id}`}
+                to={`/dashboard/${user.id}`}
               >
                 <i className="fa fa-tachometer" aria-hidden="true" /> Dashboard
               </NavLink>
@@ -31,14 +31,14 @@ class SideBar extends Component {
             <li className="nav-item">
               <NavLink
                 className="nav-link"
-                to={`/timetracker/${user._id}`}
+                to={`/timetracker/${user.id}`}
               >
                 <i className="fa fa-hourglass-start" aria-hidden="true" />{" "}
                 TimeTracker
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to={`/todos/${user._id}`}>
+              <NavLink className="nav-link" to={`/todos`}>
                 <i className="fa fa-tasks" aria-hidden="true" /> Objectives
               </NavLink>
             </li>
