@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import BarChart from "../barChart";
 
+import {getMonthlySums} from "../../redux/actions/taskActions"
+import {connect} from "react-redux"
+
 class Dashboard extends Component {
   state = {
     data: []
@@ -11,6 +14,8 @@ class Dashboard extends Component {
     if (this.props.match.params.user_id === undefined) return;
     else user_id = this.props.match.params.user_id;
     this.setState({ user_id });
+
+    this.props.getMonthlySums()
   }
 
   render() {
@@ -30,4 +35,6 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+
+
+export default connect(null, {getMonthlySums})(Dashboard);

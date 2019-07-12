@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import _ from "lodash";
 
 export function drawMonthlyBarChart(data) {
+  console.log(data)
   const canvas = d3.select(".canvas-monthly").node();
   const canvasBoundaries = canvas.getBoundingClientRect();
   const w = canvasBoundaries.width;
@@ -22,7 +23,7 @@ export function drawMonthlyBarChart(data) {
   ];
   // add the name of the months to the data
   data.map(d => (d.month = months[d._id - 1].name));
-
+  console.log("from the chart util", data)
   // select the svg and set the width and the height
   const svg = d3
     .select(".canvas-monthly")
@@ -63,20 +64,20 @@ export function drawMonthlyBarChart(data) {
   const yAxisGroup = graph.append("g");
 
   // create the rects for the bar chart and append them to the graph group
-  // const rects = graph
-  //   .selectAll("rect")
-  //   .data(data)
-  //   .enter()
-  //   .append("rect")
-  //   .attr("width", x.bandwidth)
-  //   .attr("height", 0)
-  //   .attr("fill", "teal")
-  //   .attr("x", (d, i) => x(d.month))
-  //   .attr("y", graphHeight)
-  //   .transition()
-  //   .duration(500)
-  //   .attr("y", d => y(d.total))
-  //   .attr("height", d => graphHeight - y(d.total));
+  const rects = graph
+    .selectAll("rect")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("width", x.bandwidth)
+    .attr("height", 0)
+    .attr("fill", "teal")
+    .attr("x", (d, i) => x(d.month))
+    .attr("y", graphHeight)
+    .transition()
+    .duration(500)
+    .attr("y", d => y(d.total))
+    .attr("height", d => graphHeight - y(d.total));
 
   // create and call axis
   const xAxis = d3.axisBottom(x);
@@ -140,20 +141,20 @@ export function drawWeeklyBarChart(data) {
   const yAxisGroup = graph.append("g");
 
   // create the rects for the bar chart and append them to the graph group
-  // const rects = graph
-  //   .selectAll("rect")
-  //   .data(data)
-  //   .enter()
-  //   .append("rect")
-  //   .attr("width", x.bandwidth)
-  //   .attr("height", 0)
-  //   .attr("fill", "teal")
-  //   .attr("x", (d, i) => x(d._id))
-  //   .attr("y", graphHeight)
-  //   .transition()
-  //   .duration(500)
-  //   .attr("y", d => y(d.total))
-  //   .attr("height", d => graphHeight - y(d.total));
+  const rects = graph
+    .selectAll("rect")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("width", x.bandwidth)
+    .attr("height", 0)
+    .attr("fill", "teal")
+    .attr("x", (d, i) => x(d._id))
+    .attr("y", graphHeight)
+    .transition()
+    .duration(500)
+    .attr("y", d => y(d.total))
+    .attr("height", d => graphHeight - y(d.total));
 
   // create and call axis
   const xAxis = d3.axisBottom(x);

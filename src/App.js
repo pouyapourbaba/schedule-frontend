@@ -52,7 +52,7 @@ class App extends Component {
                   <ProtectedRoute path="/edit-profile" component={EditProfile} />
                   <ProtectedRoute path="/todos" component={NewTodo} />
                   <ProtectedRoute
-                    path="/timetracker/:user_id"
+                    path="/timetracker"
                     component={Tasks}
                   />
                   {/* <ProtectedRoute

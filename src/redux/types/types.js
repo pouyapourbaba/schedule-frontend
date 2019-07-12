@@ -21,6 +21,8 @@ export const ACCOUNT_DELETED = "ACCOUNT_DELETED";
 export const INIT_TASKS = "INIT_TASKS";
 export const POST_NEW_TASK = "POST_NEW_TASK";
 export const GET_TASKS_FOR_WEEK = "GET_TASKS_FOR_WEEK";
+export const GET_MONTHLY_SUMS = "GET_MONTHLY_SUMS";
+export const DELETE_TASK = "DELETE_TASK";
 
 // TODOS
 export const GET_TODOS_FOR_WEEK = "GET_TODOS_FOR_WEEK";

@@ -31,7 +31,7 @@ class SideBar extends Component {
             <li className="nav-item">
               <NavLink
                 className="nav-link"
-                to={`/timetracker/${user.id}`}
+                to={`/timetracker`}
               >
                 <i className="fa fa-hourglass-start" aria-hidden="true" />{" "}
                 TimeTracker
