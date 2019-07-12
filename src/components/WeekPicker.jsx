@@ -9,6 +9,7 @@ import "react-day-picker/lib/style.css";
 import { connect } from "react-redux";
 import { setWeekAndDays } from "./../redux/actions/dateActions";
 import { getTodosForWeek } from "../redux/actions/todoActions";
+import { getTasksForWeek } from "../redux/actions/taskActions";
 
 function getWeekDays(weekStart) {
   const days = [weekStart];
@@ -47,7 +48,7 @@ class Calender extends React.Component {
       days: getWeekDays(getWeekRange(date).from)
     });
 
-    this.props.getTodosForWeek(parseInt(moment(date).format("W")));
+    this.props.getTasksForWeek(parseInt(moment(date).format("W")));
 
     this.setState({
       selectedDays: getWeekDays(getWeekRange(date).from)
@@ -150,7 +151,8 @@ class Calender extends React.Component {
             }
             .SelectedWeekExample .DayPicker-Day--hoverRange:hover {
               border-radius: 0 !important;
-            }
+            }import { getTaksForWeek } from './../redux/actions/taskActions';
+
 
           `}</style>
         </Helmet>
@@ -172,5 +174,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setWeekAndDays, getTodosForWeek }
+  { setWeekAndDays, getTasksForWeek }
 )(Calender);

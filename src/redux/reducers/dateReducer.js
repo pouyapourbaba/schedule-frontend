@@ -2,11 +2,9 @@ import { SET_DATE } from "../types/types";
 import moment from "moment";
 
 const initialState = {
-  date: {
-    year: parseInt(moment().format("Y")),
-    month: parseInt(moment().format("M")),
-    week: parseInt(moment().format("W"))
-  }
+  year: parseInt(moment().format("Y")),
+  month: parseInt(moment().format("M")),
+  week: parseInt(moment().format("W"))
 };
 
 export default function(state = initialState, action) {
@@ -14,7 +12,8 @@ export default function(state = initialState, action) {
 
   switch (type) {
     case SET_DATE:
-      return { ...state, date: payload };
+      console.log(payload);
+      return { ...state, ...payload };
     default:
       return state;
   }

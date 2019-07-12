@@ -6,6 +6,7 @@ import NavBar from "./components/navBar";
 import Todos from "./components/todos";
 import NewTodo from "./components/NewTodo";
 import TimeTracker from "./components/timeTracker";
+import Tasks from "./components/Tasks";
 import Profile from "./components/profile/profile";
 import CreateProfile from "./components/profile/CreateProfile";
 import EditProfile from "./components/profile/EditProfile";
@@ -26,6 +27,8 @@ import { loadUser } from "./redux/actions/authActions";
 import setAuthToken from "./utils/setAuthToken";
 
 import "./App.css";
+import { getTasksForWeek } from "./redux/actions/taskActions";
+import moment from 'moment';
 
 if (localStorage.token) setAuthToken(localStorage.token);
 
@@ -50,8 +53,12 @@ class App extends Component {
                   <ProtectedRoute path="/todos" component={NewTodo} />
                   <ProtectedRoute
                     path="/timetracker/:user_id"
-                    component={TimeTracker}
+                    component={Tasks}
                   />
+                  {/* <ProtectedRoute
+                    path="/timetracker/:user_id"
+                    component={TimeTracker}
+                  /> */}
                   <ProtectedRoute
                     path="/dashboard/:user_id"
                     component={Dashboard}

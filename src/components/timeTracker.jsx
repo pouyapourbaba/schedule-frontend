@@ -3,6 +3,9 @@ import moment from "moment";
 import WeekTable from "./weekTable";
 import TimeTrackerTable from "./timeTrackerTable";
 
+// Redux
+import { connect } from "react-redux";
+
 class TimeTracker extends Component {
   state = {};
 
@@ -53,7 +56,9 @@ class TimeTracker extends Component {
     this.setState({ weekToBeDisplayed });
   };
 
+
   render() {
+    console.log("tasks from timeTracker",this.props.tasks)
     return (
       <React.Fragment>
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -114,4 +119,10 @@ class TimeTracker extends Component {
   }
 }
 
-export default TimeTracker;
+const mapStateToProps = state => ({
+  tasks: state.tasks
+});
+
+export default connect(
+  mapStateToProps,
+)(TimeTracker);

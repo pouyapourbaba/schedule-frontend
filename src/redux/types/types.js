@@ -18,6 +18,8 @@ export const CLEAR_PROFILE = "CLEAR_PROFILE";
 export const ACCOUNT_DELETED = "ACCOUNT_DELETED";
 
 // TASKS
+export const INIT_TASKS = "INIT_TASKS";
+export const POST_NEW_TASK = "POST_NEW_TASK";
 export const GET_TASKS_FOR_WEEK = "GET_TASKS_FOR_WEEK";
 
 // TODOS

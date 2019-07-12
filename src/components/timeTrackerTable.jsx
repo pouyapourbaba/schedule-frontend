@@ -8,9 +8,11 @@ import Form from "./common/form";
 import { getUser } from "../services/userService";
 import taskService from "../services/taskService";
 
+// REDUX
+import { connect } from "react-redux";
+
 class TimeTrackerTable extends Form {
   state = {
-    tasks: [],
     errors: [],
     pageSize: 5,
     currentPage: 1,
@@ -31,7 +33,10 @@ class TimeTrackerTable extends Form {
   };
 
   async componentWillReceiveProps(newProps) {
-    this.setState({ weekNumber: newProps.weekNumber, currentMonth: newProps.currentMonth });
+    this.setState({
+      weekNumber: newProps.weekNumber,
+      currentMonth: newProps.currentMonth
+    });
     try {
       const { data: tasks } = await taskService.getTasks(
         newProps.user_id,
@@ -55,28 +60,26 @@ class TimeTrackerTable extends Form {
   }
 
   async componentDidMount() {
-    let user_id;
-    if (this.props.user_id === undefined) return;
-    else user_id = this.props.user_id;
-
-    try {
-      let user = await getUser(user_id);
-      user = user.data;
-      this.setState({ user });
-    } catch (ex) {
-      console.log(ex.message);
-    }
-
-    try {
-      const { data: tasks } = await taskService.getTasks(
-        user_id,
-        this.state.weekNumber
-      );
-      tasks.reverse();
-      this.setState({ tasks });
-    } catch (ex) {
-      console.log(ex.message);
-    }
+    // let user_id;
+    // if (this.props.user_id === undefined) return;
+    // else user_id = this.props.user_id;
+    // try {
+    //   let user = await getUser(user_id);
+    //   user = user.data;
+    //   this.setState({ user });
+    // } catch (ex) {
+    //   console.log(ex.message);
+    // }
+    // try {
+    //   const { data: tasks } = await taskService.getTasks(
+    //     user_id,
+    //     this.state.weekNumber
+    //   );
+    //   tasks.reverse();
+    //   this.setState({ tasks });
+    // } catch (ex) {
+    //   console.log(ex.message);
+    // }
   }
 
   // handle page change
@@ -94,7 +97,7 @@ class TimeTrackerTable extends Form {
 
       obj.year = moment().format("YYYY");
       obj.month = monthNumber;
-      obj.weekInYear = weekNumber;
+      obj.week = weekNumber;
       obj.days = [
         { day: "monday", duration: 0 },
         { day: "tuesday", duration: 0 },
@@ -104,6 +107,8 @@ class TimeTrackerTable extends Form {
         { day: "saturday", duration: 0 },
         { day: "sunday", duration: 0 }
       ];
+
+      console.log(obj)
 
       const { data: task } = await taskService.postTask(obj, user_id);
       const tasks = [task, ...this.state.tasks];
@@ -227,15 +232,14 @@ class TimeTrackerTable extends Form {
     }
   };
 
-  handleBlur = (task) => {
-    this.handleUpdate(task)
+  handleBlur = task => {
+    this.handleUpdate(task);
   };
 
-  doEditDUration = () => {
-  };
+  doEditDUration = () => {};
 
   // disable new lines in the ContentEditable
-  disableNewlines = (event) => {
+  disableNewlines = event => {
     const keyCode = event.keyCode || event.which;
 
     if (keyCode === 13) {
@@ -254,8 +258,9 @@ class TimeTrackerTable extends Form {
   };
 
   render() {
-    const { length: count } = this.state.tasks;
-    const { pageSize, currentPage, tasks: allTasks } = this.state;
+    const { length: count } = this.props.tasks;
+    const allTasks = this.props.tasks;
+    const { pageSize, currentPage } = this.state;
 
     const tasks = paginate(allTasks, currentPage, pageSize);
 
@@ -290,35 +295,40 @@ class TimeTrackerTable extends Form {
                 <tr key={task._id}>
                   <td>
                     <ContentEditable
-                        html={String(task.title)}
+                      html={String(task.title)}
+                      data-task={task._id}
+                      className="content-editable"
+                      onChange={this.handleContentEditable}
+                      onKeyPress={this.disableNewlines}
+                      onBlur={() => this.handleBlur(task)}
+                    />
+                  </td>
+                  {task.days.map(day => (
+                    <td key={day._id} style={{ textAlign: "center" }}>
+                      <ContentEditable
+                        html={String(day.duration)}
                         data-task={task._id}
+                        data-day={day._id}
                         className="content-editable"
                         onChange={this.handleContentEditable}
                         onKeyPress={this.disableNewlines}
                         onBlur={() => this.handleBlur(task)}
                       />
-                  </td>
-                  {task.days.map(day => (
-                    <td key={day._id} style={{textAlign: "center"}}>
-                        <ContentEditable
-                          html={String(day.duration)}
-                          data-task={task._id}
-                          data-day={day._id}
-                          className="content-editable"
-                          onChange={this.handleContentEditable}
-                          onKeyPress={this.disableNewlines}
-                          onBlur={() => this.handleBlur(task)}
-                        />
                     </td>
                   ))}
-                  <td style={{textAlign:"center"}}>
-                  <span className="badge badge-success" style={{fontSize:"16px"}}>{task.days
-                      .map(d => d.duration)
-                      .reduce(
-                        (accumulator, currentValue) =>
-                          accumulator + currentValue
-                      )}</span>
-                    
+                  <td style={{ textAlign: "center" }}>
+                    <span
+                      className="badge badge-success"
+                      style={{ fontSize: "16px" }}
+                    >
+                      {task.days
+                        .map(d => d.duration)
+                        .reduce(
+                          (accumulator, currentValue) =>
+                            accumulator + currentValue
+                        )}
+                    </span>
+
                     {this.state.errors.title &&
                       this.state.errors.id === task._id && (
                         <div className="alert alert-danger">
@@ -348,10 +358,15 @@ class TimeTrackerTable extends Form {
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("title", "New task", false)}
           {this.renderButton("Submit")}
+          <input type="text" />
         </form>
       </React.Fragment>
     );
   }
 }
 
-export default TimeTrackerTable;
+const mapStateToProps = state => ({
+  tasks: state.tasks
+});
+
+export default connect(mapStateToProps)(TimeTrackerTable);
