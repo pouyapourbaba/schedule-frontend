@@ -14,7 +14,7 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
         </NavLink>
       </li>
       <li className="nav-item">
-        <NavLink onClick={logout} className="nav-item nav-link" to="/">
+        <NavLink className="nav-item nav-link" to="/register">
           Register
         </NavLink>
       </li>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
-import LoginForm from "./components/loginForm";
+import LoginFormMUI from "./components/LoginFormMUI";
 import NavBar from "./components/navBar";
 import Todos from "./components/todos";
 import NewTodo from "./components/NewTodo";
@@ -12,13 +12,13 @@ import CreateProfile from "./components/profile/CreateProfile";
 import EditProfile from "./components/profile/EditProfile";
 import NotFound from "./components/notFound";
 import Home from "./components/home";
-import RegisterForm from "./components/registerForm";
-import Dashboard from "./components/dashboard/dashboard";
+import RegisterFormMUI from "./components/RegisterFormMUI";
 import SideBar from "./components/sideBar";
 import SidebarMUI from "./components/SidebarMUI";
 import NavbarRS from "./components/NavbarRS";
 import Alert from "./components/layout/Alert";
 import ProtectedRoute from "./components/common/protectedRoute";
+import Dashboard from "./components/dashboard/dashboard";
 import WeekPicker from "./components/WeekPicker";
 
 // Redux Init
@@ -36,45 +36,43 @@ if (localStorage.token) setAuthToken(localStorage.token);
 class App extends Component {
   componentDidMount() {
     store.dispatch(loadUser());
-    store.dispatch(getMonthlySums())
-    store.dispatch(getWeeklySums())
+    // store.dispatch(getMonthlySums())
+    // store.dispatch(getWeeklySums())
   }
   render() {
     return (
       <Provider store={store}>
         <BrowserRouter>
-          {/* <NavbarRS /> */}
-          <NavBar />
           {/* <div className="container-fluid"> */}
-          <div className="">
-            <div className="row">
-            <SideBar />
+          {/* <div className="">
+            <div className="row"> */}
+            {/* <SideBar /> */}
             {/* <SidebarMUI /> */}
-            <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
+            {/* <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4"> */}
                 <Alert />
                 <Switch>
-                  <ProtectedRoute path="/profile" component={Profile} />
-                  <ProtectedRoute path="/create-profile" component={CreateProfile} />
-                  <ProtectedRoute path="/edit-profile" component={EditProfile} />
-                  <ProtectedRoute path="/todos" component={NewTodo} />
-                  <ProtectedRoute
+                  {/* <ProtectedRoute path="/profile" component={Profile} /> */}
+                  {/* <ProtectedRoute path="/create-profile" component={CreateProfile} /> */}
+                  {/* <ProtectedRoute path="/edit-profile" component={EditProfile} /> */}
+                  {/* <ProtectedRoute path="/todos" component={NewTodo} /> */}
+                  {/* <ProtectedRoute
                     path="/timetracker"
                     component={Tasks}
-                  />
-                  <ProtectedRoute
+                  /> */}
+                  {/* <ProtectedRoute
                     path="/dashboard"
                     component={Dashboard}
-                  />
-                  <Route path="/register" component={RegisterForm} />
-                  <Route path="/week" component={WeekPicker} />
-                  <Route path="/login" component={LoginForm} />
+                  /> */}
+                  {/* <Route path="/week" component={WeekPicker} /> */}
+                  <Route path="/login" component={LoginFormMUI} />
+                  <Route path="/register" component={RegisterFormMUI} />
                   <Route path="/not-found" component={NotFound} />
-                  <Route path="/" exact component={Home} />
-                  <Redirect to="/not-found" />
+                  {/* <Redirect to="/not-found" /> */}
+                  <ProtectedRoute path="/" exact component={Home} />
                 </Switch>
-              </main>
-            </div>
-          </div>
+              {/* </main> */}
+            {/* </div> */}
+          {/* </div> */}
         </BrowserRouter>
       </Provider>
     );

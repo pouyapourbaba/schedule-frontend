@@ -98,6 +98,8 @@ const Tasks = props => {
       .replace(/&lt;/g, "<");
   };
 
+  console.log("tasks rendered")
+
   return (
     <div>
       <WeekPicker />
