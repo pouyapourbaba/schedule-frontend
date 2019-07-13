@@ -3,10 +3,12 @@ import {
   INIT_TASKS,
   POST_NEW_TASK,
   GET_TASKS_FOR_WEEK,
-  DELETE_TASK
+  DELETE_TASK,
+  UPDATE_TASK,
+  GET_WEEKLY_SUMS,
+  GET_MONTHLY_SUMS
 } from "../types/types";
 import { setAlert } from "./alertActions";
-import { GET_MONTHLY_SUMS } from "./../types/types";
 
 export const initializeTasks = () => async dispatch => {
   try {
@@ -47,7 +49,6 @@ export const getTasksForWeek = week => async dispatch => {
 export const getMonthlySums = () => async dispatch => {
   try {
     const response = await http.get("/tasks/sum-months");
- console.log("response action", response.data);
     dispatch({
       type: GET_MONTHLY_SUMS,
       payload: response.data
@@ -57,14 +58,38 @@ export const getMonthlySums = () => async dispatch => {
   }
 };
 
+export const getWeeklySums = () => async dispatch => {
+  try {
+    const response = await http.get("/tasks/sum-weeks");
+    dispatch({
+      type: GET_WEEKLY_SUMS,
+      payload: response.data
+    });
+  } catch (error) {
+    dispatch(setAlert("data not fethced", "danger"));
+  }
+};
+
 export const deleteTask = taskId => async dispatch => {
   try {
-    const response = await http.delete(`/tasks/${taskId}`);
+    await http.delete(`/tasks/${taskId}`);
     dispatch({
       type: DELETE_TASK,
       payload: taskId
     });
   } catch (error) {
     dispatch(setAlert("task not deleted", "danger"));
+  }
+};
+
+export const updateTaske = task => async dispatch => {
+  try {
+    const response = await http.put(`/tasks/${task._id}`, task);
+    dispatch({
+      type: UPDATE_TASK,
+      payload: response.data
+    });
+  } catch (error) {
+    dispatch(setAlert("task not updated", "danger"));
   }
 };

@@ -12,7 +12,6 @@ export default function(state = initialState, action) {
 
   switch (type) {
     case SET_DATE:
-      console.log(payload);
       return { ...state, ...payload };
     default:
       return state;

@@ -23,7 +23,6 @@ export const getTodosForWeek = week => async dispatch => {
 
 // Create new todo
 export const createNewTodo = todo => async dispatch => {
-  console.log("todo ", todo);
   try {
     const res = await http.post("/todos", todo);
     dispatch({

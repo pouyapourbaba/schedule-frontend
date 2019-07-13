@@ -99,8 +99,7 @@ class Calender extends React.Component {
           modifiers={modifiers}
           onDayClick={this.handleDayChange}
           firstDayOfWeek={1}
-          // onDayMouseEnter={this.handleDayEnter}
-          // onDayMouseLeave={this.handleDayLeave}
+          todayButton="Current Month"
           onWeekClick={this.handleWeekClick}
         />
         {selectedDays.length === 7 && (

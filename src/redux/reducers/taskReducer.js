@@ -3,12 +3,15 @@ import {
   INIT_TASKS,
   POST_NEW_TASK,
   GET_MONTHLY_SUMS,
-  DELETE_TASK
+  GET_WEEKLY_SUMS,
+  DELETE_TASK,
+  UPDATE_TASK
 } from "../types/types";
 
 const initialState = {
   tasks: [],
-  monthly: []
+  monthly: [],
+  weekly: []
 };
 
 export default function(state = initialState, action) {
@@ -22,13 +25,18 @@ export default function(state = initialState, action) {
     case GET_TASKS_FOR_WEEK:
       return { ...state, tasks: [...payload] };
     case GET_MONTHLY_SUMS:
-      console.log("reducer", payload)
       return { ...state, monthly: [...payload] };
+    case GET_WEEKLY_SUMS:
+      return { ...state, weekly: [...payload] };
     case DELETE_TASK:
       return {
         ...state,
         tasks: state.tasks.filter(task => task._id !== payload)
       };
+    case UPDATE_TASK:
+      return {
+        ...state, tasks: state.tasks.map(task => task._id !== payload._id ? task : payload)
+      }
     default:
       return state;
   }
