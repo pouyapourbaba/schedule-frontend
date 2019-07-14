@@ -120,7 +120,7 @@ class Profile extends Component {
         </Form>
         {profile !== null ? (
           <React.Fragment>
-            <Link to="/edit-profile" className="btn btn-primary">
+            <Link to={`/dashboard/edit-profile`} className="btn btn-primary">
               Edit Profile
             </Link>
             <div>
@@ -135,7 +135,7 @@ class Profile extends Component {
         ) : (
           <React.Fragment>
             <p>You have not yet setup a profile, you can add your info via</p>
-            <Link to="/create-profile" className="btn btn-primary">
+            <Link to={`dashboard/create-profile`} className="btn btn-primary">
               Create Profile
             </Link>
           </React.Fragment>

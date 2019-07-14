@@ -49,7 +49,7 @@ const LoginFormMUI = props => {
     props.login({ email, password });
   };
 
-  if (props.isAuthenticated) return <Redirect to="/" />;
+  if (props.isAuthenticated) return <Redirect to="/dashboard/home" />;
 
   return (
     <Container component="main" maxWidth="xs">
