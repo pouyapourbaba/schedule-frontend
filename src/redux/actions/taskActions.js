@@ -89,6 +89,10 @@ export const updateTaske = task => async dispatch => {
       type: UPDATE_TASK,
       payload: response.data
     });
+    console.log("lets dispatch the monthly and weekly")
+    dispatch(getMonthlySums());
+    dispatch(getWeeklySums());
+    console.log("dispatched the monthly and weekly")
   } catch (error) {
     dispatch(setAlert("task not updated", "danger"));
   }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -33,6 +33,8 @@ import EditProfile from "./profile/EditProfile";
 import ProtectedRoute from "./common/protectedRoute";
 import Statistics from "./Statistics";
 import Home from "./Home";
+import { getWeeklySums, getMonthlySums } from "./../redux/actions/taskActions";
+import Alert from './layout/Alert';
 
 const drawerWidth = 180;
 
@@ -104,6 +106,11 @@ const MainLayout = props => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    props.getWeeklySums();
+    props.getMonthlySums();
+  });
 
   function handleDrawerOpen() {
     setOpen(true);
@@ -190,6 +197,8 @@ const MainLayout = props => {
 
         <main className={classes.content}>
           <div className={classes.toolbar} />
+
+          <Alert />
           <ProtectedRoute path={`${props.match.path}/home`} component={Home} />
           <ProtectedRoute
             path={`${props.match.path}/tasks`}
@@ -228,5 +237,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logout }
+  { logout, getWeeklySums, getMonthlySums }
 )(MainLayout);

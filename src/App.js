@@ -11,7 +11,6 @@ import "./App.css";
 import { Provider } from "react-redux";
 import store from "./store";
 
-import { getMonthlySums, getWeeklySums } from "./redux/actions/taskActions";
 import { loadUser } from "./redux/actions/authActions";
 import setAuthToken from "./utils/setAuthToken";
 
@@ -20,8 +19,6 @@ if (localStorage.token) setAuthToken(localStorage.token);
 class App extends Component {
   componentDidMount() {
     store.dispatch(loadUser());
-    // store.dispatch(getMonthlySums())
-    // store.dispatch(getWeeklySums())
   }
   render() {
     return (
@@ -32,7 +29,6 @@ class App extends Component {
           <Route path="/login" component={LoginFormMUI} />
           <Route path="/register" component={RegisterFormMUI} />
           <Route path="/not-found" component={NotFound} />
-          {/* <Redirect from="/" to="/main" /> */}
         </BrowserRouter>
       </Provider>
     );

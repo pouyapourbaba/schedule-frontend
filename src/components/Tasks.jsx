@@ -3,6 +3,7 @@ import { Paper, Grid, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import WeekPicker from "./WeekPicker";
 import TasksTable from "./TasksTable";
+import WeekDesc from "./WeekDesc";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -34,7 +35,7 @@ const Tasks = () => {
 
       <Grid item xs={12} sm={6} md={12} lg={9}>
         <Paper className={fixedHeightPaper}>
-          {/* <TasksTable tasks={props.tasks} date={props.date} /> */}
+          <WeekDesc />
         </Paper>
       </Grid>
 
