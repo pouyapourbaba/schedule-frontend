@@ -19,9 +19,9 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import PermContactCalendarIcon from "@material-ui/icons/PermContactCalendar";
 import HomeIcon from "@material-ui/icons/Home";
 import Button from "@material-ui/core/Button";
-import InsertChartIcon from "@material-ui/icons/InsertChart"
+import InsertChartIcon from "@material-ui/icons/InsertChart";
 
-// Redux and
+// Redux and Own
 import { connect } from "react-redux";
 import { logout } from "../redux/actions/authActions";
 import PropTypes from "prop-types";
@@ -34,7 +34,7 @@ import ProtectedRoute from "./common/protectedRoute";
 import Statistics from "./Statistics";
 import Home from "./Home";
 
-const drawerWidth = 240;
+const drawerWidth = 180;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -114,88 +114,105 @@ const MainLayout = props => {
   }
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        style={{ background: "#2E3B55" }}
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap className={classes.title}>
-            Schedu
-          </Typography>
-          <Button color="inherit" onClick={() => props.logout()}>
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open
-        })}
-        classes={{
-          paper: clsx({
+    <div>
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar
+          style={{ background: "#2E3B55" }}
+          position="fixed"
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: open
+          })}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, {
+                [classes.hide]: open
+              })}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap className={classes.title}>
+              Schedu
+            </Typography>
+            <Button color="inherit" onClick={() => props.logout()}>
+              Logout
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          className={clsx(classes.drawer, {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open
-          })
-        }}
-        open={open}
-      >
-        <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          {[
-            { text: "home", icon: <HomeIcon /> },
-            { text: "tasks", icon: <AssignmentIcon /> },
-            { text: "stats", icon: <InsertChartIcon /> },
-            { text: "profile", icon: <PermContactCalendarIcon /> }
-          ].map((item, index) => (
-            <ListItem
-              button
-              key={item.text}
-              component={Link}
-              to={`${props.match.url}/${item.text}`}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
+          })}
+          classes={{
+            paper: clsx({
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open
+            })
+          }}
+          open={open}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            {[
+              { text: "home", icon: <HomeIcon /> },
+              { text: "tasks", icon: <AssignmentIcon /> },
+              { text: "stats", icon: <InsertChartIcon /> },
+              { text: "profile", icon: <PermContactCalendarIcon /> }
+            ].map((item, index) => (
+              <ListItem
+                button
+                key={item.text}
+                component={Link}
+                to={`${props.match.url}/${item.text}`}
+              >
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
 
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <ProtectedRoute path={`${props.match.path}/home`} component={Home} />
-        <ProtectedRoute path={`${props.match.path}/tasks`} component={Tasks} />
-        <ProtectedRoute path={`${props.match.path}/stats`} component={Statistics} />
-        <ProtectedRoute path={`${props.match.path}/profile`} component={Profile} />
-        <ProtectedRoute path={`${props.match.path}/create-profile`} component={CreateProfile} />
-        <ProtectedRoute path={`${props.match.path}/edit-profile`} component={EditProfile} />
-      </main>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <ProtectedRoute path={`${props.match.path}/home`} component={Home} />
+          <ProtectedRoute
+            path={`${props.match.path}/tasks`}
+            component={Tasks}
+          />
+          <ProtectedRoute
+            path={`${props.match.path}/stats`}
+            component={Statistics}
+          />
+          <ProtectedRoute
+            path={`${props.match.path}/profile`}
+            component={Profile}
+          />
+          <ProtectedRoute
+            path={`${props.match.path}/create-profile`}
+            component={CreateProfile}
+          />
+          <ProtectedRoute
+            path={`${props.match.path}/edit-profile`}
+            component={EditProfile}
+          />
+        </main>
+      </div>
     </div>
   );
 };

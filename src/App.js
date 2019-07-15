@@ -20,8 +20,8 @@ if (localStorage.token) setAuthToken(localStorage.token);
 class App extends Component {
   componentDidMount() {
     store.dispatch(loadUser());
-    store.dispatch(getMonthlySums())
-    store.dispatch(getWeeklySums())
+    // store.dispatch(getMonthlySums())
+    // store.dispatch(getWeeklySums())
   }
   render() {
     return (

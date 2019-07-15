@@ -8,7 +8,6 @@ import "react-day-picker/lib/style.css";
 // Redux
 import { connect } from "react-redux";
 import { setWeekAndDays } from "./../redux/actions/dateActions";
-import { getTodosForWeek } from "../redux/actions/todoActions";
 import { getTasksForWeek } from "../redux/actions/taskActions";
 
 function getWeekDays(weekStart) {
