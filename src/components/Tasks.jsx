@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Paper, Grid, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import WeekPicker from "./WeekPicker";
 import TasksTable from "./TasksTable";
 import WeekDesc from "./WeekDesc";
+
+// Redux
+import { connect } from "react-redux";
+import { getTasksForWeek } from "./../redux/actions/taskActions";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -21,9 +25,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Tasks = () => {
+const Tasks = props => {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  useEffect(() => {
+    // props.getTasksForWeek(props.date.week);
+  }, []);
+
+  const weeklyTasks = props.tasks.filter(task => task.week === props.date.week)
 
   return (
     <Grid container spacing={3}>
@@ -35,17 +45,26 @@ const Tasks = () => {
 
       <Grid item xs={12} sm={6} md={12} lg={9}>
         <Paper className={fixedHeightPaper}>
-          <WeekDesc />
+          <WeekDesc weeklyTasks={weeklyTasks}/>
         </Paper>
       </Grid>
 
       <Grid item xs={12}>
         <Paper>
-          <TasksTable />
+          <TasksTable weeklyTasks={weeklyTasks} />
         </Paper>
       </Grid>
     </Grid>
   );
 };
 
-export default Tasks;
+const mapStateToProps = state => ({
+  tasks: state.tasks.tasks,
+  allTasks: state.tasks.allTasks,
+  date: state.date
+});
+
+export default connect(
+  mapStateToProps,
+  { getTasksForWeek }
+)(Tasks);

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import clsx from "clsx";
 import { TextField, Button, makeStyles } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/DeleteForever";
+import UpdateIcon from "@material-ui/icons/Update";
 import ContentEditable from "react-contenteditable";
 import { connect } from "react-redux";
 import {
@@ -15,11 +16,13 @@ const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1)
-    // width: 200,
-    // border: "1px red solid"
   },
   dense: {
     marginTop: theme.spacing(0)
+  },
+  icon: {
+    margin: theme.spacing(0),
+    fontSize: 20
   }
 }));
 
@@ -29,10 +32,7 @@ const TasksTable = props => {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-    // grab the tasks for the current week
-    props.getTasksForWeek(parseInt(moment().format("W")));
-
-    setEdittedTasks(props.tasks);
+    setEdittedTasks(props.weeklyTasks);
   }, []);
 
   const handleContentEditable = e => {
@@ -42,8 +42,7 @@ const TasksTable = props => {
     );
 
     if (!e.currentTarget.dataset.day) {
-      tasks[index].title = e.target.value;
-      const obj = { title: e.target.value };
+      tasks[index].title = trimSpaces(e.target.value);
     } else {
       const dayIndex = tasks[index].days.findIndex(
         day => day._id === e.currentTarget.dataset.day
@@ -107,6 +106,7 @@ const TasksTable = props => {
       .replace(/&gt;/g, ">")
       .replace(/&lt;/g, "<");
   };
+
   return (
     <React.Fragment>
       <h5 className="card-header text-center font-weight-bold  text-uppercase py-2">
@@ -131,8 +131,8 @@ const TasksTable = props => {
               </tr>
             </thead>
             <tbody>
-              {props.tasks &&
-                props.tasks.map(task => {
+              {props.weeklyTasks &&
+                props.weeklyTasks.map(task => {
                   return (
                     <tr key={task._id}>
                       <td
@@ -168,18 +168,20 @@ const TasksTable = props => {
                         <button
                           onClick={() => handleUpdateTask(task)}
                           type="button"
-                          className="btn btn-info btn-rounded btn-sm my-0"
+                          style={{padding: "2px 1px"}}
+                          className="btn btn-info btn-rounded btn-sm my-0 m-1"
                         >
-                          Update
+                          <UpdateIcon className={classes.icon} />
                         </button>
                       </td>
                       <td>
                         <button
                           onClick={() => props.deleteTask(task._id)}
                           type="button"
-                          className="btn btn-danger btn-rounded btn-sm my-0"
+                          style={{padding: "2px 1px"}}
+                          className="btn btn-danger btn-rounded btn-sm my-0 m-1"
                         >
-                          Remove
+                          <DeleteIcon className={classes.icon} />
                         </button>
                       </td>
                     </tr>
@@ -201,6 +203,7 @@ const TasksTable = props => {
                 variant="outlined"
               />
               <Button
+                type="submit"
                 variant="contained"
                 style={{ background: "#2E3B55", color: "#fff" }}
                 className={classes.button}

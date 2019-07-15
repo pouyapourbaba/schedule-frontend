@@ -39,6 +39,19 @@ class Calender extends React.Component {
     selectedDays: []
   };
 
+  componentDidMount() {
+    // set the current week upon loading the page and clicking on the
+    // current week button and colorize it on the calender
+    // this.state.selectedDays.length === 0 && this.setCurrentWeek();
+  }
+
+  setCurrentWeek = () => {
+    const now = moment().format();
+    const selectedDays = getWeekDays(getWeekRange(now).from);
+    this.setState({ selectedDays });
+    // this.props.getTasksForWeek(parseInt(moment().format("W")));
+  };
+
   handleDayChange = date => {
     this.props.setWeekAndDays({
       year: parseInt(moment(date).format("Y")),
@@ -47,10 +60,12 @@ class Calender extends React.Component {
       days: getWeekDays(getWeekRange(date).from)
     });
 
-    this.props.getTasksForWeek(parseInt(moment(date).format("W")));
+    // this.props.getTasksForWeek(parseInt(moment(date).format("W")));
+
+    const selectedDays = getWeekDays(getWeekRange(date).from);
 
     this.setState({
-      selectedDays: getWeekDays(getWeekRange(date).from)
+      selectedDays
     });
   };
 
@@ -98,7 +113,8 @@ class Calender extends React.Component {
           modifiers={modifiers}
           onDayClick={this.handleDayChange}
           firstDayOfWeek={1}
-          todayButton="Current Month"
+          todayButton="Current Week"
+          onTodayButtonClick={this.setCurrentWeek}
           onWeekClick={this.handleWeekClick}
         />
         {selectedDays.length === 7 && (

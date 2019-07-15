@@ -33,8 +33,12 @@ import EditProfile from "./profile/EditProfile";
 import ProtectedRoute from "./common/protectedRoute";
 import Statistics from "./Statistics";
 import Home from "./Home";
-import { getWeeklySums, getMonthlySums } from "./../redux/actions/taskActions";
-import Alert from './layout/Alert';
+import {
+  getWeeklySums,
+  getMonthlySums,
+  initializeTasks
+} from "./../redux/actions/taskActions";
+import Alert from "./layout/Alert";
 
 const drawerWidth = 180;
 
@@ -110,7 +114,10 @@ const MainLayout = props => {
   useEffect(() => {
     props.getWeeklySums();
     props.getMonthlySums();
-  });
+
+    // get all the tasks for the user
+    props.initializeTasks();
+  }, []);
 
   function handleDrawerOpen() {
     setOpen(true);
@@ -237,5 +244,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logout, getWeeklySums, getMonthlySums }
+  { logout, getWeeklySums, getMonthlySums, initializeTasks }
 )(MainLayout);
