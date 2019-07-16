@@ -3,6 +3,7 @@ import * as d3 from "d3";
 export function drawLineChartForOneWeek(data) {
   const canvas = d3.select(".canvas-for-week-desc").node();
   const canvasBoundaries = canvas.getBoundingClientRect();
+ console.log("canvasBoundaries ", canvasBoundaries);
   const w = canvasBoundaries.width;
   const h = 250;
 

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { IntlProvider } from "react-intl";
 import { BrowserRouter, Route } from "react-router-dom";
 import RegisterFormMUI from "./components/RegisterFormMUI";
 import LoginFormMUI from "./components/LoginFormMUI";
@@ -23,13 +24,15 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <BrowserRouter>
-          <Alert />
-          <Route path="/dashboard" component={MainLayout} />
-          <Route path="/login" component={LoginFormMUI} />
-          <Route path="/register" component={RegisterFormMUI} />
-          <Route path="/not-found" component={NotFound} />
-        </BrowserRouter>
+        <IntlProvider locale="en">
+          <BrowserRouter>
+            <Alert />
+            <Route path="/dashboard" component={MainLayout} />
+            <Route path="/login" component={LoginFormMUI} />
+            <Route path="/register" component={RegisterFormMUI} />
+            <Route path="/not-found" component={NotFound} />
+          </BrowserRouter>
+        </IntlProvider>
       </Provider>
     );
   }
