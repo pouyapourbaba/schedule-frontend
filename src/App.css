@@ -43,3 +43,7 @@ html {
 rect:hover {
   fill: #007bff;
 }
+
+table td {
+  vertical-align: middle !important;
+}
