@@ -30,7 +30,7 @@ import CreateProfileMUI from "./profile/CreateProfileMUI";
 import EditProfileMUI from "./profile/EditProfileMUI";
 import ProtectedRoute from "./common/protectedRoute";
 import Statistics from "./Statistics";
-import Home from "./Home";
+import Home from "./home";
 import {
   getWeeklySums,
   getMonthlySums,
