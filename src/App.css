@@ -1,32 +1,33 @@
 
 /* RESET */
 body {
-	padding: 0;
-	margin: 0;
-	font-family: "Roboto", sans-serif;
+  padding: 0;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
 }
 
 ul {
-	list-style: none;
-	padding: 0;
-	margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 a,
 a:hover,
 a:active,
 a:focus {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 a {
-	color: rgb(178, 159, 179);
+  color: rgb(178, 159, 179);
 }
 
 * {
-	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-	-moz-box-sizing: border-box; /* Firefox, other Gecko */
-	box-sizing: border-box; /* Opera/IE 8+ */
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
 }
 
 html {
@@ -37,6 +38,7 @@ html {
   text-align: center;
 }
 
+<<<<<<< HEAD
 .container {
   margin-top: 50px;
 }
@@ -102,6 +104,8 @@ html {
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
 }
 
+=======
+>>>>>>> redux
 /* 
 * Bar Chart
 */

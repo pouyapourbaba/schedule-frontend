@@ -6,7 +6,7 @@ const apiEndpoint = "/todos";
  * GET all the todos of the current user
  */
 export function getTodos(user_id, weekNumber) {
-  return http.get(apiEndpoint + "/" + user_id + "/" + weekNumber);
+  return http.get(apiEndpoint + "/" + weekNumber);
 }
 
 /*
@@ -20,7 +20,7 @@ export function getAllTodos(user_id) {
  * POST a new todo
  */
 export function postTodo(todoObj, user_id) {
-  return http.post(apiEndpoint + "/new/" + user_id, todoObj);
+  return http.post(apiEndpoint + "/new", todoObj);
 }
 
 /*

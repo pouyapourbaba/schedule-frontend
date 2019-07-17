@@ -22,7 +22,6 @@ export function drawMonthlyBarChart(data) {
   ];
   // add the name of the months to the data
   data.map(d => (d.month = months[d._id - 1].name));
-
   // select the svg and set the width and the height
   const svg = d3
     .select(".canvas-monthly")
@@ -63,7 +62,7 @@ export function drawMonthlyBarChart(data) {
   const yAxisGroup = graph.append("g");
 
   // create the rects for the bar chart and append them to the graph group
-  const rects = graph
+  graph
     .selectAll("rect")
     .data(data)
     .enter()
@@ -91,7 +90,6 @@ export function drawMonthlyBarChart(data) {
  * Weekly bar chart
  */
 export function drawWeeklyBarChart(data) {
- console.log("data ", data);
   const canvas = d3.select(".canvas-weekly").node();
   const canvasBoundaries = canvas.getBoundingClientRect();
   const w = canvasBoundaries.width;
@@ -140,7 +138,7 @@ export function drawWeeklyBarChart(data) {
   const yAxisGroup = graph.append("g");
 
   // create the rects for the bar chart and append them to the graph group
-  const rects = graph
+   graph
     .selectAll("rect")
     .data(data)
     .enter()
