@@ -77,6 +77,10 @@ export const deleteTask = taskId => async dispatch => {
       type: DELETE_TASK,
       payload: taskId
     });
+    
+    // get the new sums to update the charts in the stats page
+    dispatch(getMonthlySums());
+    dispatch(getWeeklySums());
   } catch (error) {
     dispatch(setAlert("task not deleted", "danger"));
   }
@@ -89,10 +93,10 @@ export const updateTaske = task => async dispatch => {
       type: UPDATE_TASK,
       payload: response.data
     });
-    console.log("lets dispatch the monthly and weekly")
+    
+    // get the new sums to update the charts in the stats page
     dispatch(getMonthlySums());
     dispatch(getWeeklySums());
-    console.log("dispatched the monthly and weekly")
   } catch (error) {
     dispatch(setAlert("task not updated", "danger"));
   }

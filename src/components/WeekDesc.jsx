@@ -47,7 +47,7 @@ const WeekDesc = props => {
                  one {task} 
                  other {tasks}
                 } for this week`}
-              values={{ numberOfTasks: props.weeklyTasks.length}}
+              values={{ numberOfTasks: props.weeklyTasks.length }}
             />
             <svg
               viewBox={`0 0 ${width} ${250}`}
@@ -57,12 +57,14 @@ const WeekDesc = props => {
               <VictoryChart
                 domainPadding={{ x: (width * 5) / 100 }}
                 standalone={false}
-                width={width}
+                width={width + width*15 /100}
                 height={250}
                 singleQuadrantDomainPadding={{ x: false }}
                 theme={VictoryTheme.material}
               >
                 <VictoryAxis
+                label="days"
+                style={{ axisLabel: {padding: 30} }}
                   tickValues={[0, 1, 2, 3, 4, 5, 6]}
                   tickFormat={["mon", "tue", "wed", "thu", "fri", "sat", "sun"]}
                 />
@@ -70,6 +72,8 @@ const WeekDesc = props => {
                   offsetX={50}
                   dependentAxis
                   tickFormat={x => `${x}h`}
+                  label="hours"
+                  style={{ axisLabel: {padding: 40} }}
                 />
                 <VictoryLabel
                   text="daily hours"

@@ -29,7 +29,7 @@ import { Link } from "react-router-dom";
 import Tasks from "./Tasks";
 import Profile from "./profile/profile";
 import CreateProfile from "./profile/CreateProfile";
-import EditProfile from "./profile/EditProfile";
+import EditProfileMUI from "./profile/EditProfileMUI";
 import ProtectedRoute from "./common/protectedRoute";
 import Statistics from "./Statistics";
 import Home from "./Home";
@@ -158,6 +158,7 @@ const MainLayout = props => {
             </Button>
           </Toolbar>
         </AppBar>
+
         <Drawer
           variant="permanent"
           className={clsx(classes.drawer, {
@@ -225,7 +226,7 @@ const MainLayout = props => {
           />
           <ProtectedRoute
             path={`${props.match.path}/edit-profile`}
-            component={EditProfile}
+            component={EditProfileMUI}
           />
         </main>
       </div>

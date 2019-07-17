@@ -135,7 +135,7 @@ class Profile extends Component {
         ) : (
           <React.Fragment>
             <p>You have not yet setup a profile, you can add your info via</p>
-            <Link to={`dashboard/create-profile`} className="btn btn-primary">
+            <Link to={`/dashboard/create-profile`} className="btn btn-primary">
               Create Profile
             </Link>
           </React.Fragment>

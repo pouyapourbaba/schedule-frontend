@@ -105,7 +105,7 @@ class Calender extends React.Component {
     };
 
     return (
-      <div className="SelectedWeekExample">
+      <div className="SelectedWeekExample" style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
         <DayPicker
           selectedDays={selectedDays}
           showWeekNumbers

@@ -33,28 +33,30 @@ const Tasks = props => {
     // props.getTasksForWeek(props.date.week);
   }, []);
 
-  const weeklyTasks = props.tasks.filter(task => task.week === props.date.week)
+  const weeklyTasks = props.tasks.filter(task => task.week === props.date.week);
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12} sm={6} md={12} lg={3}>
-        <Paper className={fixedHeightPaper}>
-          <WeekPicker />
-        </Paper>
-      </Grid>
+    <div>
+      <Grid container spacing={3} style={{ justifyContent: "center" }}>
+        <Grid item xs={12} sm={6} md={5} lg={4}>
+          <Paper className={fixedHeightPaper}>
+            <WeekPicker />
+          </Paper>
+        </Grid>
 
-      <Grid item xs={12} sm={6} md={12} lg={9}>
-        <Paper className={fixedHeightPaper}>
-          <WeekDesc weeklyTasks={weeklyTasks}/>
-        </Paper>
-      </Grid>
+        <Grid item xs={12} sm={6} md={7} lg={8}>
+          <Paper className={fixedHeightPaper}>
+            <WeekDesc weeklyTasks={weeklyTasks} />
+          </Paper>
+        </Grid>
 
-      <Grid item xs={12}>
-        <Paper>
-          <TasksTable weeklyTasks={weeklyTasks} />
-        </Paper>
+        <Grid item xs={12} sm={12} md={12} lg={12}>
+          <Paper>
+            <TasksTable weeklyTasks={weeklyTasks} />
+          </Paper>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };
 
