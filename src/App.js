@@ -3,7 +3,6 @@ import { IntlProvider } from "react-intl";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import RegisterFormMUI from "./components/RegisterFormMUI";
 import LoginFormMUI from "./components/LoginFormMUI";
-import MainLayout from "./components/MainLayout";
 import MainLayoutResponsive from "./components/MainLayoutResponsive";
 import NotFound from "./components/notFound";
 import Alert from "./components/layout/Alert";
