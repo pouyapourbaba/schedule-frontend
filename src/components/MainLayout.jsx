@@ -28,8 +28,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Tasks from "./Tasks";
 import Profile from "./profile/profile";
-import CreateProfile from "./profile/CreateProfile";
 import EditProfileMUI from "./profile/EditProfileMUI";
+import CreateProfileMUI from "./profile/CreateProfileMUI";
 import ProtectedRoute from "./common/protectedRoute";
 import Statistics from "./Statistics";
 import Home from "./Home";
@@ -222,7 +222,7 @@ const MainLayout = props => {
           />
           <ProtectedRoute
             path={`${props.match.path}/create-profile`}
-            component={CreateProfile}
+            component={CreateProfileMUI}
           />
           <ProtectedRoute
             path={`${props.match.path}/edit-profile`}

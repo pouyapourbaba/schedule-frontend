@@ -183,7 +183,6 @@ const CreateProfileMUI = ({ createProfile, history }) => {
             >
               Add Social Network Links
             </Button>
-            <span style={{ marginLeft: "20px" }}>Optional</span>
           </Grid>
 
           {displaySocialInouts && (

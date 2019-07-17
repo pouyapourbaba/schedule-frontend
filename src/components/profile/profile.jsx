@@ -1,23 +1,44 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import _ from "lodash";
-import { Col, Form, FormGroup, Label, Button, Input } from "reactstrap";
+import { Col, Form, FormGroup, Label, Input } from "reactstrap";
 import PropTypes from "prop-types";
+import { Paper, Button, Divider } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 
 // Own
 import Spinner from "../layout/Spinner";
-
 // Own Redux
 import { connect } from "react-redux";
+import { updateUser } from "./../../services/userService";
 import {
   getCurrentProfile,
   deleteAccount
 } from "../../redux/actions/profileActions";
 
+const styles = {
+  container: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  textField: {
+    marginLeft: "10px",
+    marginRight: "10px"
+  },
+  dense: {
+    marginTop: "20px"
+  },
+  menu: {
+    width: 200
+  }
+};
+
 class Profile extends Component {
+  classes = this.props.classes;
   componentDidMount() {
     this.props.getCurrentProfile();
   }
+
   handleSubmit = e => {
     e.preventDefault();
     const first_name = e.target.elements.first_name.value;
@@ -31,14 +52,14 @@ class Profile extends Component {
 
     if (_.isEmpty(user)) return;
 
-    this.props.updateUser(this.props.user._id, user);
+    updateUser(this.props.auth.user._id, user);
   };
 
   render() {
     // destructure auth
     const {
       isAuthenticated,
-      user: { first_name, last_name, email, added_date }
+      user: { first_name, last_name, email, date }
     } = this.props.auth;
 
     // destructure profile
@@ -50,7 +71,7 @@ class Profile extends Component {
     if (loading && profile === null) return <Spinner />;
 
     // format the date
-    const rawDate = new Date(added_date);
+    const rawDate = new Date(date);
     const formattedDate = rawDate.toDateString();
 
     return (
@@ -102,42 +123,58 @@ class Profile extends Component {
             </Col>
           </FormGroup>
           <FormGroup row>
-            <Label for="added_date" sm={2} size="lg">
+            <Label for="date" sm={2} size="lg">
               Joined Date
             </Label>
             <Col sm={10}>
               <Input
-                type="added_date"
-                name="added_date"
-                id="added_date"
+                type="text"
+                name="date"
+                id="date"
                 placeholder={formattedDate}
                 bsSize="lg"
                 disabled={true}
               />
             </Col>
           </FormGroup>
-          <Button>Submit</Button>
+
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{ marginBottom: "10px" }}
+          >
+            Update
+          </Button>
         </Form>
         {profile !== null ? (
           <React.Fragment>
-            <Link to={`/dashboard/edit-profile`} className="btn btn-primary">
-              Edit Profile
-            </Link>
+            <Button
+              component={Link}
+              to={`/dashboard/edit-profile`}
+              style={{ marginBottom: "10px" }}
+              variant="contained"
+            >
+              Detailed Profile
+            </Button>
+
             <div>
-              <button
-                className="btn btn-danger"
+              <Button
                 onClick={() => this.props.deleteAccount()}
+                style={{ marginBottom: "10px" }}
+                variant="contained"
+                color="secondary"
               >
-                <i className="fa fa-user-minus">Delete My Account</i>
-              </button>
+                Delete My Account
+              </Button>
             </div>
           </React.Fragment>
         ) : (
           <React.Fragment>
             <p>You have not yet setup a profile, you can add your info via</p>
-            <Link to={`/dashboard/create-profile`} className="btn btn-primary">
-              Create Profile
-            </Link>
+            <Button component={Link} to={`/dashboard/create-profile`} color="primary">
+              Create Detailed Profile
+            </Button>
           </React.Fragment>
         )}
       </React.Fragment>
@@ -160,4 +197,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getCurrentProfile, deleteAccount }
-)(Profile);
+)(withStyles(styles)(Profile));
