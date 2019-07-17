@@ -1,36 +1,74 @@
-import React, { Component } from "react";
-import taskService from "../services/taskService";
-import { drawMonthlyBarChart, drawWeeklyBarChart } from "../utils/barChart";
+import React from "react";
+import { connect } from "react-redux";
+import {
+  VictoryBar,
+  VictoryChart,
+  VictoryAxis,
+  VictoryTheme,
+  VictoryLabel
+} from "victory";
+import ReactResizeDetector from "react-resize-detector";
+import { PropTypes } from "prop-types";
 
-class BarChart extends Component {
-  state = {};
+const BarChart = props => {
+  return (
+    <ReactResizeDetector handleWidth handleHeight>
+      {({ width = 0, height }) => {
+        return (
+          <div>
+            <svg
+              viewBox={`0 0 ${width} ${380}`}
+              preserveAspectRatio="none"
+              width="100%"
+            >
+              <VictoryChart
+                domainPadding={{
+                  x: (width * props.extraDomainPadding) / 100
+                }}
+                standalone={false}
+                width={width}
+                height={380}
+                singleQuadrantDomainPadding={{ x: false }}
+                theme={VictoryTheme.material}
+              >
+                <VictoryAxis
+                  tickValues={props.tickValues}
+                  tickFormat={props.tickFormat}
+                  fixLabelOverlap={true}
+                  label={props.xAxisLabel}
+                  style={{ axisLabel: { padding: 40 } }}
 
-  async componentDidMount() {
-    if (this.props.user_id) {
-      // Get the monthly data
-      const monthlyData = await taskService.getMonthlyTotalDurations(
-        this.props.user_id
-      );
-      drawMonthlyBarChart(monthlyData.data);
+                />
+                <VictoryAxis
+                  offsetX={50}
+                  dependentAxis
+                  tickFormat={x => `${x}h`}
+                  label="hours"
+                  style={{ axisLabel: { padding: 40 } }}
+                />
+                <VictoryLabel
+                  text={props.title}
+                  x={width / 2}
+                  y={30}
+                  textAnchor="middle"
+                />
+                <VictoryBar data={props.data} y="total" />
+              </VictoryChart>
+            </svg>
+          </div>
+        );
+      }}
+    </ReactResizeDetector>
+  );
+};
 
-      // Get the weekly data
-      const weeklyData = await taskService.getWeeklyTotalDurations(
-        this.props.user_id
-      );
-      drawWeeklyBarChart(weeklyData.data);
-    }
-  }
+BarChart.propTypes = {
+  weekly: PropTypes.array.isRequired,
+  tickValues: PropTypes.array.isRequired
+};
 
-  render() {
-    return (
-      <React.Fragment>
-        <h1><span className="badge badge-info">MONTHLY</span></h1>
-        <div className="canvas-monthly" style={{ border: "1px solid #ccc" }} />
-        <h1><span className="badge badge-info">WEEKLY</span></h1>
-        <div className="canvas-weekly" style={{ border: "1px solid #ccc" }} />
-      </React.Fragment>
-    );
-  }
-}
+const mapStateToProps = state => ({
+  weekly: state.tasks.weekly
+});
 
-export default BarChart;
+export default connect(mapStateToProps)(BarChart);

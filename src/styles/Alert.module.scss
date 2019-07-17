@@ -1,0 +1,17 @@
+@import "./variables";
+
+.container {
+  color: #fff;
+  font-size: 1.2rem;
+  padding: 5px 15px;
+  margin-bottom: 10px;
+}
+.container-danger {
+    background-color: $dangerColor;
+}
+.container-success {
+    background-color: $successColor;
+}
+.container-info {
+    background-color: $infoColor;
+}

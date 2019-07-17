@@ -6,21 +6,21 @@ const apiEndpoint = "/tasks";
  * Get the weekly total
  */
 export function getWeeklyTotalDurations(user_id) {
-  return http.get(apiEndpoint + "/total-weekly-durations/" + user_id)
+  return http.get(apiEndpoint + "/weeks")
 }
 
 /*
  * Get the monthly total
  */
 export function getMonthlyTotalDurations(user_id) {
-  return http.get(apiEndpoint + "/total-monthly-durations/" + user_id)
+  return http.get(apiEndpoint + "/months")
 }
 
 /*
  * GET all the tasks of the current user based on the week
  */
 export function getTasks(user_id, weekNumber) {
-  return http.get(apiEndpoint + "/" + user_id + "/" + weekNumber);
+  return http.get(apiEndpoint + "/" + weekNumber);
 }
 
 /*
@@ -28,14 +28,14 @@ export function getTasks(user_id, weekNumber) {
  */
 
 export function getAllTasks(user_id) {
-  return http.get(apiEndpoint + "/" + user_id);
+  return http.get(apiEndpoint + "/");
 }
 
 /*
  * POST a new task
  */
-export function postTask(taskObj, user_id) {
-  return http.post(apiEndpoint + "/new/" + user_id, taskObj);
+export function postTask(taskObj) {
+  return http.post(apiEndpoint, taskObj);
 }
 
 /*

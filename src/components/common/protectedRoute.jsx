@@ -1,22 +1,32 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
+// Own Redux
+import { connect } from "react-redux";
 
 const ProtectedRoute = ({
-  path,
-  user,
   component: Component,
   render,
+  auth,
   ...rest
 }) => {
   return (
     <Route
       {...rest}
       render={props => {
-        if (!user) return <Redirect to="/login" />;
+        if (!auth.isAuthenticated) return <Redirect to="/login" />;
         return Component ? <Component {...props} /> : render(props);
       }}
     />
   );
 };
 
-export default ProtectedRoute;
+ProtectedRoute.propTypes = {
+  auth: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+  auth: state.auth
+})
+
+export default connect(mapStateToProps)(ProtectedRoute);
