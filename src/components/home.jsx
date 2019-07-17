@@ -1,28 +1,37 @@
 import React from "react";
-import Typography from "@material-ui/core/Typography";
+import { Typography, Grid, Paper } from "@material-ui/core";
+import { connect } from "react-redux";
 
-const Home = () => {
+const Home = props => {
+  if (!props.auth.user) return null;
+
   return (
-    <div>
+    <Paper style={{ padding: "25px" }}>
+      <h1>Welcome {props.auth.user.first_name.toUpperCase()}!</h1>
       <Typography paragraph>
-        Schedu is a platform where you can set up weekly goals for yourself and
-        keep track of your tasks by storing the number of hours that you work on
-        a specific task in one week.
+        Here you can plan your tasks for each week of the year and store the
+        amount of time you spend on each task. Schedu enables you to analyze
+        your productivity and strategy for accomplishing your responsibilities.
       </Typography>
       <Typography paragraph>
-        The weekly objectives can be set in the Objectives page where there are
-        options to edit, delete, and change the status of a goal between done
-        and not done. The TimeTracker page can be used to insert tasks for each
-        week and enter the amount of time that you spent working on that task
-        each day. You can see the total amount of time that you have worked on a
-        specific task as well.
+        First you go to the "tasks" tab from the side menu and there you can
+        insert the name of tasks that you plan to work on. Each task will be
+        assignd a row in the tasks table where you can enter the number of hours
+        you worked on the task each day. You can chage the week and the month or
+        the year from the calendar provided there. Moreover, a chart showing the
+        sum of the hours worked on each task on each day is provided to show the
+        progress.
       </Typography>
       <Typography paragraph>
-        On the Dashboard page, you can see a chart which shows the number of
-        hours that you have worked or studied during each week of the year 2019.
+        Additionally, in the Statistics tab you can see the amount of work done
+        on each week and month of the year.
       </Typography>
-    </div>
+    </Paper>
   );
 };
 
-export default Home;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps)(Home);
