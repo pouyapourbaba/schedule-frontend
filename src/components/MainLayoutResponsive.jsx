@@ -83,14 +83,6 @@ const ResponsiveDrawer = props => {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  useEffect(() => {
-    props.getWeeklySums();
-    props.getMonthlySums();
-
-    // get all the tasks for the user
-    props.initializeTasks();
-  }, []);
-
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
   }

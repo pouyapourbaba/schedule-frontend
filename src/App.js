@@ -21,6 +21,7 @@ class App extends Component {
   componentDidMount() {
     store.dispatch(loadUser());
   }
+  
   render() {
     return (
       <Provider store={store}>
@@ -28,11 +29,11 @@ class App extends Component {
           <BrowserRouter>
             <Alert />
             <Switch>
-            	<Route path="/dashboard" component={MainLayoutResponsive} />
-            	<Route path="/login" component={LoginFormMUI} />
-            	<Route path="/register" component={RegisterFormMUI} />
-            	<Route path="/not-found" component={NotFound} />
-            	<Redirect from="/" to="/dashboard/home" />
+              <Route path="/dashboard" component={MainLayoutResponsive} />
+              <Route path="/login" component={LoginFormMUI} />
+              <Route path="/register" component={RegisterFormMUI} />
+              <Route path="/not-found" component={NotFound} />
+              <Redirect from="/" to="/dashboard/home" />
               <Redirect to="/not-found" />
             </Switch>
           </BrowserRouter>

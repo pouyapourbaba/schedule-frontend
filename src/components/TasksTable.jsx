@@ -171,7 +171,8 @@ const TasksTable = props => {
                             style={{padding: "2px 1px"}}
                             className="btn btn-info btn-rounded btn-sm my-0 m-1"
                           >
-                            <UpdateIcon className={classes.icon} />
+                            Update
+                            {/* <UpdateIcon className={classes.icon} /> */}
                           </button>
                         </td>
                         <td>
@@ -181,7 +182,8 @@ const TasksTable = props => {
                             style={{padding: "2px 1px"}}
                             className="btn btn-danger btn-rounded btn-sm my-0 m-1"
                           >
-                            <DeleteIcon className={classes.icon} />
+                            Delete
+                            {/* <DeleteIcon className={classes.icon} /> */}
                           </button>
                         </td>
                       </tr>

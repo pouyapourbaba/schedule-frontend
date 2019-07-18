@@ -7,7 +7,10 @@ import WeekDesc from "./WeekDesc";
 
 // Redux
 import { connect } from "react-redux";
-import { getTasksForWeek } from "./../redux/actions/taskActions";
+import {
+  getTasksForWeek,
+  initializeTasks
+} from "./../redux/actions/taskActions";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -30,7 +33,7 @@ const Tasks = props => {
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   useEffect(() => {
-    // props.getTasksForWeek(props.date.week);
+    props.initializeTasks();
   }, []);
 
   const weeklyTasks = props.tasks.filter(task => task.week === props.date.week);
@@ -68,5 +71,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getTasksForWeek }
+  { getTasksForWeek, initializeTasks }
 )(Tasks);

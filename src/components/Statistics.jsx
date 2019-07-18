@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import _ from "lodash";
 import { connect } from "react-redux";
 import BarChart from "./barChart";
 import { Paper } from "@material-ui/core";
 
+import { getWeeklySums, getMonthlySums } from "./../redux/actions/taskActions";
+
 const Statistics = props => {
+  useEffect(() => {
+    props.getWeeklySums();
+    props.getMonthlySums();
+  }, []);
+  
   const monthlyTickFormat = [
     "Jan",
     "Feb",
@@ -74,4 +81,7 @@ const mapStateToProps = state => ({
   weekly: state.tasks.weekly
 });
 
-export default connect(mapStateToProps)(Statistics);
+export default connect(
+  mapStateToProps,
+  { getWeeklySums, getMonthlySums }
+)(Statistics);
