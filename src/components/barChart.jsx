@@ -1,14 +1,14 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 import {
   VictoryBar,
   VictoryChart,
   VictoryAxis,
   VictoryTheme,
   VictoryLabel
-} from "victory";
-import ReactResizeDetector from "react-resize-detector";
-import { PropTypes } from "prop-types";
+} from 'victory';
+import ReactResizeDetector from 'react-resize-detector';
+import { PropTypes } from 'prop-types';
 
 const BarChart = props => {
   return (
@@ -37,7 +37,6 @@ const BarChart = props => {
                   fixLabelOverlap={true}
                   label={props.xAxisLabel}
                   style={{ axisLabel: { padding: 40 } }}
-
                 />
                 <VictoryAxis
                   offsetX={50}
