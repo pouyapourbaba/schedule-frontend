@@ -49,7 +49,7 @@ const TasksTable = props => {
       if (e.target.value === "") {
         tasks[index].days[dayIndex].duration = 0;
       } else {
-        tasks[index].days[dayIndex].duration = parseInt(e.target.value);
+        tasks[index].days[dayIndex].duration = parseFloat(e.target.value.replace(/[^0-9.]/g, ""));
       }
       setEdittedTasks(tasks);
     }
@@ -87,9 +87,11 @@ const TasksTable = props => {
   };
 
   const totalDuration = task => {
-    return task.days.reduce((a, b) => {
+    const total = task.days.reduce((a, b) => {
       return a + Number(b.duration);
     }, 0);
+
+    return total.toFixed(2)
   };
 
   const handleUpdateTask = task => {
