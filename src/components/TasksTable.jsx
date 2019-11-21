@@ -49,7 +49,7 @@ const TasksTable = props => {
       if (e.target.value === "") {
         tasks[index].days[dayIndex].duration = 0;
       } else {
-        tasks[index].days[dayIndex].duration = parseInt(e.target.value);
+        tasks[index].days[dayIndex].duration = parseFloat(e.target.value.replace(/[^0-9.]/g, ""));
       }
       setEdittedTasks(tasks);
     }
@@ -87,9 +87,11 @@ const TasksTable = props => {
   };
 
   const totalDuration = task => {
-    return task.days.reduce((a, b) => {
+    const total = task.days.reduce((a, b) => {
       return a + Number(b.duration);
     }, 0);
+
+    return total.toFixed(2)
   };
 
   const handleUpdateTask = task => {
@@ -171,7 +173,8 @@ const TasksTable = props => {
                             style={{padding: "2px 1px"}}
                             className="btn btn-info btn-rounded btn-sm my-0 m-1"
                           >
-                            <UpdateIcon className={classes.icon} />
+                            Update
+                            {/* <UpdateIcon className={classes.icon} /> */}
                           </button>
                         </td>
                         <td>
@@ -181,7 +184,8 @@ const TasksTable = props => {
                             style={{padding: "2px 1px"}}
                             className="btn btn-danger btn-rounded btn-sm my-0 m-1"
                           >
-                            <DeleteIcon className={classes.icon} />
+                            Delete
+                            {/* <DeleteIcon className={classes.icon} /> */}
                           </button>
                         </td>
                       </tr>

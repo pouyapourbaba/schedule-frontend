@@ -91,7 +91,7 @@ const CreateProfileMUI = ({ createProfile, history }) => {
               onChange={e => handleChange(e)}
               id="birthday"
               name="birthday"
-              label="Birtchday"
+              label="Birthday"
               fullWidth
               margin="normal"
               variant="outlined"
@@ -115,7 +115,7 @@ const CreateProfileMUI = ({ createProfile, history }) => {
               onChange={e => handleChange(e)}
               id="country"
               name="country"
-              label="Cuntry"
+              label="Country"
               fullWidth
               margin="normal"
               variant="outlined"
