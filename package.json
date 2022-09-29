@@ -8,7 +8,7 @@
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "clsx": "^1.0.4",
-    "d3": "^5.9.2",
+    "d3": "^7.6.1",
     "font-awesome": "^4.7.0",
     "joi-browser": "^13.4.0",
     "jquery": "^3.4.1",
@@ -38,7 +38,7 @@
     "semantic-ui-react": "^0.87.3",
     "typeface-roboto": "0.0.54",
     "uuid": "^3.3.2",
-    "victory": "^32.3.3"
+    "victory": "^36.6.8"
   },
   "scripts": {
     "start": "react-scripts start",
